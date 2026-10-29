@@ -1,5 +1,5 @@
 const App: React.FC = () => (
-  <div>App Production</div>
+  <div>App Staging</div>
 );
 
 export default App;
