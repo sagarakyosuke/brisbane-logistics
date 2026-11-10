@@ -10,7 +10,8 @@ class PreviousCaseStudyResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id' => (string) $this->id,
+            'key' => $this->key,
             'category' => $this->category,
             'title' => $this->title,
             'description' => $this->description,

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-// use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -10,24 +9,41 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        /* =====================================================================
+         * Seed Configuration
+         * Toggle true/false to choose which seeders run.
+         * ===================================================================== */
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        
-        // $this->call([
-        //     CaseStudiesSectionSeeder::class,
-        // ]);
+        $seedCaseStudies    = false;
+        $seedArticles       = false;
+        $seedCompanyUpdates = false;
+        $seedGuideTips      = false;
+        $seedBrowseTopics   = true;
 
-        $this->call([
-            ArticleSeeder::class,
-        ]);
+        /* =====================================================================
+         * Execution
+         * ===================================================================== */
+
+        if ($seedCaseStudies) {
+            $this->call(CaseStudiesSectionSeeder::class);
+        }
+
+        if ($seedArticles) {
+            $this->call(ArticleSeeder::class);
+        }
+
+        if ($seedCompanyUpdates) {
+            $this->call(CompanyUpdatesSeeder::class);
+        }
+
+        if ($seedGuideTips) {
+            $this->call(GuideTipsSeeder::class);
+        }
+
+        if ($seedBrowseTopics) {
+            $this->call(BrowseTopicSeeder::class);
+        }
     }
 }

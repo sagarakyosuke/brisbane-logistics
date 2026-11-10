@@ -25,3 +25,15 @@ export {
   useGetArticlesQuery,
   type ArticlesResponse,
 } from '@/pages/news-and-blogs/sections/api-hook';
+
+export {
+  useGetCompanyUpdatesQuery,
+  type CompanyUpdatesResponse,
+} from '@/pages/news-and-blogs/company-updates/sections/api-hook';
+
+export {
+  useGetFeaturedGuideQuery,
+  useGetBrowseByTopicQuery,
+  type FeaturedGuideResponse,
+  type BrowseByTopicResponse,
+} from '@/pages/news-and-blogs/guides-and-tips/sections/api-hook';

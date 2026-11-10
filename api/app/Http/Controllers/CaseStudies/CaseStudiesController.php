@@ -41,7 +41,7 @@ class CaseStudiesController extends Controller
 
     public function theResult(): JsonResponse
     {
-        $study = CaseStudy::with('points')->findOrFail('urgent-delivery');
+        $study = CaseStudy::with('points')->where('key', 'urgent-delivery')->firstOrFail();
 
         return response()->json(new TheResultResource($study));
     }
@@ -63,7 +63,7 @@ class CaseStudiesController extends Controller
     public function whyClientsStayWithUs(): JsonResponse
     {
         $values = WhyClientValue::all();
-
-        return response()->json(new WhyClientsStayResource($values));
+        
+        return response()->json(WhyClientsStayResource::collection($values));
     }
 }

@@ -6,6 +6,11 @@ import type {
   ApiWhyClientsStayResponse,
 } from '@/pages/case-studies/client-testimonials/sections/api-hook';
 import type { ArticlesResponse } from '@/pages/news-and-blogs/sections/api-hook';
+import type { CompanyUpdatesResponse } from '@/pages/news-and-blogs/company-updates/sections/api-hook';
+import type {
+  FeaturedGuideResponse,
+  BrowseByTopicResponse,
+} from '@/pages/news-and-blogs/guides-and-tips/sections/api-hook';
 
 /* =====================================================================
  * Types
@@ -16,8 +21,11 @@ interface ApiData {
   previous: PreviousResponse['previous'];
   clientFeedbacks: ClientFeedbacksResponse['feedbacks'];
   moreClientFeedbacks: MoreClientFeedbacksResponse['feedbacks'];
-  whyClientsStay: ApiWhyClientsStayResponse | null;
+  whyClientsStay: ApiWhyClientsStayResponse[];
   articles: ArticlesResponse['articles'];
+  companyUpdates: CompanyUpdatesResponse['updates'];
+  featuredGuide: FeaturedGuideResponse['guide'];
+  browseByTopic: BrowseByTopicResponse;
 }
 
 export interface ApiContextValue {

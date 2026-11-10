@@ -7,12 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CaseStudy extends Model
 {
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
     protected $fillable = [
-        'id', 'tag', 'title', 'description',
+        'key', 'tag', 'title', 'description',
         'main_image', 'top_right_image', 'bottom_right_image',
         'category', 'status', 'icon_key', 'image', 'path',
     ];

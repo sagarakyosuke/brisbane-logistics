@@ -15,7 +15,7 @@ class CaseStudiesSectionSeeder extends Seeder
         /* ── 1. Case Studies ──────────────────────────────────────── */
 
         $featured = CaseStudy::updateOrCreate(
-            ['id' => 'urgent-delivery'],
+            ['key' => 'urgent-delivery'],
             [
                 'tag' => 'Latest Case Study',
                 'title' => 'Urgent delivery in Brisbane CBD.',
@@ -28,7 +28,6 @@ class CaseStudiesSectionSeeder extends Seeder
             ]
         );
 
-        // Clean up old points so we don't duplicate them on re-run
         $featured->points()->delete();
         
         $featured->points()->createMany([
@@ -39,7 +38,7 @@ class CaseStudiesSectionSeeder extends Seeder
 
         CaseStudy::upsert([
             [
-                'id' => 'container-handling',
+                'key' => 'container-handling',
                 'category' => 'Container Handling',
                 'title' => 'Case study coming soon',
                 'description' => 'A client story about container handling will appear here once it is approved for publishing.',
@@ -49,7 +48,7 @@ class CaseStudiesSectionSeeder extends Seeder
                 'path' => '#',
             ],
             [
-                'id' => 'warehousing',
+                'key' => 'warehousing',
                 'category' => 'Warehousing',
                 'title' => 'Case study coming soon',
                 'description' => 'A client story about warehousing will appear here once it is approved for publishing.',
@@ -59,7 +58,7 @@ class CaseStudiesSectionSeeder extends Seeder
                 'path' => '#',
             ],
             [
-                'id' => 'ecommerce',
+                'key' => 'ecommerce',
                 'category' => 'E-commerce Fulfilment',
                 'title' => 'Case study coming soon',
                 'description' => 'A client story about e-commerce fulfilment will appear here once it is approved for publishing.',
@@ -68,12 +67,10 @@ class CaseStudiesSectionSeeder extends Seeder
                 'image' => null,
                 'path' => '#',
             ],
-        ], ['id'], ['category', 'title', 'description', 'status', 'icon_key', 'image', 'path']);
+        ], ['key'], ['category', 'title', 'description', 'status', 'icon_key', 'image', 'path']);
 
         /* ── 2. Client Feedbacks (Carousel) ───────────────────────── */
 
-        // Since these don't have unique string IDs, the cleanest way to prevent duplicates 
-        // is to wipe the table and re-insert the fresh list.
         ClientFeedback::truncate();
         ClientFeedback::insert([
             ['quote' => 'We appreciate a team that listens, keeps us informed and helps us move forward.', 'meta' => 'Sample testimonial · E-commerce retailer', 'created_at' => now(), 'updated_at' => now()],
@@ -97,9 +94,9 @@ class CaseStudiesSectionSeeder extends Seeder
         /* ── 4. Why Clients Stay With Us ──────────────────────────── */
 
         WhyClientValue::upsert([
-            ['id' => 'communication', 'title' => 'Direct communication', 'description' => 'You speak with the people who handle your stock, not a call centre.', 'icon_key' => 'chat'],
-            ['id' => 'handling', 'title' => 'Careful handling', 'description' => 'Stock is checked, recorded and handled to your instructions.', 'icon_key' => 'verified_user'],
-            ['id' => 'team', 'title' => 'A team you know by name', 'description' => 'The same small team supports your account day to day.', 'icon_key' => 'people'],
-        ], ['id'], ['title', 'description', 'icon_key']);
+            ['key' => 'communication', 'title' => 'Direct communication', 'description' => 'You speak with the people who handle your stock, not a call centre.', 'icon_key' => 'chat'],
+            ['key' => 'handling', 'title' => 'Careful handling', 'description' => 'Stock is checked, recorded and handled to your instructions.', 'icon_key' => 'verified_user'],
+            ['key' => 'team', 'title' => 'A team you know by name', 'description' => 'The same small team supports your account day to day.', 'icon_key' => 'people'],
+        ], ['key'], ['title', 'description', 'icon_key']);
     }
 }

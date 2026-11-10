@@ -1,12 +1,27 @@
+import { useMemo, createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
-import { ArrowForward } from '@mui/icons-material';
+import { ArrowForward, Warehouse, Inventory, BarChart, LocalShipping } from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionWrap } from '@/components/sections';
 import { palette, shadows } from '@/utilities/themes';
-import {
-  browseByTopicData,
-  type TopicItem,
-} from '@/utilities/_mock/news-and-blogs/guides-and-tips/browse-by-topic';
+import { useGetBrowseByTopicQuery } from '@/pages/news-and-blogs/guides-and-tips/sections/api-hook';
+import type { TopicItem } from '@/utilities/data/news-and-blogs/guides-and-tips/browse-by-topic';
+
+/* =====================================================================
+ * Icon Mapping
+ * ===================================================================== */
+
+const ICONS: Record<string, ElementType> = {
+  warehouse: Warehouse,
+  inventory: Inventory,
+  bar_chart: BarChart,
+  local_shipping: LocalShipping,
+};
+
+const DynamicIcon = ({ iconKey, sx }: { iconKey: string; sx?: SxProps<Theme> }) => {
+  const Icon = ICONS[iconKey] || Warehouse;
+  return createElement(Icon, { sx });
+};
 
 /* =====================================================================
  * Static styles
@@ -87,36 +102,43 @@ const ARROW_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const BrowseByTopicSection = () => {
+  const { data } = useGetBrowseByTopicQuery();
+
+  const topics = useMemo(() => {
+    return (data?.topics || []) as unknown as TopicItem[];
+  }, [data?.topics]);
+
+  if (!data || topics.length === 0) return null;
+
   return (
     <Section tone="mist" skipAlternate>
       <SectionWrap>
         <Typography component="h2" sx={TITLE_SX}>
-          {browseByTopicData.title}
+          {data.title}
         </Typography>
 
         <Box sx={GRID_SX}>
-          {browseByTopicData.topics.map((topic: TopicItem) => {
-            const Icon = topic.icon;
-
-            return (
-              <Box key={topic.id} component={Link} to={topic.path} sx={CARD_SX}>
-                <Box sx={ICON_BOX_SX}>
-                  <Icon fontSize="medium" />
-                </Box>
-
-                <Typography component="h3" sx={CARD_TITLE_SX}>
-                  {topic.title}
-                </Typography>
-
-                <Typography sx={CARD_DESC_SX}>{topic.desc}</Typography>
-
-                <Box sx={LINK_SX}>
-                  Explore
-                  <ArrowForward className="arrow-icon" sx={ARROW_SX} />
-                </Box>
+          {topics.map((topic) => (
+            <Box key={topic.id} component={Link} to={topic.path} sx={CARD_SX}>
+              <Box sx={ICON_BOX_SX}>
+                <DynamicIcon
+                  iconKey={(topic as unknown as { iconKey: string }).iconKey}
+                  sx={{ fontSize: 32 }}
+                />
               </Box>
-            );
-          })}
+
+              <Typography component="h3" sx={CARD_TITLE_SX}>
+                {topic.title}
+              </Typography>
+
+              <Typography sx={CARD_DESC_SX}>{topic.desc}</Typography>
+
+              <Box sx={LINK_SX}>
+                Explore
+                <ArrowForward className="arrow-icon" sx={ARROW_SX} />
+              </Box>
+            </Box>
+          ))}
         </Box>
       </SectionWrap>
     </Section>

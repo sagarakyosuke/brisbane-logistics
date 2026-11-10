@@ -9,7 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('case_studies', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->id();
+            $table->string('key')->unique();
             $table->string('tag')->nullable();
             $table->string('title');
             $table->text('description');
@@ -26,8 +27,7 @@ return new class extends Migration
 
         Schema::create('case_study_points', function (Blueprint $table) {
             $table->id();
-            $table->string('case_study_id');
-            $table->foreign('case_study_id')->references('id')->on('case_studies')->cascadeOnDelete();
+            $table->foreignId('case_study_id')->constrained('case_studies')->cascadeOnDelete();
             $table->string('label');
             $table->text('desc');
             $table->string('icon_key');
@@ -50,7 +50,8 @@ return new class extends Migration
         });
 
         Schema::create('why_client_values', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->id();
+            $table->string('key')->unique();
             $table->string('title');
             $table->text('description');
             $table->string('icon_key');

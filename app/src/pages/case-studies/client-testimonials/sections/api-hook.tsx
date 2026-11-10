@@ -1,9 +1,5 @@
 import { apiSlice } from '@/utilities/hooks/api/slice';
 
-/* =====================================================================
- * Types
- * ===================================================================== */
-
 export interface ApiClientFeedback {
   id: number;
   quote: string;
@@ -17,24 +13,12 @@ export interface ApiMoreClientFeedback {
   tag: string;
 }
 
-export interface ApiWhyClientValue {
+export interface ApiWhyClientsStayResponse {
   id: string;
+  key: string;
   title: string;
   description: string;
   iconKey: string;
-}
-
-export interface ApiWhyClientsStayResponse {
-  eyebrow: string;
-  title: string;
-  values: ApiWhyClientValue[];
-  cta: {
-    title: string;
-    description: string;
-    linkLabel: string;
-    linkHref: string;
-    iconKey: string;
-  };
 }
 
 export interface ClientFeedbacksResponse {
@@ -44,10 +28,6 @@ export interface ClientFeedbacksResponse {
 export interface MoreClientFeedbacksResponse {
   feedbacks: ApiMoreClientFeedback[];
 }
-
-/* =====================================================================
- * Endpoints
- * ===================================================================== */
 
 export const clientTestimonialsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -59,7 +39,7 @@ export const clientTestimonialsApi = apiSlice.injectEndpoints({
       query: () => '/case-studies/more-client-feedbacks',
       providesTags: ['CaseStudies'],
     }),
-    getWhyClientsStay: builder.query<ApiWhyClientsStayResponse, void>({
+    getWhyClientsStay: builder.query<ApiWhyClientsStayResponse[], void>({
       query: () => '/case-studies/why-clients-stay-with-us',
       providesTags: ['CaseStudies'],
     }),

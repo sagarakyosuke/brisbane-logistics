@@ -11,6 +11,7 @@ class ArticleSeeder extends Seeder
     {
         $articles = [
             [
+                'key' => 'wh',
                 'slug' => 'what-do-warehousing-services-include',
                 'category' => 'Warehousing',
                 'title' => 'What do warehousing services include?',
@@ -20,6 +21,7 @@ class ArticleSeeder extends Seeder
                 'is_featured' => true,
             ],
             [
+                'key' => 'peaks',
                 'slug' => 'planning-stock-for-retail-peaks',
                 'category' => 'Warehousing',
                 'title' => 'Planning stock for retail peaks',
@@ -29,6 +31,7 @@ class ArticleSeeder extends Seeder
                 'is_featured' => false,
             ],
             [
+                'key' => '3pl',
                 'slug' => 'what-to-consider-when-choosing-a-3pl',
                 'category' => 'Fulfilment',
                 'title' => 'What to consider when choosing a 3PL',
@@ -38,6 +41,7 @@ class ArticleSeeder extends Seeder
                 'is_featured' => false,
             ],
             [
+                'key' => 'sys',
                 'slug' => 'connecting-your-systems-with-warehouse-operations',
                 'category' => 'Systems',
                 'title' => 'Connecting your systems with warehouse operations',
@@ -47,6 +51,7 @@ class ArticleSeeder extends Seeder
                 'is_featured' => false,
             ],
             [
+                'key' => 'drop',
                 'slug' => 'from-dropshipping-to-holding-your-own-stock',
                 'category' => 'Fulfilment',
                 'title' => 'From dropshipping to holding your own stock',
@@ -56,6 +61,7 @@ class ArticleSeeder extends Seeder
                 'is_featured' => false,
             ],
             [
+                'key' => 'pallet',
                 'slug' => 'pallet-storage-explained-for-small-businesses',
                 'category' => 'Warehousing',
                 'title' => 'Pallet storage explained for small businesses',
@@ -65,6 +71,7 @@ class ArticleSeeder extends Seeder
                 'is_featured' => false,
             ],
             [
+                'key' => 'freight',
                 'slug' => 'what-rising-freight-costs-mean-for-small-businesses',
                 'category' => 'Business Insights',
                 'title' => 'What rising freight costs mean for small businesses',
@@ -74,6 +81,7 @@ class ArticleSeeder extends Seeder
                 'is_featured' => false,
             ],
             [
+                'key' => 'eoy',
                 'slug' => 'planning-your-logistics-for-the-end-of-year-rush',
                 'category' => 'Business Insights',
                 'title' => 'Planning your logistics for the end-of-year rush',
@@ -83,6 +91,7 @@ class ArticleSeeder extends Seeder
                 'is_featured' => false,
             ],
             [
+                'key' => 'cont',
                 'slug' => 'preparing-paperwork-for-a-container-unpack',
                 'category' => 'Systems',
                 'title' => 'Preparing paperwork for a container unpack',
@@ -94,7 +103,7 @@ class ArticleSeeder extends Seeder
         ];
 
         foreach ($articles as $article) {
-            Article::updateOrCreate(['slug' => $article['slug']], $article);
+            Article::updateOrCreate(['key' => $article['key']], $article);
         }
     }
 }

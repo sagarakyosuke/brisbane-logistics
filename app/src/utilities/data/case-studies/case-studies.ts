@@ -13,6 +13,7 @@ export interface CaseStudyPoint {
 
 export interface CaseStudy {
   id: string;
+  key: string;
   tag: string;
   title: string;
   description: string;
@@ -27,6 +28,7 @@ export interface CaseStudy {
 
 export interface PreviousCaseStudy {
   id: string;
+  key: string;
   category: string;
   title: string;
   description: string;

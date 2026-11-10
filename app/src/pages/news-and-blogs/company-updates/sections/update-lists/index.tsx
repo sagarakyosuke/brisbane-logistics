@@ -1,12 +1,29 @@
+import { useState, useMemo, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
-import { ArrowForward } from '@mui/icons-material';
+import {
+  ArrowForward,
+  Image as ImageIcon,
+  Groups,
+  LocalShipping,
+  MenuBook,
+} from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionWrap } from '@/components/sections';
 import { palette, shadows } from '@/utilities/themes';
-import {
-  companyUpdatesData,
-  type UpdateItem,
-} from '@/utilities/_mock/news-and-blogs/company-updates/company-updates';
+import { useGetCompanyUpdatesQuery } from '@/pages/news-and-blogs/company-updates/sections/api-hook';
+import type { UpdateItem } from '@/utilities/data/news-and-blogs/company-updates/company-updates';
+
+/* =====================================================================
+ * Icon Mapping
+ * ===================================================================== */
+
+const ICONS: Record<string, ElementType> = {
+  groups: Groups,
+  local_shipping: LocalShipping,
+  menu_book: MenuBook,
+};
+
+const getIcon = (key: string) => ICONS[key] || Groups;
 
 /* =====================================================================
  * Static styles
@@ -116,24 +133,98 @@ const ARROW_SX: SxProps<Theme> = {
   transition: 'transform 0.2s',
 };
 
+/* ── Fallback Styles ──────────────────────────────────────────────── */
+
+const FALLBACK_WRAP_SX: SxProps<Theme> = {
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: `linear-gradient(135deg, ${palette.navySoft} 0%, ${palette.navy} 100%)`,
+  color: palette.white,
+};
+
+const FALLBACK_ICON_SX: SxProps<Theme> = {
+  fontSize: 48,
+  opacity: 0.7,
+  mb: 1,
+};
+
+/* =====================================================================
+ * Sub-components
+ * ===================================================================== */
+
+const SafeImage = ({
+  src,
+  alt,
+  className,
+  sx,
+}: {
+  src?: string | null;
+  alt: string;
+  className?: string;
+  sx?: SxProps<Theme>;
+}) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (!src || hasError) {
+    return (
+      <Box sx={{ position: 'absolute', inset: 0, ...FALLBACK_WRAP_SX }}>
+        <ImageIcon sx={FALLBACK_ICON_SX} />
+        <Typography
+          sx={{
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            opacity: 0.8,
+          }}
+        >
+          No Image
+        </Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      component="img"
+      className={className}
+      src={src}
+      alt={alt}
+      onError={() => setHasError(true)}
+      sx={sx}
+    />
+  );
+};
+
 /* =====================================================================
  * Component
  * ===================================================================== */
 
 export const CompanyUpdatesSection = () => {
+  const { data } = useGetCompanyUpdatesQuery();
+
+  const updates = useMemo(() => {
+    return (data?.updates || []) as unknown as UpdateItem[];
+  }, [data?.updates]);
+
+  if (updates.length === 0) return null;
+
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
         <Box sx={LIST_WRAPPER_SX}>
-          {companyUpdatesData.map((update: UpdateItem) => {
-            const Icon = update.icon;
+          {updates.map((update) => {
+            const Icon = getIcon((update as unknown as { iconKey: string }).iconKey);
 
             return (
               <Box key={update.id} component={Link} to={update.linkPath} sx={UPDATE_CARD_SX}>
                 {/* Image Column */}
                 <Box sx={IMAGE_WRAP_SX}>
-                  <Box
-                    component="img"
+                  <SafeImage
                     src={update.image}
                     alt={update.title}
                     className="update-img"

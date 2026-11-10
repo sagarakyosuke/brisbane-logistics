@@ -9,6 +9,11 @@ import {
   useGetWhyClientsStayQuery,
 } from '@/pages/case-studies/client-testimonials/sections/api-hook';
 import { useGetArticlesQuery } from '@/pages/news-and-blogs/sections/api-hook';
+import { useGetCompanyUpdatesQuery } from '@/pages/news-and-blogs/company-updates/sections/api-hook';
+import {
+  useGetFeaturedGuideQuery,
+  useGetBrowseByTopicQuery,
+} from '@/pages/news-and-blogs/guides-and-tips/sections/api-hook';
 import { showError } from '@/components/dialogs/alerts';
 import { ApiContext } from './api-context';
 
@@ -25,6 +30,9 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const moreClientFeedbacksQuery = useGetMoreClientFeedbacksQuery();
   const whyClientsStayQuery = useGetWhyClientsStayQuery();
   const articlesQuery = useGetArticlesQuery();
+  const companyUpdatesQuery = useGetCompanyUpdatesQuery();
+  const featuredGuideQuery = useGetFeaturedGuideQuery();
+  const browseByTopicQuery = useGetBrowseByTopicQuery();
 
   const queries = [
     latestQuery,
@@ -33,6 +41,9 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     moreClientFeedbacksQuery,
     whyClientsStayQuery,
     articlesQuery,
+    companyUpdatesQuery,
+    featuredGuideQuery,
+    browseByTopicQuery,
   ];
 
   /* ── Loading & Error States ───────────────────────────────────────── */
@@ -70,8 +81,11 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       previous: previousQuery.data?.previous ?? [],
       clientFeedbacks: clientFeedbacksQuery.data?.feedbacks ?? [],
       moreClientFeedbacks: moreClientFeedbacksQuery.data?.feedbacks ?? [],
-      whyClientsStay: whyClientsStayQuery.data ?? null,
+      whyClientsStay: whyClientsStayQuery.data ?? [],
       articles: articlesQuery.data?.articles ?? [],
+      companyUpdates: companyUpdatesQuery.data?.updates ?? [],
+      featuredGuide: featuredGuideQuery.data?.guide ?? null,
+      browseByTopic: browseByTopicQuery.data ?? { title: '', topics: [] },
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -81,6 +95,9 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     moreClientFeedbacksQuery.data,
     whyClientsStayQuery.data,
     articlesQuery.data,
+    companyUpdatesQuery.data,
+    featuredGuideQuery.data,
+    browseByTopicQuery.data,
   ]);
 
   /* ── Render ───────────────────────────────────────────────────────── */

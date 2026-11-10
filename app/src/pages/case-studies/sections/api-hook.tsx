@@ -9,6 +9,7 @@ export interface ApiCaseStudyPoint {
 
 export interface ApiCaseStudy {
   id: string;
+  key: string;
   tag: string;
   title: string;
   description: string;
@@ -19,6 +20,7 @@ export interface ApiCaseStudy {
 
 export interface ApiPreviousCaseStudy {
   id: string;
+  key: string;
   category: string;
   title: string;
   description: string;

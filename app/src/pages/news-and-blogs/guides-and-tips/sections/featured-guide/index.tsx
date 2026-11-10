@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, createElement, type ElementType } from 'react';
 import {
   Box,
   Typography,
@@ -9,12 +9,50 @@ import {
   type SxProps,
   type Theme,
 } from '@mui/material';
-import { ArrowForward, ArrowBack, Close, Check } from '@mui/icons-material';
+import {
+  ArrowForward,
+  ArrowBack,
+  Close,
+  Check,
+  MenuBook,
+  Warehouse,
+  Inventory,
+  SyncAlt,
+  Laptop,
+  LocalShipping,
+  Outbox,
+  ChatBubbleOutlined,
+} from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { AppButton } from '@/components/buttons';
 import { Modal } from '@/components/dialogs/modals';
 import { palette, shadows } from '@/utilities/themes';
-import { featuredGuideData } from '@/utilities/_mock/news-and-blogs/featured-guide/featured-guide';
+import {
+  useGetFeaturedGuideQuery,
+  type ApiQuoteServiceOption,
+} from '@/pages/news-and-blogs/guides-and-tips/sections/api-hook';
+import type { FeaturedGuideData } from '@/utilities/data/news-and-blogs/guides-and-tips/featured-guide';
+
+/* =====================================================================
+ * Icon Mapping
+ * ===================================================================== */
+
+const ICONS: Record<string, ElementType> = {
+  menu_book: MenuBook,
+  warehouse: Warehouse,
+  inventory: Inventory,
+  sync_alt: SyncAlt,
+  laptop: Laptop,
+  local_shipping: LocalShipping,
+  outbox: Outbox,
+  chat_bubble_outline: ChatBubbleOutlined,
+};
+
+const getIcon = (key: string) => ICONS[key] || MenuBook;
+
+const DynamicIcon = ({ iconKey, sx }: { iconKey: string; sx?: SxProps<Theme> }) => {
+  return createElement(getIcon(iconKey), { sx });
+};
 
 /* =====================================================================
  * Static styles
@@ -249,26 +287,37 @@ const DONE_ICON_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const FeaturedGuideSection = () => {
-  // Checklist state
-  const [checkedItems, setCheckedItems] = useState<boolean[]>(
-    new Array(featuredGuideData.checklist.length).fill(false),
-  );
+  const { data } = useGetFeaturedGuideQuery();
 
-  // Modal State
+  const guideData = useMemo(() => {
+    if (!data?.guide) return null;
+    return data.guide as unknown as FeaturedGuideData & {
+      iconKey: string;
+      modal: { services: ApiQuoteServiceOption[] };
+    };
+  }, [data?.guide]);
+
+  const [checkedItems, setCheckedItems] = useState<boolean[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStep, setModalStep] = useState(0);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
-  // Form State (Step 2)
   const [businessType, setBusinessType] = useState('Online store or dropshipper');
   const [stockSize, setStockSize] = useState('Under 10 pallets');
   const [startTime, setStartTime] = useState('As soon as possible');
   const [notes, setNotes] = useState('');
 
-  const Icon = featuredGuideData.icon;
-  const { modal } = featuredGuideData;
+  useMemo(() => {
+    if (guideData?.checklist) {
+      setCheckedItems(new Array(guideData.checklist.length).fill(false));
+    }
+  }, [guideData?.checklist]);
 
-  const total = featuredGuideData.checklist.length;
+  if (!guideData) return null;
+
+  const { modal } = guideData;
+
+  const total = guideData.checklist.length;
   const readyCount = checkedItems.filter(Boolean).length;
 
   const toggleCheck = (index: number) => {
@@ -290,7 +339,6 @@ export const FeaturedGuideSection = () => {
 
   const resetModal = () => {
     setIsModalOpen(false);
-    // Small timeout to allow modal close animation before resetting state
     setTimeout(() => {
       setModalStep(0);
       setSelectedServices([]);
@@ -311,8 +359,7 @@ export const FeaturedGuideSection = () => {
       <Typography sx={MODAL_SUBTITLE_SX}>{modal.subtitle}</Typography>
 
       <Box sx={SERVICES_GRID_SX}>
-        {modal.services.map((service) => {
-          const ServiceIcon = service.icon;
+        {modal.services.map((service: ApiQuoteServiceOption) => {
           const isSelected = selectedServices.includes(service.id);
           return (
             <Box
@@ -322,7 +369,7 @@ export const FeaturedGuideSection = () => {
               onClick={() => toggleService(service.id)}
               sx={serviceChipSx(isSelected)}
             >
-              <ServiceIcon />
+              <DynamicIcon iconKey={service.iconKey} />
               {service.label}
             </Box>
           );
@@ -469,16 +516,16 @@ export const FeaturedGuideSection = () => {
             {/* Left Column */}
             <Box sx={LEFT_COLUMN_SX}>
               <Box sx={ICON_BOX_SX}>
-                <Icon fontSize="large" />
+                <DynamicIcon iconKey={guideData.iconKey} sx={{ fontSize: 'large' }} />
               </Box>
 
-              <SectionEyebrow>{featuredGuideData.eyebrow}</SectionEyebrow>
+              <SectionEyebrow>{guideData.eyebrow}</SectionEyebrow>
 
               <Typography component="h2" sx={{ ...TITLE_SX, mt: 2 }}>
-                {featuredGuideData.title}
+                {guideData.title}
               </Typography>
 
-              <Typography sx={DESC_SX}>{featuredGuideData.desc}</Typography>
+              <Typography sx={DESC_SX}>{guideData.desc}</Typography>
 
               <Typography sx={PROGRESS_TEXT_SX}>
                 {readyCount} of {total} ready
@@ -493,7 +540,7 @@ export const FeaturedGuideSection = () => {
 
             {/* Right Column */}
             <Box sx={CHECKLIST_SX}>
-              {featuredGuideData.checklist.map((question, index) => {
+              {guideData.checklist.map((question, index) => {
                 const isChecked = checkedItems[index];
                 return (
                   <Box

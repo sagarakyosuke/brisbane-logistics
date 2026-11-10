@@ -6,6 +6,7 @@ import type { ElementType } from 'react';
 
 export interface WhyClientValue {
   id: string;
+  key: string;
   title: string;
   description: string;
   icon: ElementType;

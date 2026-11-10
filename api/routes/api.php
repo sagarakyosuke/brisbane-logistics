@@ -26,4 +26,7 @@ Route::prefix('case-studies')->group(function () {
 
 Route::prefix('news-and-blogs')->group(function () {
     Route::get('/articles', [NewsBlogsController::class, 'articles']);
+    Route::get('/company-updates', [NewsBlogsController::class, 'companyUpdates']);
+    Route::get('/featured-guide', [NewsBlogsController::class, 'featuredGuide']);
+    Route::get('/browse-by-topic', [NewsBlogsController::class, 'browseByTopic']);
 });
