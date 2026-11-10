@@ -1,6 +1,13 @@
 import { useState, createElement, type ElementType } from 'react';
 import { Box, Typography, IconButton, type SxProps, type Theme } from '@mui/material';
-import { ArrowBack, CheckCircle, Close, ZoomIn, AccessTime, Image as ImageIcon } from '@mui/icons-material';
+import {
+  ArrowBack,
+  CheckCircle,
+  Close,
+  ZoomIn,
+  AccessTime,
+  Image as ImageIcon,
+} from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { AppButton } from '@/components/buttons';
@@ -287,9 +294,17 @@ export const TheResultSection = () => {
                 sx={GALLERY_BTN_SX(img.isMain)}
               >
                 {img.src ? (
-                  <Box component="img" src={img.src} alt={img.alt} className="gallery-img" sx={GALLERY_IMG_SX} />
+                  <Box
+                    component="img"
+                    src={img.src}
+                    alt={img.alt}
+                    className="gallery-img"
+                    sx={GALLERY_IMG_SX}
+                  />
                 ) : (
-                  <Box sx={GALLERY_FALLBACK_SX}><ImageIcon sx={{ fontSize: 48 }} /></Box>
+                  <Box sx={GALLERY_FALLBACK_SX}>
+                    <ImageIcon sx={{ fontSize: 48 }} />
+                  </Box>
                 )}
                 <Box className="zoom-overlay" sx={ZOOM_OVERLAY_SX}>
                   <ZoomIn sx={ZOOM_ICON_SX} />
@@ -302,12 +317,16 @@ export const TheResultSection = () => {
             <Box sx={LEFT_COLUMN_SX}>
               <Box sx={CONTENT_CARD_SX}>
                 <Box>
-                  <Typography component="h2" sx={TITLE_SX}>{data.challenge.title}</Typography>
+                  <Typography component="h2" sx={TITLE_SX}>
+                    {data.challenge.title}
+                  </Typography>
                   <Typography sx={TEXT_SX}>{data.challenge.desc}</Typography>
                 </Box>
 
                 <Box>
-                  <Typography component="h2" sx={TITLE_SX}>{data.response.title}</Typography>
+                  <Typography component="h2" sx={TITLE_SX}>
+                    {data.response.title}
+                  </Typography>
                   <Box sx={STEP_LIST_SX}>
                     {data.response.steps.map((step, index) => {
                       const isLast = index === data.response.steps.length - 1;
@@ -327,7 +346,12 @@ export const TheResultSection = () => {
               </Box>
 
               <Box>
-                <AppButton color="outline" size="large" startIcon={<ArrowBack />} onClick={() => navigate('/case-studies')}>
+                <AppButton
+                  color="outline"
+                  size="large"
+                  startIcon={<ArrowBack />}
+                  onClick={() => navigate('/case-studies')}
+                >
                   Back to case studies
                 </AppButton>
               </Box>
@@ -340,7 +364,9 @@ export const TheResultSection = () => {
                 {createElement(getIcon(data.result.iconKey), { fontSize: 'large' })}
               </Box>
 
-              <Typography component="h3" sx={RESULT_TITLE_SX}>{data.result.title}</Typography>
+              <Typography component="h3" sx={RESULT_TITLE_SX}>
+                {data.result.title}
+              </Typography>
               <Typography sx={RESULT_SUBTITLE_SX}>{data.result.subtitle}</Typography>
               <Box>
                 {data.result.points.map((point, idx) => (
@@ -360,13 +386,20 @@ export const TheResultSection = () => {
         onClose={() => setActiveImage(null)}
         hideHeader
         size="lg"
-        paperSx={{ bgcolor: '#000', overflow: 'hidden', borderRadius: '16px', boxShadow: '0 24px 64px -12px rgba(0,0,0,0.8)' }}
+        paperSx={{
+          bgcolor: '#000',
+          overflow: 'hidden',
+          borderRadius: '16px',
+          boxShadow: '0 24px 64px -12px rgba(0,0,0,0.8)',
+        }}
       >
         <Box sx={LIGHTBOX_CONTENT_SX}>
           <IconButton onClick={() => setActiveImage(null)} sx={LIGHTBOX_CLOSE_SX}>
             <Close />
           </IconButton>
-          {activeImage && <Box component="img" src={activeImage} alt="Enlarged view" sx={LIGHTBOX_IMG_SX} />}
+          {activeImage && (
+            <Box component="img" src={activeImage} alt="Enlarged view" sx={LIGHTBOX_IMG_SX} />
+          )}
         </Box>
       </Modal>
     </>

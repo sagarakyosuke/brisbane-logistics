@@ -2,10 +2,11 @@ import { Box, Typography, Divider, type SxProps, type Theme } from '@mui/materia
 import { FormatQuote } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { moreClientFeedbacks } from '@/utilities/_mock/case-studies/client-testimonials/more-client-feedbacks';
+import { useApi } from '@/routes/api-routing/api-context';
+import type { MoreFeedback } from '@/utilities/data/case-studies/client-testimonials/more-client-feedbacks';
 
 /* =====================================================================
- * Static styles
+ * Static Styles
  * ===================================================================== */
 
 const HEADER_WRAPPER_SX: SxProps<Theme> = {
@@ -107,10 +108,15 @@ const SAMPLE_BADGE_SX: SxProps<Theme> = {
 };
 
 /* =====================================================================
- * Component
+ * MoreClientFeedbacksSection
  * ===================================================================== */
 
 export const MoreClientFeedbacksSection = () => {
+  const { data } = useApi();
+  const feedbacks = (data?.moreClientFeedbacks || []) as MoreFeedback[];
+
+  if (feedbacks.length === 0) return null;
+
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
@@ -122,7 +128,7 @@ export const MoreClientFeedbacksSection = () => {
         </Box>
 
         <Box sx={GRID_SX}>
-          {moreClientFeedbacks.map((feedback) => (
+          {feedbacks.map((feedback) => (
             <Box key={feedback.id} sx={CARD_SX}>
               <Box sx={TOP_RIGHT_TAG_SX}>{feedback.tag}</Box>
 

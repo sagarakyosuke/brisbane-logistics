@@ -28,8 +28,12 @@ export interface ApiPreviousCaseStudy {
   path: string;
 }
 
-export interface LatestResponse { latest: ApiCaseStudy | null; }
-export interface PreviousResponse { previous: ApiPreviousCaseStudy[]; }
+export interface LatestResponse {
+  latest: ApiCaseStudy | null;
+}
+export interface PreviousResponse {
+  previous: ApiPreviousCaseStudy[];
+}
 
 export const caseStudiesApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -44,7 +48,4 @@ export const caseStudiesApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { 
-  useGetLatestCaseStudiesQuery, 
-  useGetPreviousCaseStudiesQuery 
-} = caseStudiesApi;
+export const { useGetLatestCaseStudiesQuery, useGetPreviousCaseStudiesQuery } = caseStudiesApi;

@@ -48,9 +48,7 @@ export const Logo = ({
   sx,
   alt = 'Brisbane Logistics',
 }: LogoProps) => {
-  const img = (
-    <Box component="img" src={mainLogo} alt={alt} sx={logoImgSx(height)} />
-  );
+  const img = <Box component="img" src={mainLogo} alt={alt} sx={logoImgSx(height)} />;
 
   if (to === null) {
     return <Box sx={{ ...LOGO_WRAPPER_SX, ...sx }}>{img}</Box>;

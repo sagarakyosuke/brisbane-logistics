@@ -1,17 +1,39 @@
+import { createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
-import { ArrowForward } from '@mui/icons-material';
+import {
+  ArrowForward,
+  ChatBubbleOutlined,
+  VerifiedUser,
+  PeopleOutlined,
+  Description,
+  Image as ImageIcon,
+} from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { whyClientsStayData } from '@/utilities/_mock/case-studies/client-testimonials/why-clients-stay-with-us';
+import { useApi } from '@/routes/api-routing/api-context';
 
 /* =====================================================================
- * Static styles
+ * Icon Mapping
  * ===================================================================== */
 
-const HEADER_WRAPPER_SX: SxProps<Theme> = {
-  mb: 5,
+const ICONS: Record<string, ElementType> = {
+  chat: ChatBubbleOutlined,
+  verified_user: VerifiedUser,
+  people: PeopleOutlined,
+  description: Description,
 };
+
+const getIcon = (key: string | null | undefined) => {
+  if (!key) return ImageIcon;
+  return ICONS[key] || ImageIcon;
+};
+
+/* =====================================================================
+ * Static Styles
+ * ===================================================================== */
+
+const HEADER_WRAPPER_SX: SxProps<Theme> = { mb: 5 };
 
 const TITLE_SX: SxProps<Theme> = {
   fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
@@ -20,8 +42,6 @@ const TITLE_SX: SxProps<Theme> = {
   lineHeight: 1.1,
   mt: 1,
 };
-
-/* ── Values Grid ──────────────────────────────────────────────────── */
 
 const VALUES_GRID_SX: SxProps<Theme> = {
   display: 'grid',
@@ -68,8 +88,6 @@ const VALUE_DESC_SX: SxProps<Theme> = {
   color: palette.muted,
   lineHeight: 1.6,
 };
-
-/* ── Bottom CTA ───────────────────────────────────────────────────── */
 
 const BOTTOM_CTA_SX: SxProps<Theme> = {
   bgcolor: palette.navy,
@@ -135,54 +153,50 @@ const CTA_ARROW_SX: SxProps<Theme> = {
 };
 
 /* =====================================================================
- * Component
+ * WhyClientsStayWithUsSection
  * ===================================================================== */
 
 export const WhyClientsStayWithUsSection = () => {
-  const { eyebrow, title, values, cta } = whyClientsStayData;
-  const CtaIcon = cta.icon;
+  const { data } = useApi();
+  const section = data?.whyClientsStay;
+
+  if (!section) return null;
 
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
-        {/* Header */}
         <Box sx={HEADER_WRAPPER_SX}>
-          <SectionEyebrow>{eyebrow}</SectionEyebrow>
+          <SectionEyebrow>{section.eyebrow}</SectionEyebrow>
           <Typography component="h2" sx={TITLE_SX}>
-            {title}
+            {section.title}
           </Typography>
         </Box>
 
-        {/* Values Grid */}
         <Box sx={VALUES_GRID_SX}>
-          {values.map((value) => {
-            const Icon = value.icon;
-            return (
-              <Box key={value.id} sx={VALUE_CARD_SX}>
-                <Box sx={VALUE_ICON_BOX_SX}>
-                  <Icon sx={VALUE_ICON_SX} />
-                </Box>
-                <Typography sx={VALUE_TITLE_SX}>{value.title}</Typography>
-                <Typography sx={VALUE_DESC_SX}>{value.description}</Typography>
+          {section.values.map((value) => (
+            <Box key={value.id} sx={VALUE_CARD_SX}>
+              <Box sx={VALUE_ICON_BOX_SX}>
+                {createElement(getIcon(value.iconKey), { sx: VALUE_ICON_SX })}
               </Box>
-            );
-          })}
+              <Typography sx={VALUE_TITLE_SX}>{value.title}</Typography>
+              <Typography sx={VALUE_DESC_SX}>{value.description}</Typography>
+            </Box>
+          ))}
         </Box>
 
-        {/* Bottom CTA */}
         <Box sx={BOTTOM_CTA_SX}>
           <Box sx={CTA_LEFT_SX}>
             <Box sx={CTA_ICON_BOX_SX}>
-              <CtaIcon sx={CTA_ICON_SX} />
+              {createElement(getIcon(section.cta.iconKey), { sx: CTA_ICON_SX })}
             </Box>
             <Box>
-              <Typography sx={CTA_TITLE_SX}>{cta.title}</Typography>
-              <Typography sx={CTA_DESC_SX}>{cta.description}</Typography>
+              <Typography sx={CTA_TITLE_SX}>{section.cta.title}</Typography>
+              <Typography sx={CTA_DESC_SX}>{section.cta.description}</Typography>
             </Box>
           </Box>
 
-          <Box component={Link} to={cta.linkHref} sx={CTA_LINK_SX}>
-            {cta.linkLabel}
+          <Box component={Link} to={section.cta.linkHref} sx={CTA_LINK_SX}>
+            {section.cta.linkLabel}
             <ArrowForward className="arrow" sx={CTA_ARROW_SX} />
           </Box>
         </Box>

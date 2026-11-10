@@ -2,11 +2,11 @@ import type { ReactNode } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Box, Typography } from '@mui/material';
-import { 
-  ErrorOutlined, 
-  CheckCircleOutlined, 
-  InfoOutlined, 
-  WarningAmberOutlined 
+import {
+  ErrorOutlined,
+  CheckCircleOutlined,
+  InfoOutlined,
+  WarningAmberOutlined,
 } from '@mui/icons-material';
 import { AppButton } from '@/components/buttons';
 import { palette, radii, shadows } from '@/utilities/themes';
@@ -94,17 +94,20 @@ export const showStatusAlert = ({
 }: StatusAlertOptions) => {
   const config = VARIANTS[variant];
   const Icon = config.icon;
-  
-  const redButtonSx = variant === 'error' ? {
-    bgcolor: palette.red,
-    color: palette.white,
-    boxShadow: 'none',
-    '&:hover': {
-      bgcolor: palette.redDark,
-      transform: 'translateY(-2px)',
-      boxShadow: 'none',
-    },
-  } : undefined;
+
+  const redButtonSx =
+    variant === 'error'
+      ? {
+          bgcolor: palette.red,
+          color: palette.white,
+          boxShadow: 'none',
+          '&:hover': {
+            bgcolor: palette.redDark,
+            transform: 'translateY(-2px)',
+            boxShadow: 'none',
+          },
+        }
+      : undefined;
 
   MySwal.fire({
     html: (
@@ -127,11 +130,11 @@ export const showStatusAlert = ({
               {retryText}
             </AppButton>
           )}
-          
+
           <AppButton
             color="primary"
             fullWidth
-            sx={redButtonSx} 
+            sx={redButtonSx}
             onClick={() => {
               MySwal.close();
               if (onConfirm) onConfirm();
@@ -168,7 +171,11 @@ export const showInfo = (options: AlertOptions) =>
   showStatusAlert({ ...options, variant: 'info', confirmText: options.confirmText ?? 'Got it' });
 
 export const showWarning = (options: AlertOptions) =>
-  showStatusAlert({ ...options, variant: 'warning', confirmText: options.confirmText ?? 'Understood' });
+  showStatusAlert({
+    ...options,
+    variant: 'warning',
+    confirmText: options.confirmText ?? 'Understood',
+  });
 
 export const showError = (options: AlertOptions & { onRetry?: () => void }) =>
   showStatusAlert({ ...options, variant: 'error', confirmText: options.confirmText ?? 'Dismiss' });

@@ -65,9 +65,9 @@ const SHIMMER_KEYFRAMES = {
  * ===================================================================== */
 
 const BACKDROP_SX: SxProps<Theme> = {
-  zIndex: (theme) => theme.zIndex.modal + 999, 
+  zIndex: (theme) => theme.zIndex.modal + 999,
   color: '#fff',
-  backgroundColor: 'rgba(11, 16, 66, 0.85)', 
+  backgroundColor: 'rgba(11, 16, 66, 0.85)',
   backdropFilter: 'blur(8px)',
   pointerEvents: 'all',
   display: 'flex',
@@ -76,7 +76,7 @@ const BACKDROP_SX: SxProps<Theme> = {
   justifyContent: 'center',
   gap: 4,
   overflow: 'hidden',
-  overscrollBehavior: 'contain', 
+  overscrollBehavior: 'contain',
 };
 
 const GLOW_SX: SxProps<Theme> = {

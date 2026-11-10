@@ -15,12 +15,12 @@ export const palette = {
   ink: '#121a57',
   logoBlue: '#37598a',
   logoSky: '#6295c0',
-  
-  red: '#d32f2f',         // Danger / Error
-  redDark: '#b71c1c',     // Danger hover / emphasis
-  redLight: '#fdecea',    // Danger background tint
-  warning: '#ed6c02',     // Warning
-  success: '#2e7d32',     // Success
+
+  red: '#d32f2f', // Danger / Error
+  redDark: '#b71c1c', // Danger hover / emphasis
+  redLight: '#fdecea', // Danger background tint
+  warning: '#ed6c02', // Warning
+  success: '#2e7d32', // Success
 } as const;
 
 export const fontFamily =
@@ -134,7 +134,7 @@ export const theme = createTheme({
           '--ink': palette.ink,
           '--logo-blue': palette.logoBlue,
           '--logo-sky': palette.logoSky,
-          
+
           '--red': palette.red,
           '--red-dark': palette.redDark,
           '--red-light': palette.redLight,

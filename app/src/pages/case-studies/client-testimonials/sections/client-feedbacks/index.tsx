@@ -3,7 +3,8 @@ import { Box, Typography, IconButton, type SxProps, type Theme } from '@mui/mate
 import { FormatQuote, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { useGetClientFeedbacksQuery } from '@/pages/case-studies/client-testimonials/sections/api-hook';
+import { useApi } from '@/routes/api-routing/api-context';
+import type { ClientFeedback } from '@/utilities/data/case-studies/client-testimonials/client-feedbacks';
 
 /* =====================================================================
  * Constants
@@ -12,10 +13,12 @@ import { useGetClientFeedbacksQuery } from '@/pages/case-studies/client-testimon
 const AUTOPLAY_INTERVAL_MS = 5000;
 
 /* =====================================================================
- * Static styles
+ * Static Styles
  * ===================================================================== */
 
-const HEADER_WRAPPER_SX: SxProps<Theme> = { mb: 5 };
+const HEADER_WRAPPER_SX: SxProps<Theme> = {
+  mb: 5,
+};
 
 const TITLE_SX: SxProps<Theme> = {
   fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
@@ -134,9 +137,9 @@ const DISCLAIMER_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const ClientFeedbacksSection = () => {
-  const { data, isLoading } = useGetClientFeedbacksQuery();
-  const feedbacks = data?.feedbacks || [];
-  
+  const { data } = useApi();
+  const feedbacks = (data?.clientFeedbacks || []) as ClientFeedback[];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const total = feedbacks.length;
 
@@ -156,7 +159,7 @@ export const ClientFeedbacksSection = () => {
     return () => clearInterval(timer);
   }, [currentIndex, handleNext, total]);
 
-  if (isLoading || total === 0) return null;
+  if (total === 0) return null;
 
   return (
     <Section skipAlternate={false}>
@@ -186,7 +189,12 @@ export const ClientFeedbacksSection = () => {
 
           <Box sx={CONTROLS_ROW_SX}>
             <Box sx={NAV_GROUP_SX}>
-              <IconButton onClick={handlePrev} aria-label="Previous testimonial" size="small" sx={NAV_BUTTON_SX}>
+              <IconButton
+                onClick={handlePrev}
+                aria-label="Previous testimonial"
+                size="small"
+                sx={NAV_BUTTON_SX}
+              >
                 <ChevronLeft fontSize="small" />
               </IconButton>
 
@@ -204,7 +212,12 @@ export const ClientFeedbacksSection = () => {
                 ))}
               </Box>
 
-              <IconButton onClick={handleNext} aria-label="Next testimonial" size="small" sx={NAV_BUTTON_SX}>
+              <IconButton
+                onClick={handleNext}
+                aria-label="Next testimonial"
+                size="small"
+                sx={NAV_BUTTON_SX}
+              >
                 <ChevronRight fontSize="small" />
               </IconButton>
             </Box>

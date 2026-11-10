@@ -41,7 +41,7 @@ const LABEL_TO_PATH: Record<string, string> = {
 const labelToPath = (label: string): string => LABEL_TO_PATH[label] ?? '/';
 
 //  Reduced the height from 96 to 88 to fit the new 70px logo nicely
-const NAVBAR_HEIGHT = 88; 
+const NAVBAR_HEIGHT = 88;
 const SCROLL_THRESHOLD = 10;
 
 /* =====================================================================
@@ -60,12 +60,28 @@ const TOPBAR_BUTTON_SX: SxProps<Theme> = {
   '&:hover': { color: palette.white, bgcolor: 'transparent' },
 };
 
-const TOPBAR_INFO_ROW_SX: SxProps<Theme> = { display: 'flex', gap: 3, alignItems: 'center', whiteSpace: 'nowrap' };
+const TOPBAR_INFO_ROW_SX: SxProps<Theme> = {
+  display: 'flex',
+  gap: 3,
+  alignItems: 'center',
+  whiteSpace: 'nowrap',
+};
 const TOPBAR_INFO_ITEM_SX: SxProps<Theme> = { display: 'flex', gap: 1, alignItems: 'center' };
 const TOPBAR_ICON_SX = { fontSize: 15, color: palette.orange } as const;
 const TOPBAR_TEXT_SX: SxProps<Theme> = { fontSize: '0.8rem', fontWeight: 500 };
-const TOPBAR_UTILITY_ROW_SX: SxProps<Theme> = { display: { xs: 'none', md: 'flex' }, gap: 3, alignItems: 'center', whiteSpace: 'nowrap' };
-const TOPBAR_INNER_ROW_SX: SxProps<Theme> = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 };
+const TOPBAR_UTILITY_ROW_SX: SxProps<Theme> = {
+  display: { xs: 'none', md: 'flex' },
+  gap: 3,
+  alignItems: 'center',
+  whiteSpace: 'nowrap',
+};
+const TOPBAR_INNER_ROW_SX: SxProps<Theme> = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  gap: 2,
+};
 
 /* ── Main bar ─────────────────────────────────────────────────────── */
 
@@ -80,9 +96,9 @@ const NAV_GRID_SX: SxProps<Theme> = {
   display: 'grid',
   //  'max-content' prevents the logo and buttons from shrinking.
   // 'minmax(0, 1fr)' allows the center nav links to take the middle space.
-  gridTemplateColumns: { 
-    xs: 'max-content 1fr max-content', 
-    lg: 'max-content minmax(0, 1fr) max-content' 
+  gridTemplateColumns: {
+    xs: 'max-content 1fr max-content',
+    lg: 'max-content minmax(0, 1fr) max-content',
   },
   alignItems: 'center',
   height: NAVBAR_HEIGHT,
@@ -104,8 +120,16 @@ const NAV_ITEM_WRAPPER_SX: SxProps<Theme> = {
   display: 'flex',
   alignItems: 'center',
   height: '100%',
-  '&:hover .nav-dropdown': { opacity: 1, visibility: 'visible', transform: 'translateY(0) translateX(-50%)' },
-  '&:hover .nav-dropdown-standard': { opacity: 1, visibility: 'visible', transform: 'translateY(0) translateX(0)' },
+  '&:hover .nav-dropdown': {
+    opacity: 1,
+    visibility: 'visible',
+    transform: 'translateY(0) translateX(-50%)',
+  },
+  '&:hover .nav-dropdown-standard': {
+    opacity: 1,
+    visibility: 'visible',
+    transform: 'translateY(0) translateX(0)',
+  },
   '&:hover .nav-expand-icon': { transform: 'rotate(180deg)' },
 };
 
@@ -175,24 +199,65 @@ const dropdownItemSx = (active: boolean): SxProps<Theme> => ({
   textDecoration: 'none',
   transition: 'all 0.2s',
   bgcolor: active ? palette.peach : 'transparent',
-  '&:hover': { bgcolor: palette.peach, '& .dd-icon-box': { bgcolor: palette.orange, color: palette.white } },
-  ...(active && { '& .dd-icon-box': { bgcolor: palette.orange, color: palette.white }, '& .dd-title': { color: palette.orange } }),
+  '&:hover': {
+    bgcolor: palette.peach,
+    '& .dd-icon-box': { bgcolor: palette.orange, color: palette.white },
+  },
+  ...(active && {
+    '& .dd-icon-box': { bgcolor: palette.orange, color: palette.white },
+    '& .dd-title': { color: palette.orange },
+  }),
 });
 
 const DROPDOWN_ICON_BOX_SX: SxProps<Theme> = {
-  width: 34, height: 34, borderRadius: '8px', bgcolor: palette.white, border: `1px solid ${palette.line}`, color: palette.orange, display: 'grid', placeItems: 'center', flex: 'none', transition: 'all 0.2s',
+  width: 34,
+  height: 34,
+  borderRadius: '8px',
+  bgcolor: palette.white,
+  border: `1px solid ${palette.line}`,
+  color: palette.orange,
+  display: 'grid',
+  placeItems: 'center',
+  flex: 'none',
+  transition: 'all 0.2s',
 };
 
 const DROPDOWN_ICON_SX = { fontSize: 18 } as const;
-const DROPDOWN_TITLE_SX: SxProps<Theme> = { fontWeight: 700, fontSize: '0.85rem', color: palette.navy, mb: 0.25, whiteSpace: 'nowrap' };
-const DROPDOWN_DESC_SX: SxProps<Theme> = { fontSize: '0.75rem', color: palette.muted, lineHeight: 1.3 };
+const DROPDOWN_TITLE_SX: SxProps<Theme> = {
+  fontWeight: 700,
+  fontSize: '0.85rem',
+  color: palette.navy,
+  mb: 0.25,
+  whiteSpace: 'nowrap',
+};
+const DROPDOWN_DESC_SX: SxProps<Theme> = {
+  fontSize: '0.75rem',
+  color: palette.muted,
+  lineHeight: 1.3,
+};
 
 /* ── CTAs & burger ────────────────────────────────────────────────── */
 
-const CTA_ROW_SX: SxProps<Theme> = { display: { xs: 'none', lg: 'flex' }, gap: 1.5, alignItems: 'center', justifySelf: 'end' };
+const CTA_ROW_SX: SxProps<Theme> = {
+  display: { xs: 'none', lg: 'flex' },
+  gap: 1.5,
+  alignItems: 'center',
+  justifySelf: 'end',
+};
 const NAV_CTA_OVERRIDE_SX = { fontSize: '0.8rem', px: 2.5, py: 1 } as const;
-const BURGER_WRAPPER_SX: SxProps<Theme> = { display: { xs: 'flex', lg: 'none' }, justifySelf: 'end' };
-const BURGER_BUTTON_SX: SxProps<Theme> = { minWidth: 0, p: 1, border: `1px solid ${palette.line}`, borderRadius: 2, color: palette.navy, bgcolor: 'transparent', cursor: 'pointer' };
+const BURGER_WRAPPER_SX: SxProps<Theme> = {
+  display: { xs: 'flex', lg: 'none' },
+  justifySelf: 'end',
+};
+const BURGER_BUTTON_SX: SxProps<Theme> = {
+  minWidth: 0,
+  p: 1,
+  border: `1px solid ${palette.line}`,
+  borderRadius: 2,
+  color: palette.navy,
+  bgcolor: 'transparent',
+  cursor: 'pointer',
+};
 
 /* =====================================================================
  * Navbar Content
@@ -253,10 +318,20 @@ const NavbarContent = () => {
               </Box>
 
               <Box sx={TOPBAR_UTILITY_ROW_SX}>
-                <AppButton color="ghost" size="small" startIcon={<Person sx={{ fontSize: 16 }} />} sx={TOPBAR_BUTTON_SX}>
+                <AppButton
+                  color="ghost"
+                  size="small"
+                  startIcon={<Person sx={{ fontSize: 16 }} />}
+                  sx={TOPBAR_BUTTON_SX}
+                >
                   Client Portal Login
                 </AppButton>
-                <AppButton color="ghost" size="small" startIcon={<LocalShipping sx={{ fontSize: 16 }} />} sx={TOPBAR_BUTTON_SX}>
+                <AppButton
+                  color="ghost"
+                  size="small"
+                  startIcon={<LocalShipping sx={{ fontSize: 16 }} />}
+                  sx={TOPBAR_BUTTON_SX}
+                >
                   BL Express Tracking
                 </AppButton>
               </Box>
@@ -292,7 +367,9 @@ const NavbarContent = () => {
                       sx={navLinkSx(isActive)}
                     >
                       <span className="nav-label">{link.label}</span>
-                      {hasDropdown && <ExpandMore className="nav-expand-icon" sx={EXPAND_ICON_SX} />}
+                      {hasDropdown && (
+                        <ExpandMore className="nav-expand-icon" sx={EXPAND_ICON_SX} />
+                      )}
                     </Box>
 
                     {hasDropdown && (
@@ -323,11 +400,16 @@ const NavbarContent = () => {
                               <Box>
                                 <Typography
                                   className="dd-title"
-                                  sx={{ ...DROPDOWN_TITLE_SX, color: isItemActive ? palette.orange : palette.navy }}
+                                  sx={{
+                                    ...DROPDOWN_TITLE_SX,
+                                    color: isItemActive ? palette.orange : palette.navy,
+                                  }}
                                 >
                                   {item.title}
                                 </Typography>
-                                {item.desc && <Typography sx={DROPDOWN_DESC_SX}>{item.desc}</Typography>}
+                                {item.desc && (
+                                  <Typography sx={DROPDOWN_DESC_SX}>{item.desc}</Typography>
+                                )}
                               </Box>
                             </Box>
                           );
@@ -341,17 +423,34 @@ const NavbarContent = () => {
 
             {/* CTAs */}
             <Box sx={CTA_ROW_SX}>
-              <AppButton color="outline" size="medium" sx={NAV_CTA_OVERRIDE_SX} onClick={openBookACall}>
+              <AppButton
+                color="outline"
+                size="medium"
+                sx={NAV_CTA_OVERRIDE_SX}
+                onClick={openBookACall}
+              >
                 Book a Call
               </AppButton>
-              <AppButton color="primary" size="medium" endIcon={<ArrowForward sx={{ fontSize: 16 }} />} sx={NAV_CTA_OVERRIDE_SX} onClick={openQuotation}>
+              <AppButton
+                color="primary"
+                size="medium"
+                endIcon={<ArrowForward sx={{ fontSize: 16 }} />}
+                sx={NAV_CTA_OVERRIDE_SX}
+                onClick={openQuotation}
+              >
                 Get a 3PL Quote
               </AppButton>
             </Box>
 
             {/* Mobile burger */}
             <Box sx={BURGER_WRAPPER_SX}>
-              <Box component="button" type="button" onClick={() => setIsDrawerOpen(true)} aria-label="Open menu" sx={BURGER_BUTTON_SX}>
+              <Box
+                component="button"
+                type="button"
+                onClick={() => setIsDrawerOpen(true)}
+                aria-label="Open menu"
+                sx={BURGER_BUTTON_SX}
+              >
                 <MenuIcon />
               </Box>
             </Box>
