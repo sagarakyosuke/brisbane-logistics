@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, type ElementType } from 'react';
+import { useState, useEffect, useCallback, useMemo, createElement, type ElementType } from 'react';
 import { Box, Typography, IconButton, type SxProps, type Theme } from '@mui/material';
 import {
   ArrowForward,
@@ -16,9 +16,10 @@ import { Section, SectionWrap } from '@/components/sections';
 import { Modal } from '@/components/dialogs/modals';
 import { palette } from '@/utilities/themes';
 import { useGetLatestCaseStudiesQuery } from '@/pages/case-studies/sections/api-hook';
+import type { CaseStudy } from '@/utilities/data/case-studies/case-studies';
 
 /* =====================================================================
- * Icon Mapping
+ * Icon Mapping & Helpers
  * ===================================================================== */
 
 const ICONS: Record<string, ElementType> = {
@@ -31,6 +32,13 @@ const getIcon = (key: string | undefined | null) => {
   if (!key) return ImageIcon;
   return ICONS[key] || ImageIcon;
 };
+
+interface ApiPoint {
+  id: number;
+  label: string;
+  desc: string;
+  iconKey: string;
+}
 
 /* =====================================================================
  * Static Styles
@@ -267,7 +275,9 @@ const SafeImage = ({ src, alt, sx }: { src?: string | null; alt: string; sx?: Sx
 
 export const CaseStudySection = () => {
   const { data } = useGetLatestCaseStudiesQuery();
-  const study = data?.latest;
+
+  const study = data?.latest as unknown as CaseStudy | undefined;
+
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -339,20 +349,17 @@ export const CaseStudySection = () => {
               <Typography sx={DESCRIPTION_SX}>{study.description}</Typography>
 
               <Box sx={POINTS_LIST_SX}>
-                {study.points.map((point) => {
-                  const Icon = getIcon(point.iconKey);
-                  return (
-                    <Box key={point.id} sx={POINT_ROW_SX}>
-                      <Box sx={POINT_ICON_BOX_SX}>
-                        <Icon fontSize="small" />
-                      </Box>
-                      <Box>
-                        <Typography sx={POINT_LABEL_SX}>{point.label}</Typography>
-                        <Typography sx={POINT_DESC_SX}>{point.desc}</Typography>
-                      </Box>
+                {(study.points as unknown as ApiPoint[]).map((point) => (
+                  <Box key={point.id} sx={POINT_ROW_SX}>
+                    <Box sx={POINT_ICON_BOX_SX}>
+                      {createElement(getIcon(point.iconKey), { fontSize: 'small' })}
                     </Box>
-                  );
-                })}
+                    <Box>
+                      <Typography sx={POINT_LABEL_SX}>{point.label}</Typography>
+                      <Typography sx={POINT_DESC_SX}>{point.desc}</Typography>
+                    </Box>
+                  </Box>
+                ))}
               </Box>
 
               <AppButton

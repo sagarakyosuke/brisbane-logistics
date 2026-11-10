@@ -66,8 +66,8 @@ export const clientTestimonialsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { 
-  useGetClientFeedbacksQuery, 
+export const {
+  useGetClientFeedbacksQuery,
   useGetMoreClientFeedbacksQuery,
-  useGetWhyClientsStayQuery
+  useGetWhyClientsStayQuery,
 } = clientTestimonialsApi;

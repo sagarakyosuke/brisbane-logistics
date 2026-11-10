@@ -8,6 +8,7 @@ import {
   useGetMoreClientFeedbacksQuery,
   useGetWhyClientsStayQuery,
 } from '@/pages/case-studies/client-testimonials/sections/api-hook';
+import { useGetArticlesQuery } from '@/pages/news-and-blogs/sections/api-hook';
 import { showError } from '@/components/dialogs/alerts';
 import { ApiContext } from './api-context';
 
@@ -23,6 +24,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const clientFeedbacksQuery = useGetClientFeedbacksQuery();
   const moreClientFeedbacksQuery = useGetMoreClientFeedbacksQuery();
   const whyClientsStayQuery = useGetWhyClientsStayQuery();
+  const articlesQuery = useGetArticlesQuery();
 
   const queries = [
     latestQuery,
@@ -30,6 +32,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     clientFeedbacksQuery,
     moreClientFeedbacksQuery,
     whyClientsStayQuery,
+    articlesQuery,
   ];
 
   /* ── Loading & Error States ───────────────────────────────────────── */
@@ -68,6 +71,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       clientFeedbacks: clientFeedbacksQuery.data?.feedbacks ?? [],
       moreClientFeedbacks: moreClientFeedbacksQuery.data?.feedbacks ?? [],
       whyClientsStay: whyClientsStayQuery.data ?? null,
+      articles: articlesQuery.data?.articles ?? [],
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -76,6 +80,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     clientFeedbacksQuery.data,
     moreClientFeedbacksQuery.data,
     whyClientsStayQuery.data,
+    articlesQuery.data,
   ]);
 
   /* ── Render ───────────────────────────────────────────────────────── */

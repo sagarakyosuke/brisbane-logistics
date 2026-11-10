@@ -20,3 +20,8 @@ export {
   type ClientFeedbacksResponse,
   type MoreClientFeedbacksResponse,
 } from '@/pages/case-studies/client-testimonials/sections/api-hook';
+
+export {
+  useGetArticlesQuery,
+  type ArticlesResponse,
+} from '@/pages/news-and-blogs/sections/api-hook';

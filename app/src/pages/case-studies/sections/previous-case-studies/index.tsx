@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { Section, SectionHeader, SectionWrap } from '@/components/sections';
 import { palette } from '@/utilities/themes';
 import { useGetPreviousCaseStudiesQuery } from '@/pages/case-studies/sections/api-hook';
+import type { PreviousCaseStudy } from '@/utilities/data/case-studies/case-studies';
 
 /* =====================================================================
  * Icon Mapping
@@ -15,6 +16,8 @@ const ICONS: Record<string, ElementType> = {
   warehouse: Warehouse,
   shopping_cart: ShoppingCart,
 };
+
+const getIcon = (key: string) => ICONS[key] || Inventory;
 
 /* =====================================================================
  * Static Styles
@@ -191,7 +194,8 @@ const CaseStudyBanner = ({
 
 export const PreviousCaseStudiesSection = () => {
   const { data } = useGetPreviousCaseStudiesQuery();
-  const previousStudies = data?.previous || [];
+
+  const previousStudies = (data?.previous || []) as unknown as PreviousCaseStudy[];
 
   if (previousStudies.length === 0) return null;
 
@@ -209,7 +213,7 @@ export const PreviousCaseStudiesSection = () => {
             const isClickable = study.path !== '#';
             const CardWrapper = isClickable ? Link : 'div';
             const linkProps = isClickable ? { to: study.path } : {};
-            const Icon = ICONS[study.iconKey] || Inventory;
+            const Icon = getIcon((study as unknown as { iconKey: string }).iconKey);
 
             return (
               <Box

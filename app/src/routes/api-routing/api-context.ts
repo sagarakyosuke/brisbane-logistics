@@ -1,10 +1,11 @@
 import { createContext, useContext } from 'react';
 import type { LatestResponse, PreviousResponse } from '@/pages/case-studies/sections/api-hook';
-import type { 
-  ClientFeedbacksResponse, 
+import type {
+  ClientFeedbacksResponse,
   MoreClientFeedbacksResponse,
-  ApiWhyClientsStayResponse
+  ApiWhyClientsStayResponse,
 } from '@/pages/case-studies/client-testimonials/sections/api-hook';
+import type { ArticlesResponse } from '@/pages/news-and-blogs/sections/api-hook';
 
 /* =====================================================================
  * Types
@@ -16,6 +17,7 @@ interface ApiData {
   clientFeedbacks: ClientFeedbacksResponse['feedbacks'];
   moreClientFeedbacks: MoreClientFeedbacksResponse['feedbacks'];
   whyClientsStay: ApiWhyClientsStayResponse | null;
+  articles: ArticlesResponse['articles'];
 }
 
 export interface ApiContextValue {

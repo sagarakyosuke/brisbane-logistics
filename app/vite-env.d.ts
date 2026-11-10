@@ -1,10 +1,16 @@
 /// <reference types="vite/client" />
 
-// CSS and Fonts
+/* =====================================================================
+ * CSS & Fonts
+ * ===================================================================== */
+
 declare module '*.css';
 declare module '@fontsource/*' {}
 
-// Vite Environment Variables
+/* =====================================================================
+ * Vite Environment Variables
+ * ===================================================================== */
+
 interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string;
   readonly VITE_APP_ENV: 'development' | 'staging' | 'production';

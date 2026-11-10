@@ -8,11 +8,12 @@ import {
   type SxProps,
   type Theme,
 } from '@mui/material';
-import { Search, Close, ArrowForward } from '@mui/icons-material';
+import { Search, Close, ArrowForward, Image as ImageIcon } from '@mui/icons-material';
 import { Section, SectionWrap } from '@/components/sections';
 import { Modal } from '@/components/dialogs/modals';
 import { palette, shadows } from '@/utilities/themes';
-import { articlesData, type ArticleItem } from '@/utilities/_mock/news-and-blogs/articles';
+import { useGetArticlesQuery } from '@/pages/news-and-blogs/sections/api-hook';
+import type { ArticleItem } from '@/utilities/data/news-and-blogs/articles';
 
 /* =====================================================================
  * Static styles
@@ -205,6 +206,7 @@ const MODAL_HERO_SX: SxProps<Theme> = {
   display: 'flex',
   alignItems: 'flex-end',
   p: { xs: 3, md: 5 },
+  bgcolor: palette.navySoft,
 };
 
 const MODAL_HERO_IMG_SX: SxProps<Theme> = {
@@ -239,35 +241,109 @@ const MODAL_CLOSE_SX: SxProps<Theme> = {
   '&:hover': { bgcolor: 'rgba(255,255,255,0.4)' },
 };
 
+/* ── Fallback Styles ──────────────────────────────────────────────── */
+
+const FALLBACK_WRAP_SX: SxProps<Theme> = {
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: `linear-gradient(135deg, ${palette.navySoft} 0%, ${palette.navy} 100%)`,
+  color: palette.white,
+};
+
+const FALLBACK_ICON_SX: SxProps<Theme> = {
+  fontSize: 48,
+  opacity: 0.7,
+  mb: 1,
+};
+
+/* =====================================================================
+ * Sub-components
+ * ===================================================================== */
+
+const SafeImage = ({
+  src,
+  alt,
+  className,
+  sx,
+}: {
+  src?: string | null;
+  alt: string;
+  className?: string;
+  sx?: SxProps<Theme>;
+}) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (!src || hasError) {
+    return (
+      <Box sx={{ position: 'absolute', inset: 0, ...FALLBACK_WRAP_SX }}>
+        <ImageIcon sx={FALLBACK_ICON_SX} />
+        <Typography
+          sx={{
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            opacity: 0.8,
+          }}
+        >
+          No Image
+        </Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      component="img"
+      className={className}
+      src={src}
+      alt={alt}
+      onError={() => setHasError(true)}
+      sx={sx}
+    />
+  );
+};
+
 /* =====================================================================
  * Component
  * ===================================================================== */
 
 export const ArticlesSection = () => {
+  const { data } = useGetArticlesQuery();
+
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedArticle, setSelectedArticle] = useState<ArticleItem | null>(null);
 
+  const articles = useMemo(() => {
+    return (data?.articles || []) as unknown as ArticleItem[];
+  }, [data?.articles]);
+
   const categories = ['All', 'Warehousing', 'Fulfilment', 'Systems', 'Business Insights'];
 
   const filteredArticles = useMemo(() => {
-    return articlesData.filter((article) => {
+    return articles.filter((article) => {
       const matchesCategory = activeCategory === 'All' || article.category === activeCategory;
       const matchesSearch =
         article.title.toLowerCase().includes(search.toLowerCase()) ||
         article.description.toLowerCase().includes(search.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [search, activeCategory]);
+  }, [articles, search, activeCategory]);
 
   const featured = filteredArticles.find((a) => a.isFeatured);
   const list = filteredArticles.filter((a) => !a.isFeatured);
 
   const handleCloseModal = () => setSelectedArticle(null);
 
+  if (articles.length === 0) return null;
+
   return (
     <>
-      {/* ✅ FIXED: Force mist background with skipAlternate */}
       <Section tone="mist" skipAlternate>
         <SectionWrap>
           {/* Search & Filter Row */}
@@ -308,8 +384,7 @@ export const ArticlesSection = () => {
           {featured && (
             <Box onClick={() => setSelectedArticle(featured)} sx={FEATURED_POST_SX}>
               <Box sx={FEATURED_IMG_WRAP_SX}>
-                <Box
-                  component="img"
+                <SafeImage
                   className="featured-img"
                   src={featured.image}
                   alt={featured.title}
@@ -346,8 +421,7 @@ export const ArticlesSection = () => {
               {list.map((article) => (
                 <Box key={article.id} onClick={() => setSelectedArticle(article)} sx={CARD_SX}>
                   <Box sx={THUMB_WRAP_SX}>
-                    <Box
-                      component="img"
+                    <SafeImage
                       className="thumb-img"
                       src={article.image}
                       alt={article.title}
@@ -401,8 +475,7 @@ export const ArticlesSection = () => {
             </IconButton>
 
             <Box sx={MODAL_HERO_SX}>
-              <Box
-                component="img"
+              <SafeImage
                 src={selectedArticle.image}
                 alt={selectedArticle.title}
                 sx={MODAL_HERO_IMG_SX}
