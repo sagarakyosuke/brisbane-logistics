@@ -15,12 +15,7 @@ import { AppButton } from '@/components/buttons';
 import { Section, SectionWrap } from '@/components/sections';
 import { Modal } from '@/components/dialogs/modals';
 import { palette } from '@/utilities/themes';
-import { useGetLatestCaseStudiesQuery } from '@/pages/case-studies/sections/api-hook';
-import type { CaseStudy } from '@/utilities/data/case-studies/case-studies';
-
-/* =====================================================================
- * Icon Mapping & Helpers
- * ===================================================================== */
+import { useApi } from '@/routes/api-routing/api-context';
 
 const ICONS: Record<string, ElementType> = {
   description: Description,
@@ -32,17 +27,6 @@ const getIcon = (key: string | undefined | null) => {
   if (!key) return ImageIcon;
   return ICONS[key] || ImageIcon;
 };
-
-interface ApiPoint {
-  id: number;
-  label: string;
-  desc: string;
-  iconKey: string;
-}
-
-/* =====================================================================
- * Static Styles
- * ===================================================================== */
 
 const CARD_SX: SxProps<Theme> = {
   display: 'grid',
@@ -248,10 +232,6 @@ const COUNTER_SX: SxProps<Theme> = {
   zIndex: 10,
 };
 
-/* =====================================================================
- * Sub-components
- * ===================================================================== */
-
 const SafeImage = ({ src, alt, sx }: { src?: string | null; alt: string; sx?: SxProps<Theme> }) => {
   const [hasError, setHasError] = useState(false);
 
@@ -269,14 +249,9 @@ const SafeImage = ({ src, alt, sx }: { src?: string | null; alt: string; sx?: Sx
   return <Box component="img" src={src} alt={alt} sx={sx} onError={() => setHasError(true)} />;
 };
 
-/* =====================================================================
- * CaseStudySection
- * ===================================================================== */
-
 export const CaseStudySection = () => {
-  const { data } = useGetLatestCaseStudiesQuery();
-
-  const study = data?.latest as unknown as CaseStudy | undefined;
+  const { data } = useApi();
+  const study = data?.latest;
 
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -285,9 +260,9 @@ export const CaseStudySection = () => {
     () =>
       study
         ? [
-            { src: study.images?.main, alt: 'Tile cases loaded and ready to leave' },
-            { src: study.images?.topRight, alt: 'Cases delivered to the project site' },
-            { src: study.images?.bottomRight, alt: 'Cases wrapped and strapped in the van' },
+            { src: study.images.main, alt: 'Tile cases loaded and ready to leave' },
+            { src: study.images.topRight, alt: 'Cases delivered to the project site' },
+            { src: study.images.bottomRight, alt: 'Cases wrapped and strapped in the van' },
           ]
         : [],
     [study],
@@ -307,11 +282,13 @@ export const CaseStudySection = () => {
 
   useEffect(() => {
     if (!isOpen) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowLeft') handlePrev();
       if (e.key === 'ArrowRight') handleNext();
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, closeLightbox, handlePrev, handleNext]);
@@ -349,7 +326,7 @@ export const CaseStudySection = () => {
               <Typography sx={DESCRIPTION_SX}>{study.description}</Typography>
 
               <Box sx={POINTS_LIST_SX}>
-                {(study.points as unknown as ApiPoint[]).map((point) => (
+                {study.points.map((point) => (
                   <Box key={point.id} sx={POINT_ROW_SX}>
                     <Box sx={POINT_ICON_BOX_SX}>
                       {createElement(getIcon(point.iconKey), { fontSize: 'small' })}

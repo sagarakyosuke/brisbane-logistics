@@ -1,11 +1,25 @@
+import { useMemo, createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
-import { InfoOutlined } from '@mui/icons-material';
+import { InfoOutlined, Handshake, Groups, Agriculture } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import {
-  ourBeginningsData,
-  type OurBeginningsValue,
-} from '@/utilities/_mock/about-us/our-stories/our-beginnings';
+import { useApi } from '@/routes/api-routing/api-context';
+import type { OurBeginningsValue } from '@/utilities/data/about-us/our-stories/our-beginnings';
+
+/* =====================================================================
+ * Icon Mapping
+ * ===================================================================== */
+
+const ICONS: Record<string, ElementType> = {
+  handshake: Handshake,
+  groups: Groups,
+  agriculture: Agriculture,
+};
+
+const DynamicIcon = ({ iconKey, sx }: { iconKey: string; sx?: SxProps<Theme> }) => {
+  const Icon = ICONS[iconKey] || Handshake;
+  return createElement(Icon, { sx });
+};
 
 /* =====================================================================
  * Static styles
@@ -17,8 +31,6 @@ const GRID_SX: SxProps<Theme> = {
   gap: { xs: 6, md: 8, lg: 12 },
   alignItems: 'center',
 };
-
-/* ── Left Column (Text) ───────────────────────────────────────────── */
 
 const TEXT_COLUMN_SX: SxProps<Theme> = {
   display: 'flex',
@@ -59,8 +71,6 @@ const BADGE_SX: SxProps<Theme> = {
   letterSpacing: '0.05em',
   mt: 2,
 };
-
-/* ── Right Column (Values Card) ───────────────────────────────────── */
 
 const VALUES_CARD_SX: SxProps<Theme> = {
   bgcolor: palette.mist,
@@ -107,12 +117,26 @@ const VALUE_DESC_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const OurBeginningsSection = () => {
+  const { data } = useApi();
+
+  const ourBeginningsData = useMemo(() => {
+    if (!data?.ourBeginnings) return null;
+    return data.ourBeginnings as unknown as {
+      eyebrow: string;
+      title: string;
+      description1: string;
+      description2: string;
+      badge: string;
+      values: (OurBeginningsValue & { iconKey: string })[];
+    };
+  }, [data?.ourBeginnings]);
+
+  if (!ourBeginningsData || ourBeginningsData.values.length === 0) return null;
+
   return (
-    // ✅ Uses the Section component's odd/even logic
     <Section skipAlternate={false}>
       <SectionWrap>
         <Box sx={GRID_SX}>
-          {/* Left Column */}
           <Box sx={TEXT_COLUMN_SX}>
             <SectionEyebrow>{ourBeginningsData.eyebrow}</SectionEyebrow>
 
@@ -129,25 +153,20 @@ export const OurBeginningsSection = () => {
             </Box>
           </Box>
 
-          {/* Right Column */}
           <Box sx={VALUES_CARD_SX}>
-            {ourBeginningsData.values.map((value: OurBeginningsValue) => {
-              const Icon = value.icon;
-
-              return (
-                <Box key={value.id} sx={VALUE_ITEM_SX}>
-                  <Box sx={VALUE_ICON_BOX_SX}>
-                    <Icon fontSize="medium" />
-                  </Box>
-                  <Box>
-                    <Typography component="h3" sx={VALUE_TITLE_SX}>
-                      {value.title}
-                    </Typography>
-                    <Typography sx={VALUE_DESC_SX}>{value.desc}</Typography>
-                  </Box>
+            {ourBeginningsData.values.map((value) => (
+              <Box key={value.id} sx={VALUE_ITEM_SX}>
+                <Box sx={VALUE_ICON_BOX_SX}>
+                  <DynamicIcon iconKey={value.iconKey} sx={{ fontSize: 24 }} />
                 </Box>
-              );
-            })}
+                <Box>
+                  <Typography component="h3" sx={VALUE_TITLE_SX}>
+                    {value.title}
+                  </Typography>
+                  <Typography sx={VALUE_DESC_SX}>{value.desc}</Typography>
+                </Box>
+              </Box>
+            ))}
           </Box>
         </Box>
       </SectionWrap>

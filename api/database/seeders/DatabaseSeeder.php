@@ -16,11 +16,14 @@ class DatabaseSeeder extends Seeder
          * Toggle true/false to choose which seeders run.
          * ===================================================================== */
 
-        $seedCaseStudies    = false;
-        $seedArticles       = false;
-        $seedCompanyUpdates = false;
-        $seedGuideTips      = false;
-        $seedBrowseTopics   = true;
+        $seedCaseStudies     = false;
+        $seedArticles        = false;
+        $seedCompanyUpdates  = false;
+        $seedGuideTips       = false;
+        $seedBrowseTopics    = false;
+        $seedPracticalGuides = false;
+        $seedFaqs = false;
+        $seedOverview = true;
 
         /* =====================================================================
          * Execution
@@ -44,6 +47,18 @@ class DatabaseSeeder extends Seeder
 
         if ($seedBrowseTopics) {
             $this->call(BrowseTopicSeeder::class);
+        }
+
+        if ($seedPracticalGuides) {
+            $this->call(PracticalGuidesSeeder::class);
+        }
+
+        if ($seedFaqs) {
+            $this->call(FaqSeeder::class);
+        }
+
+        if ($seedOverview) {
+            $this->call(OverviewSeeder::class);
         }
     }
 }

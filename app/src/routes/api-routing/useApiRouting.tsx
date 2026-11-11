@@ -2,18 +2,22 @@ import { useMemo, useEffect, type ReactNode } from 'react';
 import {
   useGetLatestCaseStudiesQuery,
   useGetPreviousCaseStudiesQuery,
-} from '@/pages/case-studies/sections/api-hook';
-import {
   useGetClientFeedbacksQuery,
   useGetMoreClientFeedbacksQuery,
   useGetWhyClientsStayQuery,
-} from '@/pages/case-studies/client-testimonials/sections/api-hook';
-import { useGetArticlesQuery } from '@/pages/news-and-blogs/sections/api-hook';
-import { useGetCompanyUpdatesQuery } from '@/pages/news-and-blogs/company-updates/sections/api-hook';
-import {
+  useGetArticlesQuery,
+  useGetCompanyUpdatesQuery,
   useGetFeaturedGuideQuery,
   useGetBrowseByTopicQuery,
-} from '@/pages/news-and-blogs/guides-and-tips/sections/api-hook';
+  useGetPracticalGuidesQuery,
+  useGetWhatDoYouNeedQuery,
+  useGetUsefulGuideQuery,
+  useGetOverviewQuery,
+  useGetWhatWeHandleQuery,
+  useGetWhyChooseQuery,
+  useGetOurBeginningsQuery,
+  useGetKeyMomentsQuery,
+} from '@/utilities/hooks/api';
 import { showError } from '@/components/dialogs/alerts';
 import { ApiContext } from './api-context';
 
@@ -33,6 +37,14 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const companyUpdatesQuery = useGetCompanyUpdatesQuery();
   const featuredGuideQuery = useGetFeaturedGuideQuery();
   const browseByTopicQuery = useGetBrowseByTopicQuery();
+  const practicalGuidesQuery = useGetPracticalGuidesQuery();
+  const whatDoYouNeedQuery = useGetWhatDoYouNeedQuery();
+  const usefulGuideQuery = useGetUsefulGuideQuery();
+  const overviewQuery = useGetOverviewQuery();
+  const whatWeHandleQuery = useGetWhatWeHandleQuery();
+  const whyChooseQuery = useGetWhyChooseQuery();
+  const ourBeginningsQuery = useGetOurBeginningsQuery();
+  const keyMomentsQuery = useGetKeyMomentsQuery();
 
   const queries = [
     latestQuery,
@@ -44,6 +56,14 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     companyUpdatesQuery,
     featuredGuideQuery,
     browseByTopicQuery,
+    practicalGuidesQuery,
+    whatDoYouNeedQuery,
+    usefulGuideQuery,
+    overviewQuery,
+    whatWeHandleQuery,
+    whyChooseQuery,
+    ourBeginningsQuery,
+    keyMomentsQuery,
   ];
 
   /* ── Loading & Error States ───────────────────────────────────────── */
@@ -86,6 +106,26 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       companyUpdates: companyUpdatesQuery.data?.updates ?? [],
       featuredGuide: featuredGuideQuery.data?.guide ?? null,
       browseByTopic: browseByTopicQuery.data ?? { title: '', topics: [] },
+      practicalGuides: practicalGuidesQuery.data ?? { title: '', items: [] },
+      whatDoYouNeed: whatDoYouNeedQuery.data ?? { title: '', subtitle: '', topics: [] },
+      usefulGuide: usefulGuideQuery.data ?? { eyebrow: '', title: '', guides: [] },
+      overview: overviewQuery.data?.overview ?? null,
+      whatWeHandle: whatWeHandleQuery.data ?? { eyebrow: '', title: '', items: [] },
+      whyChoose: whyChooseQuery.data ?? { eyebrow: '', title: '', values: [] },
+      ourBeginnings: ourBeginningsQuery.data ?? {
+        eyebrow: '',
+        title: '',
+        description1: '',
+        description2: '',
+        badge: '',
+        values: [],
+      },
+      keyMoments: keyMomentsQuery.data ?? {
+        eyebrow: '',
+        title: '',
+        subtitle: '',
+        moments: [],
+      },
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -98,6 +138,14 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     companyUpdatesQuery.data,
     featuredGuideQuery.data,
     browseByTopicQuery.data,
+    practicalGuidesQuery.data,
+    whatDoYouNeedQuery.data,
+    usefulGuideQuery.data,
+    overviewQuery.data,
+    whatWeHandleQuery.data,
+    whyChooseQuery.data,
+    ourBeginningsQuery.data,
+    keyMomentsQuery.data,
   ]);
 
   /* ── Render ───────────────────────────────────────────────────────── */

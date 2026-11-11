@@ -1,16 +1,23 @@
 import { createContext, useContext } from 'react';
-import type { LatestResponse, PreviousResponse } from '@/pages/case-studies/sections/api-hook';
 import type {
+  LatestResponse,
+  PreviousResponse,
   ClientFeedbacksResponse,
   MoreClientFeedbacksResponse,
   ApiWhyClientsStayResponse,
-} from '@/pages/case-studies/client-testimonials/sections/api-hook';
-import type { ArticlesResponse } from '@/pages/news-and-blogs/sections/api-hook';
-import type { CompanyUpdatesResponse } from '@/pages/news-and-blogs/company-updates/sections/api-hook';
-import type {
+  ArticlesResponse,
+  CompanyUpdatesResponse,
   FeaturedGuideResponse,
   BrowseByTopicResponse,
-} from '@/pages/news-and-blogs/guides-and-tips/sections/api-hook';
+  PracticalGuidesResponse,
+  FaqsResponse,
+  UsefulGuideResponse,
+  OverviewResponse,
+  WhatWeHandleResponse,
+  WhyChooseResponse,
+  OurBeginningsResponse,
+  KeyMomentsResponse,
+} from '@/utilities/hooks/api';
 
 /* =====================================================================
  * Types
@@ -26,6 +33,14 @@ interface ApiData {
   companyUpdates: CompanyUpdatesResponse['updates'];
   featuredGuide: FeaturedGuideResponse['guide'];
   browseByTopic: BrowseByTopicResponse;
+  practicalGuides: PracticalGuidesResponse;
+  whatDoYouNeed: FaqsResponse;
+  usefulGuide: UsefulGuideResponse;
+  overview: OverviewResponse['overview'];
+  whatWeHandle: WhatWeHandleResponse;
+  whyChoose: WhyChooseResponse;
+  ourBeginnings: OurBeginningsResponse;
+  keyMoments: KeyMomentsResponse;
 }
 
 export interface ApiContextValue {

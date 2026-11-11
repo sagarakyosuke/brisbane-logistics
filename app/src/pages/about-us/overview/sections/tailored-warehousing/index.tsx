@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
-import { ArrowForward } from '@mui/icons-material';
+import { ArrowForward, Image as ImageIcon } from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette, shadows } from '@/utilities/themes';
-import { tailoredWarehousingData } from '@/utilities/_mock/about-us/overview';
+import { useGetOverviewQuery } from '@/pages/about-us/overview/sections/api-hook';
 
 /* =====================================================================
  * Static styles
@@ -15,8 +16,6 @@ const GRID_SX: SxProps<Theme> = {
   gap: { xs: 6, md: 8, lg: 12 },
   alignItems: 'center',
 };
-
-/* ── Left Column (Text) ───────────────────────────────────────────── */
 
 const TEXT_COLUMN_SX: SxProps<Theme> = {
   display: 'flex',
@@ -65,8 +64,6 @@ const ARROW_SX: SxProps<Theme> = {
   transition: 'transform 0.2s',
 };
 
-/* ── Right Column (Image) ─────────────────────────────────────────── */
-
 const IMAGE_COLUMN_SX: SxProps<Theme> = {
   position: 'relative',
   width: '100%',
@@ -87,39 +84,85 @@ const IMAGE_SX: SxProps<Theme> = {
   display: 'block',
 };
 
+const FALLBACK_WRAP_SX: SxProps<Theme> = {
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: `linear-gradient(135deg, ${palette.navySoft} 0%, ${palette.navy} 100%)`,
+  color: palette.white,
+};
+
+const FALLBACK_ICON_SX: SxProps<Theme> = {
+  fontSize: 48,
+  opacity: 0.7,
+  mb: 1,
+};
+
+/* =====================================================================
+ * Sub-components
+ * ===================================================================== */
+
+const SafeImage = ({ src, alt, sx }: { src?: string | null; alt: string; sx?: SxProps<Theme> }) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (!src || hasError) {
+    return (
+      <Box sx={{ position: 'absolute', inset: 0, ...FALLBACK_WRAP_SX }}>
+        <ImageIcon sx={FALLBACK_ICON_SX} />
+        <Typography
+          sx={{
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            opacity: 0.8,
+          }}
+        >
+          No Image
+        </Typography>
+      </Box>
+    );
+  }
+
+  return <Box component="img" src={src} alt={alt} onError={() => setHasError(true)} sx={sx} />;
+};
+
 /* =====================================================================
  * Component
  * ===================================================================== */
 
 export const TailoredWarehousingSection = () => {
-  const { eyebrow, title, description, ctaLabel, ctaPath, image, imageAlt } =
-    tailoredWarehousingData;
+  const { data } = useGetOverviewQuery();
+
+  const overview = data?.overview;
+
+  if (!overview) return null;
 
   return (
-    // Uses skipAlternate={false} so it alternates based on its position on the page
     <Section skipAlternate={false}>
       <SectionWrap>
         <Box sx={GRID_SX}>
-          {/* Left Column — Text */}
           <Box sx={TEXT_COLUMN_SX}>
-            <SectionEyebrow>{eyebrow}</SectionEyebrow>
+            <SectionEyebrow>{overview.eyebrow}</SectionEyebrow>
 
             <Typography component="h2" sx={TITLE_SX}>
-              {title}
+              {overview.title}
             </Typography>
 
-            <Typography sx={DESCRIPTION_SX}>{description}</Typography>
+            <Typography sx={DESCRIPTION_SX}>{overview.description}</Typography>
 
-            <Box component={Link} to={ctaPath} sx={LINK_SX}>
-              {ctaLabel}
+            <Box component={Link} to={overview.ctaPath} sx={LINK_SX}>
+              {overview.ctaLabel}
               <ArrowForward className="arrow-icon" sx={ARROW_SX} />
             </Box>
           </Box>
 
-          {/* Right Column — Image */}
           <Box sx={IMAGE_COLUMN_SX}>
             <Box sx={IMAGE_WRAPPER_SX}>
-              <Box component="img" src={image} alt={imageAlt} sx={IMAGE_SX} />
+              <SafeImage src={overview.image} alt={overview.imageAlt} sx={IMAGE_SX} />
             </Box>
           </Box>
         </Box>

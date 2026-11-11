@@ -1,17 +1,36 @@
+import { useMemo, createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
+import { Agriculture, BarChart, Flag } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import {
-  keyMomentsData,
-  type KeyMomentItem,
-} from '@/utilities/_mock/about-us/our-stories/key-moments';
+import { useApi } from '@/routes/api-routing/api-context';
+import type { KeyMomentItem } from '@/utilities/data/about-us/our-stories/key-moments';
+
+/* =====================================================================
+ * Icon Mapping
+ * ===================================================================== */
+
+const ICONS: Record<string, ElementType> = {
+  agriculture: Agriculture,
+  bar_chart: BarChart,
+  flag: Flag,
+};
+
+const DynamicIcon = ({ iconKey, sx }: { iconKey: string; sx?: SxProps<Theme> }) => {
+  const Icon = ICONS[iconKey] || Flag;
+  return createElement(Icon, { sx });
+};
 
 /* =====================================================================
  * Static styles
  * ===================================================================== */
 
 const HEADER_WRAP_SX: SxProps<Theme> = {
-  mb: 6,
+  mb: 8,
+  textAlign: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
 };
 
 const TITLE_SX: SxProps<Theme> = {
@@ -28,28 +47,49 @@ const SUBTITLE_SX: SxProps<Theme> = {
   fontSize: '1.1rem',
   color: palette.muted,
   lineHeight: 1.6,
+  maxWidth: '60ch',
 };
-
-/* ── Timeline ─────────────────────────────────────────────────────── */
 
 const TIMELINE_WRAP_SX: SxProps<Theme> = {
   position: 'relative',
   display: 'flex',
+  flexDirection: { xs: 'column', md: 'row' },
   justifyContent: 'space-between',
   alignItems: 'flex-start',
-  pt: 2,
-  // Add a dashed line across the entire container behind the items
+  gap: { xs: 6, md: 0 },
+  maxWidth: '900px',
+  mx: 'auto',
+  width: '100%',
+
+  // Desktop Dashed Line
   '&::before': {
     content: '""',
     position: 'absolute',
-    top: 32, // Align with the center of the icon circle
-    left: '5%',
-    right: '5%',
+    top: 32, // Exactly halfway down the 64px icon circle
+    left: 'calc(16.666% + 32px)',
+    right: 'calc(16.666% + 32px)',
     height: 2,
     backgroundImage: `linear-gradient(90deg, ${palette.orange} 50%, transparent 50%)`,
-    backgroundSize: '12px 2px', // Dash size
+    backgroundSize: '12px 2px',
     backgroundRepeat: 'repeat-x',
     zIndex: 0,
+    display: { xs: 'none', md: 'block' },
+  },
+
+  // Mobile Dashed Line
+  '@media (max-width: 899px)': {
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 64, // Starts just below the first circle
+      bottom: 64, // Stops just above the last circle
+      left: 32, // Center of the circle
+      width: 2,
+      backgroundImage: `linear-gradient(0deg, ${palette.orange} 50%, transparent 50%)`,
+      backgroundSize: '2px 12px',
+      backgroundRepeat: 'repeat-y',
+      zIndex: 0,
+    },
   },
 };
 
@@ -58,9 +98,9 @@ const MOMENT_ITEM_SX: SxProps<Theme> = {
   zIndex: 1,
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
-  flex: 1, // Distribute evenly
-  pr: 2,
+  alignItems: { xs: 'flex-start', md: 'center' },
+  textAlign: { xs: 'left', md: 'center' },
+  flex: 1,
 };
 
 const ICON_CIRCLE_SX: SxProps<Theme> = {
@@ -73,6 +113,9 @@ const ICON_CIRCLE_SX: SxProps<Theme> = {
   display: 'grid',
   placeItems: 'center',
   mb: 3,
+  boxShadow: '0 4px 12px -4px rgba(245, 130, 32, 0.2)',
+  position: 'relative',
+  zIndex: 2,
 };
 
 const MOMENT_TITLE_SX: SxProps<Theme> = {
@@ -102,8 +145,21 @@ const MOMENT_BADGE_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const KeyMomentsSection = () => {
+  const { data } = useApi();
+
+  const keyMomentsData = useMemo(() => {
+    if (!data?.keyMoments) return null;
+    return data.keyMoments as unknown as {
+      eyebrow: string;
+      title: string;
+      subtitle: string;
+      moments: (KeyMomentItem & { iconKey: string })[];
+    };
+  }, [data?.keyMoments]);
+
+  if (!keyMomentsData || keyMomentsData.moments.length === 0) return null;
+
   return (
-    // Uses the Section component's odd/even logic
     <Section skipAlternate={false}>
       <SectionWrap>
         <Box sx={HEADER_WRAP_SX}>
@@ -115,21 +171,17 @@ export const KeyMomentsSection = () => {
         </Box>
 
         <Box sx={TIMELINE_WRAP_SX}>
-          {keyMomentsData.moments.map((moment: KeyMomentItem) => {
-            const Icon = moment.icon;
-
-            return (
-              <Box key={moment.id} sx={MOMENT_ITEM_SX}>
-                <Box sx={ICON_CIRCLE_SX}>
-                  <Icon fontSize="medium" />
-                </Box>
-                <Typography component="h3" sx={MOMENT_TITLE_SX}>
-                  {moment.title}
-                </Typography>
-                <Box sx={MOMENT_BADGE_SX}>{moment.badge}</Box>
+          {keyMomentsData.moments.map((moment) => (
+            <Box key={moment.id} sx={MOMENT_ITEM_SX}>
+              <Box sx={ICON_CIRCLE_SX}>
+                <DynamicIcon iconKey={moment.iconKey} sx={{ fontSize: 28 }} />
               </Box>
-            );
-          })}
+              <Typography component="h3" sx={MOMENT_TITLE_SX}>
+                {moment.title}
+              </Typography>
+              <Box sx={MOMENT_BADGE_SX}>{moment.badge}</Box>
+            </Box>
+          ))}
         </Box>
       </SectionWrap>
     </Section>

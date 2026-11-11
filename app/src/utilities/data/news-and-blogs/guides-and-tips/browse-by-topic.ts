@@ -1,8 +1,8 @@
 import type { ElementType } from 'react';
 
 export interface TopicItem {
-  id: number; // ✅ Changed to number
-  key: string; // ✅ Added
+  id: number;
+  key: string;
   title: string;
   desc: string;
   icon: ElementType;

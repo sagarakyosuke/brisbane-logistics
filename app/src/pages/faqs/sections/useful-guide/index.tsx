@@ -1,9 +1,26 @@
+import { useMemo, createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
-import { ArrowForward } from '@mui/icons-material';
+import { ArrowForward, Description, Inventory, ShoppingCart } from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette, shadows } from '@/utilities/themes';
-import { usefulGuideData, type UsefulGuideItem } from '@/utilities/_mock/faqs/useful-guide';
+import { useGetUsefulGuideQuery } from '@/pages/faqs/sections/api-hook';
+import type { UsefulGuideItem } from '@/utilities/data/faqs/useful-guide';
+
+/* =====================================================================
+ * Icon Mapping
+ * ===================================================================== */
+
+const ICONS: Record<string, ElementType> = {
+  description: Description,
+  inventory: Inventory,
+  shopping_cart: ShoppingCart,
+};
+
+const DynamicIcon = ({ iconKey, sx }: { iconKey: string; sx?: SxProps<Theme> }) => {
+  const Icon = ICONS[iconKey] || Description;
+  return createElement(Icon, { sx });
+};
 
 /* =====================================================================
  * Static styles
@@ -38,14 +55,11 @@ const CARD_SX: SxProps<Theme> = {
   transition: 'all 0.3s ease',
   position: 'relative',
   overflow: 'hidden',
-  // Hover state
   '&:hover': {
     transform: 'translateY(-6px)',
     boxShadow: shadows.base,
     borderColor: 'transparent',
-    // Animate the arrow
     '& .arrow-icon': { transform: 'translateX(6px)' },
-    // Animate the icon box background
     '& .icon-box': {
       bgcolor: palette.orange,
       color: palette.white,
@@ -103,10 +117,22 @@ const ARROW_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const UsefulGuideSection = () => {
+  const { data } = useGetUsefulGuideQuery();
+
+  const usefulGuideData = useMemo(() => {
+    if (!data) return null;
+    return data as unknown as {
+      eyebrow: string;
+      title: string;
+      guides: (UsefulGuideItem & { iconKey: string })[];
+    };
+  }, [data]);
+
+  if (!usefulGuideData || usefulGuideData.guides.length === 0) return null;
+
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
-        {/* Header */}
         <Box sx={HEADER_WRAP_SX}>
           <SectionEyebrow>{usefulGuideData.eyebrow}</SectionEyebrow>
           <Typography component="h2" sx={TITLE_SX}>
@@ -114,30 +140,25 @@ export const UsefulGuideSection = () => {
           </Typography>
         </Box>
 
-        {/* Guides Grid */}
         <Box sx={GRID_SX}>
-          {usefulGuideData.guides.map((guide: UsefulGuideItem) => {
-            const Icon = guide.icon;
-
-            return (
-              <Box key={guide.id} component={Link} to={guide.path} sx={CARD_SX}>
-                <Box className="icon-box" sx={ICON_BOX_SX}>
-                  <Icon fontSize="medium" />
-                </Box>
-
-                <Typography component="h3" sx={CARD_TITLE_SX}>
-                  {guide.title}
-                </Typography>
-
-                <Typography sx={CARD_DESC_SX}>{guide.desc}</Typography>
-
-                <Box sx={LINK_SX}>
-                  Read more
-                  <ArrowForward className="arrow-icon" sx={ARROW_SX} />
-                </Box>
+          {usefulGuideData.guides.map((guide) => (
+            <Box key={guide.id} component={Link} to={guide.path} sx={CARD_SX}>
+              <Box className="icon-box" sx={ICON_BOX_SX}>
+                <DynamicIcon iconKey={guide.iconKey} sx={{ fontSize: 24 }} />
               </Box>
-            );
-          })}
+
+              <Typography component="h3" sx={CARD_TITLE_SX}>
+                {guide.title}
+              </Typography>
+
+              <Typography sx={CARD_DESC_SX}>{guide.desc}</Typography>
+
+              <Box sx={LINK_SX}>
+                Read more
+                <ArrowForward className="arrow-icon" sx={ARROW_SX} />
+              </Box>
+            </Box>
+          ))}
         </Box>
       </SectionWrap>
     </Section>

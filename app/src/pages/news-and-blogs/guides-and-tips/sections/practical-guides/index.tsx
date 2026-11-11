@@ -1,13 +1,10 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { Section, SectionWrap } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { practicalGuidesData } from '@/utilities/_mock/news-and-blogs/guides-and-tips/practical-guides';
-
-/* =====================================================================
- * Static styles
- * ===================================================================== */
+import { useGetPracticalGuidesQuery } from '@/pages/news-and-blogs/guides-and-tips/sections/api-hook';
+import type { PracticalGuideItem } from '@/utilities/data/news-and-blogs/guides-and-tips/practical-guides';
 
 const TITLE_SX: SxProps<Theme> = {
   fontSize: 'clamp(1.8rem, 3vw, 2.5rem)',
@@ -22,7 +19,6 @@ const LIST_WRAPPER_SX: SxProps<Theme> = {
   gap: 2,
 };
 
-// We dynamically set border and bgcolor based on `isOpen`
 const ITEM_SX = (isOpen: boolean): SxProps<Theme> => ({
   bgcolor: palette.white,
   border: `1px solid ${isOpen ? palette.orange : palette.line}`,
@@ -58,7 +54,7 @@ const ICON_BTN_SX = (isOpen: boolean): SxProps<Theme> => ({
   placeItems: 'center',
   flexShrink: 0,
   transition: 'all 0.3s ease',
-  transform: isOpen ? 'rotate(0deg)' : 'rotate(45deg)', // Rotates the X to look like a plus when closed
+  transform: isOpen ? 'rotate(0deg)' : 'rotate(45deg)',
 });
 
 const ICON_SX: SxProps<Theme> = {
@@ -82,13 +78,19 @@ const ANSWER_TEXT_SX: SxProps<Theme> = {
   lineHeight: 1.6,
 };
 
-/* =====================================================================
- * Component
- * ===================================================================== */
-
 export const PracticalGuidesSection = () => {
-  // First item is open by default
-  const [openId, setOpenId] = useState<string | null>(practicalGuidesData.items[0]?.id || null);
+  const { data } = useGetPracticalGuidesQuery();
+
+  const practicalGuides = useMemo(() => {
+    if (!data) return null;
+    return data as unknown as { title: string; items: PracticalGuideItem[] };
+  }, [data]);
+
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  if (!practicalGuides || practicalGuides.items.length === 0) return null;
+
+  const resolvedOpenId = openId ?? practicalGuides.items[0].id;
 
   const toggle = (id: string) => {
     setOpenId((prev) => (prev === id ? null : id));
@@ -98,12 +100,12 @@ export const PracticalGuidesSection = () => {
     <Section tone="default" skipAlternate>
       <SectionWrap>
         <Typography component="h2" sx={TITLE_SX}>
-          {practicalGuidesData.title}
+          {practicalGuides.title}
         </Typography>
 
         <Box sx={LIST_WRAPPER_SX}>
-          {practicalGuidesData.items.map((item) => {
-            const isOpen = openId === item.id;
+          {practicalGuides.items.map((item) => {
+            const isOpen = resolvedOpenId === item.id;
 
             return (
               <Box key={item.id} sx={ITEM_SX(isOpen)}>

@@ -22,10 +22,6 @@ export interface ApiFeaturedGuide {
   };
 }
 
-export interface FeaturedGuideResponse {
-  guide: ApiFeaturedGuide | null;
-}
-
 export interface ApiBrowseTopic {
   id: number;
   key: string;
@@ -35,9 +31,24 @@ export interface ApiBrowseTopic {
   path: string;
 }
 
+export interface ApiPracticalGuide {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+export interface FeaturedGuideResponse {
+  guide: ApiFeaturedGuide | null;
+}
+
 export interface BrowseByTopicResponse {
   title: string;
   topics: ApiBrowseTopic[];
+}
+
+export interface PracticalGuidesResponse {
+  title: string;
+  items: ApiPracticalGuide[];
 }
 
 export const guidesAndTipsApi = apiSlice.injectEndpoints({
@@ -50,7 +61,12 @@ export const guidesAndTipsApi = apiSlice.injectEndpoints({
       query: () => '/news-and-blogs/browse-by-topic',
       providesTags: ['NewsBlogs'],
     }),
+    getPracticalGuides: builder.query<PracticalGuidesResponse, void>({
+      query: () => '/news-and-blogs/practical-guides',
+      providesTags: ['NewsBlogs'],
+    }),
   }),
 });
 
-export const { useGetFeaturedGuideQuery, useGetBrowseByTopicQuery } = guidesAndTipsApi;
+export const { useGetFeaturedGuideQuery, useGetBrowseByTopicQuery, useGetPracticalGuidesQuery } =
+  guidesAndTipsApi;

@@ -1,16 +1,47 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo, createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
-import { Add, Close, ArrowForward } from '@mui/icons-material';
+import {
+  Add,
+  Close,
+  ArrowForward,
+  Business,
+  Warehouse,
+  ShoppingCart,
+  LocalShipping,
+  Inventory,
+  Settings,
+  Description,
+  Headset,
+} from '@mui/icons-material';
 import { Section, SectionWrap } from '@/components/sections';
 import { AppButton } from '@/components/buttons';
 import { palette, shadows } from '@/utilities/themes';
-import { whatDoYouNeedData, type TopicItem } from '@/utilities/_mock/faqs/what-do-you-need';
+import { useGetWhatDoYouNeedQuery } from '@/pages/faqs/sections/api-hook';
+import type { TopicItem } from '@/utilities/data/faqs/what-do-you-need';
+
+/* =====================================================================
+ * Icon Mapping
+ * ===================================================================== */
+
+const ICONS: Record<string, ElementType> = {
+  business: Business,
+  warehouse: Warehouse,
+  shopping_cart: ShoppingCart,
+  local_shipping: LocalShipping,
+  inventory: Inventory,
+  settings: Settings,
+  description: Description,
+  headset: Headset,
+};
+
+const DynamicIcon = ({ iconKey, sx }: { iconKey: string; sx?: SxProps<Theme> }) => {
+  const Icon = ICONS[iconKey] || Business;
+  return createElement(Icon, { sx });
+};
 
 /* =====================================================================
  * Static styles
  * ===================================================================== */
-
-/* ── Grid Section Styles ──────────────────────────────────────────── */
 
 const HEADER_WRAP_SX: SxProps<Theme> = {
   mb: 5,
@@ -95,8 +126,6 @@ const COUNT_BADGE_SX = (isActive: boolean): SxProps<Theme> => ({
   borderRadius: '999px',
   mt: 1,
 });
-
-/* ── Accordion Section Styles ─────────────────────────────────────── */
 
 const ACC_HEADER_ROW_SX: SxProps<Theme> = {
   display: 'flex',
@@ -194,9 +223,8 @@ const NEXT_TOPIC_LINK_SX: SxProps<Theme> = {
   '&:hover': { color: palette.orange },
 };
 
-//  Add this style for the scroll offset
 const SCROLL_ANCHOR_SX: SxProps<Theme> = {
-  scrollMarginTop: '100px', // Adjust this to match your navbar height + some breathing room
+  scrollMarginTop: '100px',
 };
 
 /* =====================================================================
@@ -204,12 +232,25 @@ const SCROLL_ANCHOR_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const WhatDoYouNeedSection = () => {
+  const { data } = useGetWhatDoYouNeedQuery();
+
+  const faqsData = useMemo(() => {
+    if (!data) return null;
+    return data as unknown as {
+      title: string;
+      subtitle: string;
+      topics: (TopicItem & { iconKey: string })[];
+    };
+  }, [data]);
+
   const [activeTopicId, setActiveTopicId] = useState<string>('getting-to-know-us');
   const [openAccordions, setOpenAccordions] = useState<number[]>([0]);
 
   const accordionRef = useRef<HTMLDivElement>(null);
 
-  const activeTopic = whatDoYouNeedData.topics.find((t) => t.id === activeTopicId)!;
+  if (!faqsData || faqsData.topics.length === 0) return null;
+
+  const activeTopic = faqsData.topics.find((t) => t.id === activeTopicId) || faqsData.topics[0];
 
   const toggleAccordion = (index: number) => {
     setOpenAccordions((prev) =>
@@ -226,7 +267,6 @@ export const WhatDoYouNeedSection = () => {
   };
 
   const scrollToAccordion = () => {
-    // A slightly longer timeout ensures the new accordion content is fully rendered before scrolling
     setTimeout(() => {
       accordionRef.current?.scrollIntoView({
         behavior: 'smooth',
@@ -236,9 +276,9 @@ export const WhatDoYouNeedSection = () => {
   };
 
   const handleNextTopic = () => {
-    const currentIndex = whatDoYouNeedData.topics.findIndex((t) => t.id === activeTopicId);
-    const nextIndex = (currentIndex + 1) % whatDoYouNeedData.topics.length;
-    setActiveTopicId(whatDoYouNeedData.topics[nextIndex].id);
+    const currentIndex = faqsData.topics.findIndex((t) => t.id === activeTopicId);
+    const nextIndex = (currentIndex + 1) % faqsData.topics.length;
+    setActiveTopicId(faqsData.topics[nextIndex].id);
     setOpenAccordions([0]);
 
     scrollToAccordion();
@@ -253,19 +293,17 @@ export const WhatDoYouNeedSection = () => {
 
   return (
     <>
-      {/* ── SECTION 1: The Grid ── */}
       <Section skipAlternate={false}>
         <SectionWrap>
           <Box sx={HEADER_WRAP_SX}>
             <Typography component="h2" sx={TITLE_SX}>
-              {whatDoYouNeedData.title}
+              {faqsData.title}
             </Typography>
-            <Typography sx={SUBTITLE_SX}>{whatDoYouNeedData.subtitle}</Typography>
+            <Typography sx={SUBTITLE_SX}>{faqsData.subtitle}</Typography>
           </Box>
 
           <Box sx={GRID_SX}>
-            {whatDoYouNeedData.topics.map((topic: TopicItem) => {
-              const Icon = topic.icon;
+            {faqsData.topics.map((topic) => {
               const isActive = activeTopicId === topic.id;
 
               return (
@@ -275,7 +313,7 @@ export const WhatDoYouNeedSection = () => {
                   sx={cardSx(isActive)}
                 >
                   <Box sx={ICON_BOX_SX(isActive)}>
-                    <Icon fontSize="small" />
+                    <DynamicIcon iconKey={topic.iconKey} sx={{ fontSize: 24 }} />
                   </Box>
                   <Typography component="h3" sx={TITLE_CARD_SX(isActive)}>
                     {topic.title}
@@ -289,8 +327,6 @@ export const WhatDoYouNeedSection = () => {
         </SectionWrap>
       </Section>
 
-      {/* ── SECTION 2: The Accordion ── */}
-      {/* Apply the scrollMarginTop to the anchor Box */}
       <Box ref={accordionRef} sx={SCROLL_ANCHOR_SX}>
         <Section skipAlternate={false} sx={{ pt: 0 }}>
           <SectionWrap>
@@ -335,9 +371,9 @@ export const WhatDoYouNeedSection = () => {
               <Box onClick={handleNextTopic} sx={NEXT_TOPIC_LINK_SX}>
                 Next topic:{' '}
                 {
-                  whatDoYouNeedData.topics[
-                    (whatDoYouNeedData.topics.findIndex((t) => t.id === activeTopicId) + 1) %
-                      whatDoYouNeedData.topics.length
+                  faqsData.topics[
+                    (faqsData.topics.findIndex((t) => t.id === activeTopicId) + 1) %
+                      faqsData.topics.length
                   ].title
                 }
                 <ArrowForward sx={{ fontSize: 18, color: palette.orange }} />

@@ -17,8 +17,10 @@ export {
 export {
   useGetClientFeedbacksQuery,
   useGetMoreClientFeedbacksQuery,
+  useGetWhyClientsStayQuery,
   type ClientFeedbacksResponse,
   type MoreClientFeedbacksResponse,
+  type ApiWhyClientsStayResponse,
 } from '@/pages/case-studies/client-testimonials/sections/api-hook';
 
 export {
@@ -34,6 +36,31 @@ export {
 export {
   useGetFeaturedGuideQuery,
   useGetBrowseByTopicQuery,
+  useGetPracticalGuidesQuery,
   type FeaturedGuideResponse,
   type BrowseByTopicResponse,
+  type PracticalGuidesResponse,
 } from '@/pages/news-and-blogs/guides-and-tips/sections/api-hook';
+
+export {
+  useGetWhatDoYouNeedQuery,
+  useGetUsefulGuideQuery,
+  type FaqsResponse,
+  type UsefulGuideResponse,
+} from '@/pages/faqs/sections/api-hook';
+
+export {
+  useGetOverviewQuery,
+  useGetWhatWeHandleQuery,
+  useGetWhyChooseQuery,
+  type OverviewResponse,
+  type WhatWeHandleResponse,
+  type WhyChooseResponse,
+} from '@/pages/about-us/overview/sections/api-hook';
+
+export {
+  useGetOurBeginningsQuery,
+  useGetKeyMomentsQuery,
+  type OurBeginningsResponse,
+  type KeyMomentsResponse,
+} from '@/pages/about-us/our-stories/sections/api-hook';

@@ -1,7 +1,26 @@
+import { useMemo, createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
+import { Groups, WbSunny, BarChart, Shield } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { whyChooseData, type WhyChooseValue } from '@/utilities/_mock/about-us/why-choose';
+import { useApi } from '@/routes/api-routing/api-context';
+import type { WhyChooseValue } from '@/utilities/data/about-us/why-choose';
+
+/* =====================================================================
+ * Icon Mapping
+ * ===================================================================== */
+
+const ICONS: Record<string, ElementType> = {
+  groups: Groups,
+  wb_sunny: WbSunny,
+  bar_chart: BarChart,
+  shield: Shield,
+};
+
+const DynamicIcon = ({ iconKey, sx }: { iconKey: string; sx?: SxProps<Theme> }) => {
+  const Icon = ICONS[iconKey] || Groups;
+  return createElement(Icon, { sx });
+};
 
 /* =====================================================================
  * Static styles
@@ -35,21 +54,17 @@ const CARD_SX: SxProps<Theme> = {
   border: `1px solid ${palette.line}`,
   position: 'relative',
   overflow: 'hidden',
-  // Premium easing curve
   transition: 'all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1)',
   cursor: 'pointer',
-
   '&:hover': {
     transform: 'translateY(-6px)',
     boxShadow: '0 20px 40px -12px rgba(18,26,87,0.12)',
     borderColor: palette.orange,
-    // Animate the icon box
     '& .icon-box': {
       bgcolor: palette.orange,
       color: palette.white,
       transform: 'scale(1.05) rotate(-5deg)',
     },
-    // Animate the card title
     '& .card-title': {
       color: palette.orange,
     },
@@ -65,7 +80,6 @@ const ICON_BOX_SX: SxProps<Theme> = {
   bgcolor: palette.peach,
   color: palette.orange,
   flexShrink: 0,
-  // Smooth easing for the icon animation
   transition: 'all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1)',
 };
 
@@ -94,6 +108,19 @@ const CARD_DESC_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const WhyChooseSection = () => {
+  const { data } = useApi();
+
+  const whyChooseData = useMemo(() => {
+    if (!data?.whyChoose) return null;
+    return data.whyChoose as unknown as {
+      eyebrow: string;
+      title: string;
+      values: (WhyChooseValue & { iconKey: string })[];
+    };
+  }, [data?.whyChoose]);
+
+  if (!whyChooseData || whyChooseData.values.length === 0) return null;
+
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
@@ -105,22 +132,19 @@ export const WhyChooseSection = () => {
         </Box>
 
         <Box sx={GRID_SX}>
-          {whyChooseData.values.map((value: WhyChooseValue) => {
-            const Icon = value.icon;
-            return (
-              <Box key={value.id} sx={CARD_SX}>
-                <Box className="icon-box" sx={ICON_BOX_SX}>
-                  <Icon fontSize="medium" />
-                </Box>
-                <Box sx={TEXT_WRAP_SX}>
-                  <Typography component="h3" className="card-title" sx={CARD_TITLE_SX}>
-                    {value.title}
-                  </Typography>
-                  <Typography sx={CARD_DESC_SX}>{value.desc}</Typography>
-                </Box>
+          {whyChooseData.values.map((value) => (
+            <Box key={value.id} sx={CARD_SX}>
+              <Box className="icon-box" sx={ICON_BOX_SX}>
+                <DynamicIcon iconKey={value.iconKey} sx={{ fontSize: 24 }} />
               </Box>
-            );
-          })}
+              <Box sx={TEXT_WRAP_SX}>
+                <Typography component="h3" className="card-title" sx={CARD_TITLE_SX}>
+                  {value.title}
+                </Typography>
+                <Typography sx={CARD_DESC_SX}>{value.desc}</Typography>
+              </Box>
+            </Box>
+          ))}
         </Box>
       </SectionWrap>
     </Section>
