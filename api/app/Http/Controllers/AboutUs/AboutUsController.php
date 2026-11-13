@@ -20,6 +20,14 @@ use App\Http\Resources\AboutUs\WhyChooseResource;
 use App\Http\Resources\AboutUs\OurBeginningResource;
 use App\Http\Resources\AboutUs\KeyMomentResource;
 use App\Http\Resources\AboutUs\OurPerspectiveResource;
+use App\Http\Resources\AboutUs\TeamMemberResource;
+use App\Http\Resources\AboutUs\TeamVideoResource;
+use App\Http\Resources\AboutUs\WarehouseDetailResource;
+use App\Http\Resources\AboutUs\WarehouseGalleryResource;
+use App\Models\AboutUs\TeamMember;
+use App\Models\AboutUs\TeamVideo;
+use App\Models\AboutUs\WarehouseDetail;
+use App\Models\AboutUs\WarehouseGallery;
 
 class AboutUsController extends Controller
 {
@@ -86,6 +94,46 @@ class AboutUsController extends Controller
 
         return response()->json([
             'perspective' => $perspective ? new OurPerspectiveResource($perspective) : null,
+        ]);
+    }
+
+    public function meetOurTeam(): JsonResponse
+    {
+        return response()->json([
+            'eyebrow' => 'Meet our team',
+            'title' => 'Meet your Brisbane Logistics team.',
+            'members' => TeamMemberResource::collection(
+                TeamMember::orderBy('sort_order')->get()
+            ),
+        ]);
+    }
+
+    public function seeTheTeam(): JsonResponse
+    {
+        return response()->json([
+            'eyebrow' => 'See the team at work',
+            'title' => 'A closer look at our people and operations.',
+            'videos' => TeamVideoResource::collection(
+                TeamVideo::orderBy('sort_order')->get()
+            ),
+        ]);
+    }
+
+    public function warehouseGalleries(): JsonResponse
+    {
+        return response()->json([
+            'images' => WarehouseGalleryResource::collection(
+                WarehouseGallery::orderBy('sort_order')->get()
+            ),
+        ]);
+    }
+
+    public function warehouseDetails(): JsonResponse
+    {
+        return response()->json([
+            'details' => WarehouseDetailResource::collection(
+                WarehouseDetail::orderBy('sort_order')->get()
+            ),
         ]);
     }
 }

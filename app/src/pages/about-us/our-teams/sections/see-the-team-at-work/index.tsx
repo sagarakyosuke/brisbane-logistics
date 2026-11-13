@@ -2,10 +2,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { PlayArrow } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import {
-  seeTheTeamData,
-  type TeamVideo,
-} from '@/utilities/_mock/about-us/our-team/see-the-team-at-work';
+import { useGetSeeTheTeamQuery } from '@/pages/about-us/our-teams/sections/api-hook';
 
 /* =====================================================================
  * Static styles
@@ -43,7 +40,6 @@ const VIDEO_FRAME_SX: SxProps<Theme> = {
   borderRadius: '20px',
   overflow: 'hidden',
   bgcolor: palette.navyDeep,
-  // Diagonal stripes pattern from the reference
   backgroundImage: `repeating-linear-gradient(-45deg, transparent, transparent 30px, rgba(255,255,255,0.04) 30px, rgba(255,255,255,0.04) 60px)`,
   display: 'flex',
   alignItems: 'center',
@@ -59,12 +55,13 @@ const VIDEO_FRAME_SX: SxProps<Theme> = {
   },
 };
 
-const IFRAME_SX: SxProps<Theme> = {
+const MEDIA_SX: SxProps<Theme> = {
   position: 'absolute',
   inset: 0,
   width: '100%',
   height: '100%',
   border: 0,
+  objectFit: 'cover',
 };
 
 const PLAY_BTN_SX: SxProps<Theme> = {
@@ -109,43 +106,60 @@ const CAPTION_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const SeeTheTeamAtWorkSection = () => {
+  const { data } = useGetSeeTheTeamQuery();
+
+  if (!data || data.videos.length === 0) return null;
+
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
         <Box sx={HEADER_WRAP_SX}>
-          <SectionEyebrow>{seeTheTeamData.eyebrow}</SectionEyebrow>
+          <SectionEyebrow>{data.eyebrow}</SectionEyebrow>
           <Typography component="h2" sx={TITLE_SX}>
-            {seeTheTeamData.title}
+            {data.title}
           </Typography>
         </Box>
 
         <Box sx={GRID_SX}>
-          {seeTheTeamData.videos.map((video: TeamVideo) => (
-            <Box key={video.id} sx={VIDEO_CARD_SX}>
-              <Box sx={VIDEO_FRAME_SX}>
-                {video.videoUrl ? (
-                  <Box
-                    component="iframe"
-                    src={video.videoUrl}
-                    title={video.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    sx={IFRAME_SX}
-                  />
-                ) : (
-                  <>
-                    <Box className="play-btn" sx={PLAY_BTN_SX}>
-                      <PlayArrow sx={{ fontSize: 36 }} />
-                    </Box>
-                    <Box sx={VIDEO_BADGE_SX}>Video to be supplied</Box>
-                  </>
-                )}
+          {data.videos.map((video) => {
+            const isDirectFile = video.videoUrl?.match(/\.(mp4|webm|ogg)$/i);
+
+            return (
+              <Box key={video.id} sx={VIDEO_CARD_SX}>
+                <Box sx={VIDEO_FRAME_SX}>
+                  {video.videoUrl ? (
+                    isDirectFile ? (
+                      <Box
+                        component="video"
+                        src={video.videoUrl}
+                        controls
+                        sx={MEDIA_SX}
+                      />
+                    ) : (
+                      <Box
+                        component="iframe"
+                        src={video.videoUrl}
+                        title={video.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        sx={MEDIA_SX}
+                      />
+                    )
+                  ) : (
+                    <>
+                      <Box className="play-btn" sx={PLAY_BTN_SX}>
+                        <PlayArrow sx={{ fontSize: 36 }} />
+                      </Box>
+                      <Box sx={VIDEO_BADGE_SX}>Video to be supplied</Box>
+                    </>
+                  )}
+                </Box>
+                <Typography component="h3" sx={CAPTION_SX}>
+                  {video.title}
+                </Typography>
               </Box>
-              <Typography component="h3" sx={CAPTION_SX}>
-                {video.title}
-              </Typography>
-            </Box>
-          ))}
+            );
+          })}
         </Box>
       </SectionWrap>
     </Section>

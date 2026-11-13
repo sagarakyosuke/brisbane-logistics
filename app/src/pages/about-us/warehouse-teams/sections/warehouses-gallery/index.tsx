@@ -1,19 +1,20 @@
 import { useState, useCallback } from 'react';
 import { Box, Typography, IconButton, type SxProps, type Theme } from '@mui/material';
-import { Image as ImageIcon, Close, ChevronLeft, ChevronRight } from '@mui/icons-material';
+import {
+  Image as ImageIcon,
+  Close,
+  ChevronLeft,
+  ChevronRight,
+} from '@mui/icons-material';
 import { Section, SectionWrap } from '@/components/sections';
 import { Modal } from '@/components/dialogs/modals';
 import { palette } from '@/utilities/themes';
-import {
-  warehouseGalleriesData,
-  type GalleryImage,
-} from '@/utilities/_mock/about-us/warehouse-team/warehouse-galleries';
+import { useGetWarehouseGalleriesQuery } from '@/pages/about-us/warehouse-teams/sections/api-hook';
+import type { GalleryImage } from '@/utilities/data/about-us/warehouse-team/warehouse-galleries';
 
 /* =====================================================================
  * Static styles
  * ===================================================================== */
-
-/* ── Grid ─────────────────────────────────────────────────────────── */
 
 const GALLERY_GRID_SX: SxProps<Theme> = {
   display: 'grid',
@@ -92,7 +93,7 @@ const MODAL_PAPER_SX: SxProps<Theme> = {
   overflow: 'hidden',
   position: 'relative',
   width: '100%',
-  maxWidth: '1100px', // Slightly wider
+  maxWidth: '1100px',
   boxShadow: '0 24px 64px -12px rgba(0,0,0,0.6)',
 };
 
@@ -112,7 +113,7 @@ const CLOSE_BTN_SX: SxProps<Theme> = {
 const IMAGE_WRAPPER_SX: SxProps<Theme> = {
   position: 'relative',
   width: '100%',
-  height: '75vh', // Fixed height, content won't cause scrollbars
+  height: '75vh',
   bgcolor: '#000',
   display: 'flex',
   alignItems: 'center',
@@ -122,7 +123,7 @@ const IMAGE_WRAPPER_SX: SxProps<Theme> = {
 const LIGHTBOX_IMG_SX: SxProps<Theme> = {
   width: '100%',
   height: '100%',
-  objectFit: 'contain', // Keeps the whole image visible
+  objectFit: 'contain',
   display: 'block',
 };
 
@@ -136,7 +137,6 @@ const FOOTER_OVERLAY_SX: SxProps<Theme> = {
   alignItems: 'center',
   px: { xs: 3, md: 4 },
   py: 3,
-  // Gradient fade so text is readable over any image
   background: 'linear-gradient(0deg, rgba(11,16,66,0.95) 0%, rgba(11,16,66,0) 100%)',
   zIndex: 5,
 };
@@ -162,14 +162,62 @@ const NAV_BTN_SX: SxProps<Theme> = {
   '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' },
 };
 
+/* ── Fallback Styles ──────────────────────────────────────────────── */
+
+const FALLBACK_WRAP_SX: SxProps<Theme> = {
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: `linear-gradient(135deg, ${palette.navySoft} 0%, ${palette.navy} 100%)`,
+  color: palette.white,
+};
+
+/* =====================================================================
+ * Sub-components
+ * ===================================================================== */
+
+const SafeImage = ({
+  src,
+  alt,
+  sx,
+}: {
+  src?: string | null;
+  alt: string;
+  sx?: SxProps<Theme>;
+}) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (!src || hasError) {
+    return (
+      <Box sx={{ position: 'absolute', inset: 0, ...FALLBACK_WRAP_SX }}>
+        <ImageIcon sx={{ fontSize: 48, opacity: 0.5, mb: 1 }} />
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      component="img"
+      src={src}
+      alt={alt}
+      onError={() => setHasError(true)}
+      sx={sx}
+    />
+  );
+};
+
 /* =====================================================================
  * Component
  * ===================================================================== */
 
 export const WarehousesGallerySection = () => {
+  const { data } = useGetWarehouseGalleriesQuery();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const images = warehouseGalleriesData.images;
+  const images = (data?.images || []) as unknown as GalleryImage[];
   const activeImage = activeIndex !== null ? images[activeIndex] : null;
 
   const handleOpen = (index: number) => setActiveIndex(index);
@@ -183,12 +231,14 @@ export const WarehousesGallerySection = () => {
     setActiveIndex((prev) => (prev === null ? null : (prev + 1) % images.length));
   }, [images.length]);
 
+  if (images.length === 0) return null;
+
   return (
     <>
       <Section skipAlternate={false}>
         <SectionWrap>
           <Box sx={GALLERY_GRID_SX}>
-            {images.map((img: GalleryImage, index: number) => (
+            {images.map((img, index) => (
               <Box
                 key={img.id}
                 component="button"
@@ -196,13 +246,9 @@ export const WarehousesGallerySection = () => {
                 onClick={() => handleOpen(index)}
                 sx={IMAGE_BUTTON_SX(img.gridArea)}
               >
-                <Box
-                  className="gallery-img"
-                  component="img"
-                  src={img.image}
-                  alt={img.label}
-                  sx={IMAGE_SX}
-                />
+                <Box className="gallery-img" sx={{ width: '100%', height: '100%', position: 'relative' }}>
+                  <SafeImage src={img.image} alt={img.label} sx={IMAGE_SX} />
+                </Box>
 
                 <Box sx={LABEL_WRAPPER_SX}>
                   <ImageIcon sx={LABEL_ICON_SX} />
@@ -214,7 +260,6 @@ export const WarehousesGallerySection = () => {
         </SectionWrap>
       </Section>
 
-      {/* Lightbox Modal */}
       <Modal
         open={activeIndex !== null}
         onClose={handleClose}
@@ -229,14 +274,12 @@ export const WarehousesGallerySection = () => {
             </IconButton>
 
             <Box sx={IMAGE_WRAPPER_SX}>
-              <Box
-                component="img"
+              <SafeImage
                 src={activeImage.image}
                 alt={activeImage.label}
                 sx={LIGHTBOX_IMG_SX}
               />
 
-              {/* Overlaid Footer */}
               <Box sx={FOOTER_OVERLAY_SX}>
                 <Typography sx={CAPTION_SX}>
                   {activeImage.label} · {activeIndex + 1} of {images.length}

@@ -17,6 +17,8 @@ import type {
   WhyChooseResponse,
   OurBeginningsResponse,
   KeyMomentsResponse,
+  MeetOurTeamResponse,
+  SeeTheTeamResponse
 } from '@/utilities/hooks/api';
 
 /* =====================================================================
@@ -41,6 +43,8 @@ interface ApiData {
   whyChoose: WhyChooseResponse;
   ourBeginnings: OurBeginningsResponse;
   keyMoments: KeyMomentsResponse;
+  meetOurTeam: MeetOurTeamResponse;
+  seeTheTeam: SeeTheTeamResponse;
 }
 
 export interface ApiContextValue {

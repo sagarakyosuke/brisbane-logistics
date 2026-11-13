@@ -1,10 +1,25 @@
+import { createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
+import { Apartment, Warehouse, LocalShipping } from '@mui/icons-material';
 import { Section, SectionWrap } from '@/components/sections';
 import { palette, shadows } from '@/utilities/themes';
-import {
-  warehouseDetailsData,
-  type WarehouseDetail,
-} from '@/utilities/_mock/about-us/warehouse-team/warehouse-details';
+import { useGetWarehouseDetailsQuery } from '@/pages/about-us/warehouse-teams/sections/api-hook';
+import type { WarehouseDetail } from '@/utilities/data/about-us/warehouse-team/warehouse-details';
+
+/* =====================================================================
+ * Icon Mapping
+ * ===================================================================== */
+
+const ICONS: Record<string, ElementType> = {
+  apartment: Apartment,
+  warehouse: Warehouse,
+  local_shipping: LocalShipping,
+};
+
+const DynamicIcon = ({ iconKey, sx }: { iconKey: string; sx?: SxProps<Theme> }) => {
+  const Icon = ICONS[iconKey] || Warehouse;
+  return createElement(Icon, { sx });
+};
 
 /* =====================================================================
  * Static styles
@@ -74,27 +89,29 @@ const DESC_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const WarehouseDetailsSection = () => {
+  const { data } = useGetWarehouseDetailsQuery();
+
+  if (!data || data.details.length === 0) return null;
+
+  const details = data.details as unknown as (WarehouseDetail & { iconKey: string })[];
+
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
         <Box sx={GRID_SX}>
-          {warehouseDetailsData.details.map((detail: WarehouseDetail) => {
-            const Icon = detail.icon;
-
-            return (
-              <Box key={detail.id} sx={CARD_SX}>
-                <Box className="icon-box" sx={ICON_BOX_SX}>
-                  <Icon fontSize="medium" />
-                </Box>
-                <Box sx={TEXT_WRAP_SX}>
-                  <Typography component="h3" sx={TITLE_SX}>
-                    {detail.title}
-                  </Typography>
-                  <Typography sx={DESC_SX}>{detail.desc}</Typography>
-                </Box>
+          {details.map((detail) => (
+            <Box key={detail.key} sx={CARD_SX}>
+              <Box className="icon-box" sx={ICON_BOX_SX}>
+                <DynamicIcon iconKey={detail.iconKey} sx={{ fontSize: 24 }} />
               </Box>
-            );
-          })}
+              <Box sx={TEXT_WRAP_SX}>
+                <Typography component="h3" sx={TITLE_SX}>
+                  {detail.title}
+                </Typography>
+                <Typography sx={DESC_SX}>{detail.desc}</Typography>
+              </Box>
+            </Box>
+          ))}
         </Box>
       </SectionWrap>
     </Section>

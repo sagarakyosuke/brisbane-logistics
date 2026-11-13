@@ -1,11 +1,10 @@
+import { useState, useMemo } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Chat, ArrowForward } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette, shadows } from '@/utilities/themes';
-import {
-  meetOurTeamData,
-  type TeamMember,
-} from '@/utilities/_mock/about-us/our-team/meet-our-team';
+import { useApi } from '@/routes/api-routing/api-context';
+import type { TeamMember } from '@/utilities/data/about-us/our-team/meet-our-team';
 
 /* =====================================================================
  * Static styles
@@ -57,7 +56,6 @@ const cardAvatarSx = (color: 'navy' | 'orange'): SxProps<Theme> => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  // Diagonal stripes pattern to match screenshot
   backgroundImage: `repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255,255,255,0.05) 20px, rgba(255,255,255,0.05) 40px)`,
 });
 
@@ -126,7 +124,7 @@ const CONTACT_CARD_SX: SxProps<Theme> = {
   textAlign: 'center',
   cursor: 'pointer',
   transition: 'all 0.3s ease',
-  minHeight: 340, // Match the height of the team cards
+  minHeight: 340,
   '&:hover': {
     bgcolor: palette.mist,
     borderColor: palette.orange,
@@ -168,10 +166,52 @@ const CONTACT_ARROW_SX: SxProps<Theme> = {
 };
 
 /* =====================================================================
+ * Sub-components
+ * ===================================================================== */
+
+const TeamAvatar = ({ member }: { member: TeamMember }) => {
+  const [hasError, setHasError] = useState(false);
+
+  const showFallback = !member.image || hasError;
+
+  return (
+    <Box sx={cardAvatarSx(member.color)}>
+      {!showFallback ? (
+        <Box
+          component="img"
+          src={member.image!}
+          alt={member.name}
+          onError={() => setHasError(true)}
+          sx={PROFILE_IMG_SX}
+        />
+      ) : (
+        <>
+          <Typography sx={INITIALS_SX(member.color)}>{member.initials}</Typography>
+          <Box sx={PHOTO_BADGE_SX}>Photo to be supplied</Box>
+        </>
+      )}
+    </Box>
+  );
+};
+
+/* =====================================================================
  * Component
  * ===================================================================== */
 
 export const MeetOurTeamSection = () => {
+  const { data } = useApi();
+
+  const meetOurTeamData = useMemo(() => {
+    if (!data?.meetOurTeam) return null;
+    return data.meetOurTeam as unknown as {
+      eyebrow: string;
+      title: string;
+      members: TeamMember[];
+    };
+  }, [data?.meetOurTeam]);
+
+  if (!meetOurTeamData || meetOurTeamData.members.length === 0) return null;
+
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
@@ -183,18 +223,9 @@ export const MeetOurTeamSection = () => {
         </Box>
 
         <Box sx={GRID_SX}>
-          {meetOurTeamData.members.map((member: TeamMember) => (
+          {meetOurTeamData.members.map((member) => (
             <Box key={member.id} sx={CARD_SX}>
-              <Box sx={cardAvatarSx(member.color)}>
-                {member.image ? (
-                  <Box component="img" src={member.image} alt={member.name} sx={PROFILE_IMG_SX} />
-                ) : (
-                  <>
-                    <Typography sx={INITIALS_SX(member.color)}>{member.initials}</Typography>
-                    <Box sx={PHOTO_BADGE_SX}>Photo to be supplied</Box>
-                  </>
-                )}
-              </Box>
+              <TeamAvatar member={member} />
               <Box sx={INFO_WRAP_SX}>
                 <Typography sx={NAME_SX}>{member.name}</Typography>
                 <Typography sx={ROLE_SX}>{member.role}</Typography>
@@ -202,7 +233,6 @@ export const MeetOurTeamSection = () => {
             </Box>
           ))}
 
-          {/* Contact Card */}
           <Box sx={CONTACT_CARD_SX}>
             <Box sx={CONTACT_ICON_BOX_SX}>
               <Chat fontSize="medium" />

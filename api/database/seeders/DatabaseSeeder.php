@@ -23,7 +23,10 @@ class DatabaseSeeder extends Seeder
         $seedBrowseTopics    = false;
         $seedPracticalGuides = false;
         $seedFaqs = false;
-        $seedOverview = true;
+        $seedOverview = false;
+        $seedTeamMembers = false;
+        $seedTeamVideos = false;
+        $seedWarehouseGalleries = true;
 
         /* =====================================================================
          * Execution
@@ -59,6 +62,18 @@ class DatabaseSeeder extends Seeder
 
         if ($seedOverview) {
             $this->call(OverviewSeeder::class);
+        }
+
+        if ($seedTeamMembers) {
+            $this->call(TeamMemberSeeder::class);
+        }
+
+        if ($seedTeamVideos) {
+            $this->call(TeamVideoSeeder::class);
+        }
+
+        if ($seedWarehouseGalleries) {
+            $this->call(WarehouseGallerySeeder::class);
         }
     }
 }

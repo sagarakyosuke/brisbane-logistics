@@ -2,7 +2,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { FormatQuote } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { perspectiveData } from '@/utilities/_mock/about-us/our-stories/perspective-from-our-people';
+import { perspectiveData } from '@/utilities/data/about-us/our-stories/perspective-from-our-people';
 
 /* =====================================================================
  * Static styles

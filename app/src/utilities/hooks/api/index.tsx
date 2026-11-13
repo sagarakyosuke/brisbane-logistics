@@ -64,3 +64,17 @@ export {
   type OurBeginningsResponse,
   type KeyMomentsResponse,
 } from '@/pages/about-us/our-stories/sections/api-hook';
+
+export {
+  useGetMeetOurTeamQuery,
+  useGetSeeTheTeamQuery,
+  type MeetOurTeamResponse,
+  type SeeTheTeamResponse,
+} from '@/pages/about-us/our-teams/sections/api-hook';
+
+export {
+  useGetWarehouseGalleriesQuery,
+  useGetWarehouseDetailsQuery,
+  type WarehouseGalleriesResponse,
+  type WarehouseDetailsResponse,
+} from '@/pages/about-us/warehouse-teams/sections/api-hook';
