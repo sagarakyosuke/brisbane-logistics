@@ -33,7 +33,7 @@ const baseQueryWithDecryption: BaseQueryFn<
 
       // 1. Decode the Base64 string
       const rawData = CryptoJS.enc.Base64.parse(encrypted);
-      
+
       // 2. Convert to a raw binary string to slice the IV
       const rawStr = rawData.toString(CryptoJS.enc.Latin1);
 
@@ -53,7 +53,7 @@ const baseQueryWithDecryption: BaseQueryFn<
 
       // 6. Convert back to JSON
       const decryptedString = decrypted.toString(CryptoJS.enc.Utf8);
-      
+
       if (!decryptedString) {
         console.error('Decryption returned empty string. Check your key.');
         return result;

@@ -1,11 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Box, Typography, IconButton, type SxProps, type Theme } from '@mui/material';
-import {
-  Image as ImageIcon,
-  Close,
-  ChevronLeft,
-  ChevronRight,
-} from '@mui/icons-material';
+import { Image as ImageIcon, Close, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Section, SectionWrap } from '@/components/sections';
 import { Modal } from '@/components/dialogs/modals';
 import { palette } from '@/utilities/themes';
@@ -179,15 +174,7 @@ const FALLBACK_WRAP_SX: SxProps<Theme> = {
  * Sub-components
  * ===================================================================== */
 
-const SafeImage = ({
-  src,
-  alt,
-  sx,
-}: {
-  src?: string | null;
-  alt: string;
-  sx?: SxProps<Theme>;
-}) => {
+const SafeImage = ({ src, alt, sx }: { src?: string | null; alt: string; sx?: SxProps<Theme> }) => {
   const [hasError, setHasError] = useState(false);
 
   if (!src || hasError) {
@@ -198,15 +185,7 @@ const SafeImage = ({
     );
   }
 
-  return (
-    <Box
-      component="img"
-      src={src}
-      alt={alt}
-      onError={() => setHasError(true)}
-      sx={sx}
-    />
-  );
+  return <Box component="img" src={src} alt={alt} onError={() => setHasError(true)} sx={sx} />;
 };
 
 /* =====================================================================
@@ -246,7 +225,10 @@ export const WarehousesGallerySection = () => {
                 onClick={() => handleOpen(index)}
                 sx={IMAGE_BUTTON_SX(img.gridArea)}
               >
-                <Box className="gallery-img" sx={{ width: '100%', height: '100%', position: 'relative' }}>
+                <Box
+                  className="gallery-img"
+                  sx={{ width: '100%', height: '100%', position: 'relative' }}
+                >
                   <SafeImage src={img.image} alt={img.label} sx={IMAGE_SX} />
                 </Box>
 
@@ -274,11 +256,7 @@ export const WarehousesGallerySection = () => {
             </IconButton>
 
             <Box sx={IMAGE_WRAPPER_SX}>
-              <SafeImage
-                src={activeImage.image}
-                alt={activeImage.label}
-                sx={LIGHTBOX_IMG_SX}
-              />
+              <SafeImage src={activeImage.image} alt={activeImage.label} sx={LIGHTBOX_IMG_SX} />
 
               <Box sx={FOOTER_OVERLAY_SX}>
                 <Typography sx={CAPTION_SX}>

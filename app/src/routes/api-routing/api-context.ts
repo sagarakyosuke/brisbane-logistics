@@ -18,7 +18,7 @@ import type {
   OurBeginningsResponse,
   KeyMomentsResponse,
   MeetOurTeamResponse,
-  SeeTheTeamResponse
+  SeeTheTeamResponse,
 } from '@/utilities/hooks/api';
 
 /* =====================================================================

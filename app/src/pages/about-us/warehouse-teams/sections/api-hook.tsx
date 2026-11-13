@@ -37,7 +37,5 @@ export const aboutUsWarehouseTeamsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const {
-  useGetWarehouseGalleriesQuery,
-  useGetWarehouseDetailsQuery,
-} = aboutUsWarehouseTeamsApi;
+export const { useGetWarehouseGalleriesQuery, useGetWarehouseDetailsQuery } =
+  aboutUsWarehouseTeamsApi;

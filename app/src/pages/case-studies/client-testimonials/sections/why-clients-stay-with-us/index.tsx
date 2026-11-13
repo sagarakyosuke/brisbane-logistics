@@ -1,13 +1,6 @@
-import { createElement, type ElementType } from 'react';
+import { useMemo, createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
-import {
-  ArrowForward,
-  ChatBubbleOutlined,
-  VerifiedUser,
-  PeopleOutlined,
-  Description,
-  Image as ImageIcon,
-} from '@mui/icons-material';
+import { ArrowForward, Chat, Shield, VerifiedUser, People } from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
@@ -18,63 +11,51 @@ import { useApi } from '@/routes/api-routing/api-context';
  * ===================================================================== */
 
 const ICONS: Record<string, ElementType> = {
-  chat: ChatBubbleOutlined,
+  chat: Chat,
   verified_user: VerifiedUser,
-  people: PeopleOutlined,
-  description: Description,
+  people: People,
+  shield: Shield,
 };
 
-const getIcon = (key: string | null | undefined) => {
-  if (!key) return ImageIcon;
-  return ICONS[key] || ImageIcon;
-};
+const getIcon = (key: string) => ICONS[key] || Chat;
 
 /* =====================================================================
- * Static Styles
+ * Static styles
  * ===================================================================== */
 
-const HEADER_WRAPPER_SX: SxProps<Theme> = { mb: 5 };
-
-const TITLE_SX: SxProps<Theme> = {
-  fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-  fontWeight: 800,
-  color: palette.navy,
-  lineHeight: 1.1,
-  mt: 1,
-};
-
-const VALUES_GRID_SX: SxProps<Theme> = {
+const GRID_SX: SxProps<Theme> = {
   display: 'grid',
   gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
-  gap: 3,
-  mb: 4,
+  gap: 4,
+  mb: 8,
 };
 
-const VALUE_CARD_SX: SxProps<Theme> = {
-  bgcolor: palette.white,
-  border: `1px solid ${palette.line}`,
-  borderRadius: '16px',
-  p: 4,
+const CARD_SX: SxProps<Theme> = {
   display: 'flex',
   flexDirection: 'column',
-  transition: 'box-shadow 0.3s ease',
+  alignItems: 'flex-start',
+  bgcolor: palette.white,
+  p: 4,
+  borderRadius: '16px',
+  border: `1px solid ${palette.line}`,
+  transition: 'all 0.3s ease',
   '&:hover': {
-    boxShadow: 'var(--shadow-sm)',
+    transform: 'translateY(-6px)',
+    boxShadow: '0 20px 40px -12px rgba(18,26,87,0.12)',
+    borderColor: palette.orange,
   },
 };
 
-const VALUE_ICON_BOX_SX: SxProps<Theme> = {
-  display: 'grid',
-  placeItems: 'center',
+const ICON_BOX_SX: SxProps<Theme> = {
   width: 56,
   height: 56,
   borderRadius: '16px',
   bgcolor: palette.peach,
   color: palette.orange,
+  display: 'grid',
+  placeItems: 'center',
   mb: 3,
 };
-
-const VALUE_ICON_SX = { fontSize: 28 } as const;
 
 const VALUE_TITLE_SX: SxProps<Theme> = {
   fontSize: '1.15rem',
@@ -89,46 +70,40 @@ const VALUE_DESC_SX: SxProps<Theme> = {
   lineHeight: 1.6,
 };
 
-const BOTTOM_CTA_SX: SxProps<Theme> = {
+const CTA_WRAP_SX: SxProps<Theme> = {
   bgcolor: palette.navy,
-  borderRadius: '16px',
-  p: { xs: 3, md: 4 },
+  borderRadius: '20px',
+  p: { xs: 4, md: 6 },
   display: 'flex',
   flexDirection: { xs: 'column', md: 'row' },
-  justifyContent: 'space-between',
   alignItems: { xs: 'flex-start', md: 'center' },
-  gap: 3,
+  justifyContent: 'space-between',
+  gap: 4,
 };
 
-const CTA_LEFT_SX: SxProps<Theme> = {
+const CTA_TEXT_WRAP_SX: SxProps<Theme> = {
   display: 'flex',
-  alignItems: 'center',
-  gap: 2.5,
+  flexDirection: 'column',
+  gap: 1,
+  maxWidth: '60ch',
 };
 
-const CTA_ICON_BOX_SX: SxProps<Theme> = {
-  display: 'grid',
-  placeItems: 'center',
-  width: 56,
-  height: 56,
-  borderRadius: '12px',
-  bgcolor: 'rgba(255,255,255,0.08)',
+const CTA_ICON_WRAP_SX: SxProps<Theme> = {
   color: palette.orange,
-  flexShrink: 0,
+  mb: 1,
 };
-
-const CTA_ICON_SX = { fontSize: 28 } as const;
 
 const CTA_TITLE_SX: SxProps<Theme> = {
-  fontSize: '1.15rem',
+  fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
   fontWeight: 800,
   color: palette.white,
-  mb: 0.5,
+  lineHeight: 1.2,
 };
 
 const CTA_DESC_SX: SxProps<Theme> = {
-  fontSize: '0.95rem',
-  color: '#d4d8f3',
+  fontSize: '1rem',
+  color: palette.mist,
+  lineHeight: 1.6,
 };
 
 const CTA_LINK_SX: SxProps<Theme> = {
@@ -136,68 +111,86 @@ const CTA_LINK_SX: SxProps<Theme> = {
   alignItems: 'center',
   gap: 1,
   fontWeight: 700,
-  fontSize: '0.95rem',
-  color: palette.white,
+  fontSize: '1rem',
+  color: palette.navy,
+  bgcolor: palette.orange,
+  px: 3,
+  py: 1.5,
+  borderRadius: '999px',
   textDecoration: 'none',
-  borderBottom: `2px solid ${palette.orange}`,
-  pb: 0.5,
-  transition: 'color 0.2s',
-  whiteSpace: 'nowrap',
-  '&:hover': { color: palette.orange },
-  '&:hover .arrow': { transform: 'translateX(4px)' },
-};
-
-const CTA_ARROW_SX: SxProps<Theme> = {
-  fontSize: 18,
-  transition: 'transform 0.25s ease',
+  transition: 'all 0.2s ease',
+  flexShrink: 0,
+  '&:hover': {
+    bgcolor: palette.white,
+  },
 };
 
 /* =====================================================================
- * WhyClientsStayWithUsSection
+ * Component
  * ===================================================================== */
 
 export const WhyClientsStayWithUsSection = () => {
   const { data } = useApi();
-  const section = data?.whyClientsStay;
 
-  if (!section) return null;
+  const values = useMemo(() => {
+    return (data?.whyClientsStay || []) as unknown as {
+      id: string;
+      key: string;
+      title: string;
+      description: string;
+      iconKey: string;
+    }[];
+  }, [data?.whyClientsStay]);
+
+  if (!values || values.length === 0) return null;
 
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
-        <Box sx={HEADER_WRAPPER_SX}>
-          <SectionEyebrow>{section.eyebrow}</SectionEyebrow>
-          <Typography component="h2" sx={TITLE_SX}>
-            {section.title}
+        <Box sx={{ mb: 6 }}>
+          <SectionEyebrow>Why our clients stay with us</SectionEyebrow>
+          <Typography
+            component="h2"
+            sx={{
+              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
+              fontWeight: 800,
+              color: palette.navy,
+              mt: 1.5,
+            }}
+          >
+            Direct communication, careful handling and a team you know.
           </Typography>
         </Box>
 
-        <Box sx={VALUES_GRID_SX}>
-          {section.values.map((value) => (
-            <Box key={value.id} sx={VALUE_CARD_SX}>
-              <Box sx={VALUE_ICON_BOX_SX}>
-                {createElement(getIcon(value.iconKey), { sx: VALUE_ICON_SX })}
+        <Box sx={GRID_SX}>
+          {values.map((value) => (
+            <Box key={value.id} sx={CARD_SX}>
+              <Box sx={ICON_BOX_SX}>
+                {createElement(getIcon(value.iconKey), { sx: { fontSize: 28 } })}
               </Box>
-              <Typography sx={VALUE_TITLE_SX}>{value.title}</Typography>
+              <Typography component="h3" sx={VALUE_TITLE_SX}>
+                {value.title}
+              </Typography>
               <Typography sx={VALUE_DESC_SX}>{value.description}</Typography>
             </Box>
           ))}
         </Box>
 
-        <Box sx={BOTTOM_CTA_SX}>
-          <Box sx={CTA_LEFT_SX}>
-            <Box sx={CTA_ICON_BOX_SX}>
-              {createElement(getIcon(section.cta.iconKey), { sx: CTA_ICON_SX })}
+        <Box sx={CTA_WRAP_SX}>
+          <Box sx={CTA_TEXT_WRAP_SX}>
+            <Box sx={CTA_ICON_WRAP_SX}>
+              {createElement(getIcon('chat'), { sx: { fontSize: 32 } })}
             </Box>
-            <Box>
-              <Typography sx={CTA_TITLE_SX}>{section.cta.title}</Typography>
-              <Typography sx={CTA_DESC_SX}>{section.cta.description}</Typography>
-            </Box>
+            <Typography component="h3" sx={CTA_TITLE_SX}>
+              Ready to work with a team that knows your name?
+            </Typography>
+            <Typography sx={CTA_DESC_SX}>
+              Get in touch to talk through your warehousing and 3PL needs.
+            </Typography>
           </Box>
-
-          <Box component={Link} to={section.cta.linkHref} sx={CTA_LINK_SX}>
-            {section.cta.linkLabel}
-            <ArrowForward className="arrow" sx={CTA_ARROW_SX} />
+          <Box component={Link} to="/contact" sx={CTA_LINK_SX}>
+            Talk to the team
+            <ArrowForward sx={{ fontSize: 18 }} />
           </Box>
         </Box>
       </SectionWrap>

@@ -40,7 +40,4 @@ export const aboutUsTeamsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const {
-  useGetMeetOurTeamQuery,
-  useGetSeeTheTeamQuery,
-} = aboutUsTeamsApi;
+export const { useGetMeetOurTeamQuery, useGetSeeTheTeamQuery } = aboutUsTeamsApi;

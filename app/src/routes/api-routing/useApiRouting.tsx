@@ -31,17 +31,28 @@ import { ApiContext } from './api-context';
 
 const PAGE_CONFIG = {
   '/case-studies': [
-    'latest', 'previous', 'clientFeedbacks', 'moreClientFeedbacks', 'whyClientsStay',
+    'latest',
+    'previous',
+    'clientFeedbacks',
+    'moreClientFeedbacks',
+    'whyClientsStay',
   ],
   '/news-and-blogs': [
-    'articles', 'companyUpdates', 'featuredGuide', 'browseByTopic', 'practicalGuides',
+    'articles',
+    'companyUpdates',
+    'featuredGuide',
+    'browseByTopic',
+    'practicalGuides',
   ],
-  '/faqs': [
-    'whatDoYouNeed', 'usefulGuide',
-  ],
+  '/faqs': ['whatDoYouNeed', 'usefulGuide'],
   '/about-us': [
-    'overview', 'whatWeHandle', 'whyChoose', 'ourBeginnings', 
-    'keyMoments', 'meetOurTeam', 'seeTheTeam',
+    'overview',
+    'whatWeHandle',
+    'whyChoose',
+    'ourBeginnings',
+    'keyMoments',
+    'meetOurTeam',
+    'seeTheTeam',
   ],
 } as const;
 
@@ -55,7 +66,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
 
   const currentPage = Object.keys(PAGE_CONFIG).find((path) =>
-    location.pathname.startsWith(path)
+    location.pathname.startsWith(path),
   ) as PageKey | undefined;
 
   const shouldFetch = (endpoint: string) => {
@@ -66,33 +77,74 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   /* ── Queries ──────────────────────────────────────────────────────── */
 
   const latestQuery = useGetLatestCaseStudiesQuery(shouldFetch('latest') ? undefined : skipToken);
-  const previousQuery = useGetPreviousCaseStudiesQuery(shouldFetch('previous') ? undefined : skipToken);
-  const clientFeedbacksQuery = useGetClientFeedbacksQuery(shouldFetch('clientFeedbacks') ? undefined : skipToken);
-  const moreClientFeedbacksQuery = useGetMoreClientFeedbacksQuery(shouldFetch('moreClientFeedbacks') ? undefined : skipToken);
-  const whyClientsStayQuery = useGetWhyClientsStayQuery(shouldFetch('whyClientsStay') ? undefined : skipToken);
+  const previousQuery = useGetPreviousCaseStudiesQuery(
+    shouldFetch('previous') ? undefined : skipToken,
+  );
+  const clientFeedbacksQuery = useGetClientFeedbacksQuery(
+    shouldFetch('clientFeedbacks') ? undefined : skipToken,
+  );
+  const moreClientFeedbacksQuery = useGetMoreClientFeedbacksQuery(
+    shouldFetch('moreClientFeedbacks') ? undefined : skipToken,
+  );
+  const whyClientsStayQuery = useGetWhyClientsStayQuery(
+    shouldFetch('whyClientsStay') ? undefined : skipToken,
+  );
 
   const articlesQuery = useGetArticlesQuery(shouldFetch('articles') ? undefined : skipToken);
-  const companyUpdatesQuery = useGetCompanyUpdatesQuery(shouldFetch('companyUpdates') ? undefined : skipToken);
-  const featuredGuideQuery = useGetFeaturedGuideQuery(shouldFetch('featuredGuide') ? undefined : skipToken);
-  const browseByTopicQuery = useGetBrowseByTopicQuery(shouldFetch('browseByTopic') ? undefined : skipToken);
-  const practicalGuidesQuery = useGetPracticalGuidesQuery(shouldFetch('practicalGuides') ? undefined : skipToken);
+  const companyUpdatesQuery = useGetCompanyUpdatesQuery(
+    shouldFetch('companyUpdates') ? undefined : skipToken,
+  );
+  const featuredGuideQuery = useGetFeaturedGuideQuery(
+    shouldFetch('featuredGuide') ? undefined : skipToken,
+  );
+  const browseByTopicQuery = useGetBrowseByTopicQuery(
+    shouldFetch('browseByTopic') ? undefined : skipToken,
+  );
+  const practicalGuidesQuery = useGetPracticalGuidesQuery(
+    shouldFetch('practicalGuides') ? undefined : skipToken,
+  );
 
-  const whatDoYouNeedQuery = useGetWhatDoYouNeedQuery(shouldFetch('whatDoYouNeed') ? undefined : skipToken);
-  const usefulGuideQuery = useGetUsefulGuideQuery(shouldFetch('usefulGuide') ? undefined : skipToken);
+  const whatDoYouNeedQuery = useGetWhatDoYouNeedQuery(
+    shouldFetch('whatDoYouNeed') ? undefined : skipToken,
+  );
+  const usefulGuideQuery = useGetUsefulGuideQuery(
+    shouldFetch('usefulGuide') ? undefined : skipToken,
+  );
 
   const overviewQuery = useGetOverviewQuery(shouldFetch('overview') ? undefined : skipToken);
-  const whatWeHandleQuery = useGetWhatWeHandleQuery(shouldFetch('whatWeHandle') ? undefined : skipToken);
+  const whatWeHandleQuery = useGetWhatWeHandleQuery(
+    shouldFetch('whatWeHandle') ? undefined : skipToken,
+  );
   const whyChooseQuery = useGetWhyChooseQuery(shouldFetch('whyChoose') ? undefined : skipToken);
-  const ourBeginningsQuery = useGetOurBeginningsQuery(shouldFetch('ourBeginnings') ? undefined : skipToken);
+  const ourBeginningsQuery = useGetOurBeginningsQuery(
+    shouldFetch('ourBeginnings') ? undefined : skipToken,
+  );
   const keyMomentsQuery = useGetKeyMomentsQuery(shouldFetch('keyMoments') ? undefined : skipToken);
-  const meetOurTeamQuery = useGetMeetOurTeamQuery(shouldFetch('meetOurTeam') ? undefined : skipToken);
+  const meetOurTeamQuery = useGetMeetOurTeamQuery(
+    shouldFetch('meetOurTeam') ? undefined : skipToken,
+  );
   const seeTheTeamQuery = useGetSeeTheTeamQuery(shouldFetch('seeTheTeam') ? undefined : skipToken);
 
   const queries = [
-    latestQuery, previousQuery, clientFeedbacksQuery, moreClientFeedbacksQuery, whyClientsStayQuery,
-    articlesQuery, companyUpdatesQuery, featuredGuideQuery, browseByTopicQuery, practicalGuidesQuery,
-    whatDoYouNeedQuery, usefulGuideQuery, overviewQuery, whatWeHandleQuery, whyChooseQuery,
-    ourBeginningsQuery, keyMomentsQuery, meetOurTeamQuery, seeTheTeamQuery,
+    latestQuery,
+    previousQuery,
+    clientFeedbacksQuery,
+    moreClientFeedbacksQuery,
+    whyClientsStayQuery,
+    articlesQuery,
+    companyUpdatesQuery,
+    featuredGuideQuery,
+    browseByTopicQuery,
+    practicalGuidesQuery,
+    whatDoYouNeedQuery,
+    usefulGuideQuery,
+    overviewQuery,
+    whatWeHandleQuery,
+    whyChooseQuery,
+    ourBeginningsQuery,
+    keyMomentsQuery,
+    meetOurTeamQuery,
+    seeTheTeamQuery,
   ];
 
   /* ── Loading & Error States ───────────────────────────────────────── */

@@ -129,12 +129,7 @@ export const SeeTheTeamAtWorkSection = () => {
                 <Box sx={VIDEO_FRAME_SX}>
                   {video.videoUrl ? (
                     isDirectFile ? (
-                      <Box
-                        component="video"
-                        src={video.videoUrl}
-                        controls
-                        sx={MEDIA_SX}
-                      />
+                      <Box component="video" src={video.videoUrl} controls sx={MEDIA_SX} />
                     ) : (
                       <Box
                         component="iframe"
