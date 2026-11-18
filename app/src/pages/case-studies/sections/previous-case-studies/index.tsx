@@ -228,7 +228,11 @@ export const PreviousCaseStudiesSection = () => {
                   <Typography sx={CATEGORY_SX}>{study.category}</Typography>
                   <Typography sx={TITLE_SX}>{study.title}</Typography>
                   <Typography sx={DESC_SX}>{study.description}</Typography>
-                  <Box sx={STATUS_BADGE_SX}>{study.status}</Box>
+                  {!study.image?.trim() && (
+                    <Box sx={STATUS_BADGE_SX}>
+                      {study.status}
+                    </Box>
+                  )}
                 </Box>
               </Box>
             );
