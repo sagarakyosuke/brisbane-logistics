@@ -26,7 +26,7 @@ const baseQueryWithDecryption: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   const result = await baseQuery(args, api, extraOptions);
 
-  // ✅ Check for the 'response' key (matching your middleware)
+  // Check for the 'response' key (matching your middleware)
   if (result.data && typeof result.data === 'object' && 'response' in result.data) {
     try {
       const encrypted = (result.data as { response: string }).response;

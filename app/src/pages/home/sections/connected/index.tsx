@@ -160,7 +160,7 @@ export const PartnersSection = () => (
       </Box>
 
       <Box sx={ARROW_LINK_WRAPPER_SX}>
-        <ArrowLink to="/partners">See our partners</ArrowLink>
+        <ArrowLink to="/home/integration-partners">See our partners</ArrowLink>
       </Box>
     </SectionWrap>
   </Section>
