@@ -9,33 +9,43 @@ class TheResultResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $result = $this->result;
+
         return [
             'challenge' => [
-                'title' => 'The challenge',
-                'desc' => $this->description,
+                'title' => $result->challenge_title,
+                'desc' => $result->challenge_description,
             ],
+
             'response' => [
-                'title' => 'Our response',
-                'steps' => $this->points->map(fn($p, $i) => [
+                'title' => $result->response_title,
+                'steps' => $this->points->values()->map(fn ($p, $i) => [
                     'step' => (string) ($i + 1),
                     'title' => $p->label,
                     'desc' => $p->desc,
                 ]),
             ],
+
             'result' => [
-                'eyebrow' => 'The result',
-                'iconKey' => 'access_time',
-                'title' => 'Around 2 hours early',
-                'subtitle' => 'Delivery completed at about 7:20 am.',
-                'points' => [
-                    'All cases arrived safely and intact.',
-                    'The early arrival helped tradespeople begin work sooner.',
-                ],
+                'eyebrow' => $result->result_eyebrow,
+                'iconKey' => $result->result_icon_key,
+                'title' => $result->result_title,
+                'subtitle' => $result->result_subtitle,
+                'points' => $result->result_points,
             ],
+
             'images' => [
-                'main' => $this->main_image ? asset('storage/' . $this->main_image) : null,
-                'topRight' => $this->top_right_image ? asset('storage/' . $this->top_right_image) : null,
-                'bottomRight' => $this->bottom_right_image ? asset('storage/' . $this->bottom_right_image) : null,
+                'main' => $this->main_image
+                    ? asset('storage/' . $this->main_image)
+                    : null,
+
+                'topRight' => $this->top_right_image
+                    ? asset('storage/' . $this->top_right_image)
+                    : null,
+
+                'bottomRight' => $this->bottom_right_image
+                    ? asset('storage/' . $this->bottom_right_image)
+                    : null,
             ],
         ];
     }

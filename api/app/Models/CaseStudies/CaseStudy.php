@@ -4,6 +4,7 @@ namespace App\Models\CaseStudies;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class CaseStudy extends Model
 {
@@ -16,5 +17,10 @@ class CaseStudy extends Model
     public function points(): HasMany
     {
         return $this->hasMany(CaseStudyPoint::class);
+    }
+
+    public function result(): HasOne
+    {
+        return $this->hasOne(CaseStudyResult::class);
     }
 }

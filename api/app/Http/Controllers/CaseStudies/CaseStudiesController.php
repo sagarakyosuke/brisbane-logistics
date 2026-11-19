@@ -41,7 +41,12 @@ class CaseStudiesController extends Controller
 
     public function theResult(): JsonResponse
     {
-        $study = CaseStudy::with('points')->where('key', 'urgent-delivery')->firstOrFail();
+        $study = CaseStudy::with(['points', 'result'])
+            ->where('key', 'urgent-delivery')
+            ->where('status', 'published')
+            ->firstOrFail();
+
+        abort_if(!$study->result, 404, 'Case study result not found.');
 
         return response()->json(new TheResultResource($study));
     }
