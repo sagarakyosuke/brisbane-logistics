@@ -5,7 +5,7 @@ import { SectionEyebrow, SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette } from '@/utilities/themes';
-import type { ContainerHandlingHeroData } from '@/utilities/_mock/services/container-handling/hero';
+import type { ContainerHandlingHeroData } from '@/utilities/data/services/container-handling/hero';
 
 /* =====================================================================
  * Types

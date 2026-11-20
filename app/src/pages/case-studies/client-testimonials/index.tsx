@@ -10,7 +10,7 @@ import { WhyClientsStayWithUsSection } from '@/pages/case-studies/client-testimo
 import { CtaBand } from '@/reusables/cta';
 
 // Mock data
-import { clientTestimonialsHeroData } from '@/utilities/_mock/case-studies/client-testimonials/hero';
+import { clientTestimonialsHeroData } from '@/utilities/data/case-studies/client-testimonials/hero';
 
 /* =====================================================================
  * Page

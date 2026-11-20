@@ -2,7 +2,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { AppButton } from '@/components/buttons';
 import { Section, SectionEyebrow, SectionWrap } from '@/components/sections';
-import { crossDockingNeedStockData } from '@/utilities/_mock/services/cross-docking/cross-docking';
+import { crossDockingNeedStockData } from '@/utilities/data/services/cross-docking/cross-docking';
 import { palette } from '@/utilities/themes';
 
 /* =====================================================================

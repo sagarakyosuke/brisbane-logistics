@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { CtaBand } from '@/reusables/cta';
-import { containerHandlingHeroData } from '@/utilities/_mock/services/container-handling/hero';
+import { containerHandlingHeroData } from '@/utilities/data/services/container-handling/hero';
 import { ContainerHandlingHeroSection } from '@/pages/services/container-handling/sections/hero';
 import { ContainerHandlingSection } from '@/pages/services/container-handling/sections/container-handling';
 import { NextStepsSection } from '@/pages/services/container-handling/sections/next-steps';

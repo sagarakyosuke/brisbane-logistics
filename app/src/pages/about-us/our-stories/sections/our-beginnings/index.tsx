@@ -1,10 +1,9 @@
-import { useMemo, createElement, type ElementType } from 'react';
+import { createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { InfoOutlined, Handshake, Groups, Agriculture } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { useApi } from '@/routes/api-routing/api-context';
-import type { OurBeginningsValue } from '@/utilities/data/about-us/our-stories/our-beginnings';
+import { useGetOurBeginningsQuery } from '@/utilities/hooks/api';
 
 /* =====================================================================
  * Icon Mapping
@@ -18,6 +17,7 @@ const ICONS: Record<string, ElementType> = {
 
 const DynamicIcon = ({ iconKey, sx }: { iconKey: string; sx?: SxProps<Theme> }) => {
   const Icon = ICONS[iconKey] || Handshake;
+
   return createElement(Icon, { sx });
 };
 
@@ -117,21 +117,11 @@ const VALUE_DESC_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const OurBeginningsSection = () => {
-  const { data } = useApi();
+  const { data: ourBeginningsData } = useGetOurBeginningsQuery();
 
-  const ourBeginningsData = useMemo(() => {
-    if (!data?.ourBeginnings) return null;
-    return data.ourBeginnings as unknown as {
-      eyebrow: string;
-      title: string;
-      description1: string;
-      description2: string;
-      badge: string;
-      values: (OurBeginningsValue & { iconKey: string })[];
-    };
-  }, [data?.ourBeginnings]);
-
-  if (!ourBeginningsData || ourBeginningsData.values.length === 0) return null;
+  if (!ourBeginningsData || ourBeginningsData.values.length === 0) {
+    return null;
+  }
 
   return (
     <Section skipAlternate={false}>
@@ -145,6 +135,7 @@ export const OurBeginningsSection = () => {
             </Typography>
 
             <Typography sx={DESCRIPTION_SX}>{ourBeginningsData.description1}</Typography>
+
             <Typography sx={DESCRIPTION_SX}>{ourBeginningsData.description2}</Typography>
 
             <Box sx={BADGE_SX}>
@@ -159,10 +150,12 @@ export const OurBeginningsSection = () => {
                 <Box sx={VALUE_ICON_BOX_SX}>
                   <DynamicIcon iconKey={value.iconKey} sx={{ fontSize: 24 }} />
                 </Box>
+
                 <Box>
                   <Typography component="h3" sx={VALUE_TITLE_SX}>
                     {value.title}
                   </Typography>
+
                   <Typography sx={VALUE_DESC_SX}>{value.desc}</Typography>
                 </Box>
               </Box>

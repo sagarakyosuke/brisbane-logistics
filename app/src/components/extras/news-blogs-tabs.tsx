@@ -7,9 +7,9 @@ import { palette } from '@/utilities/themes';
  * ===================================================================== */
 
 const TABS = [
-  { label: 'Blogs', path: '/news' },
-  { label: 'Company Updates', path: '/news/company' },
-  { label: 'Guides & Tips', path: '/news/guides' },
+  { label: 'Blogs', path: '/news-and-blogs' },
+  { label: 'Company Updates', path: '/news-and-blogs/company' },
+  { label: 'Guides & Tips', path: '/news-and-blogs/guides' },
 ];
 
 /* =====================================================================
@@ -45,7 +45,7 @@ export const NewsBlogsTabs = () => {
             <NavLink
               key={tab.label}
               to={tab.path}
-              end={tab.path === '/news'}
+              end={tab.path === '/news-and-blogs'}
               style={({ isActive }) => ({
                 padding: '16px 24px',
                 fontWeight: 600,

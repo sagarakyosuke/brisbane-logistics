@@ -1,5 +1,3 @@
-// src/reusables/loader/page-loader.ts
-
 import { useEffect, useState } from 'react';
 
 /* =====================================================================

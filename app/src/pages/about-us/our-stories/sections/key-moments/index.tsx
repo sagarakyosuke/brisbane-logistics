@@ -1,10 +1,9 @@
-import { useMemo, createElement, type ElementType } from 'react';
+import { createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Agriculture, BarChart, Flag } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { useApi } from '@/routes/api-routing/api-context';
-import type { KeyMomentItem } from '@/utilities/data/about-us/our-stories/key-moments';
+import { useGetKeyMomentsQuery } from '@/utilities/hooks/api';
 
 /* =====================================================================
  * Icon Mapping
@@ -18,6 +17,7 @@ const ICONS: Record<string, ElementType> = {
 
 const DynamicIcon = ({ iconKey, sx }: { iconKey: string; sx?: SxProps<Theme> }) => {
   const Icon = ICONS[iconKey] || Flag;
+
   return createElement(Icon, { sx });
 };
 
@@ -65,7 +65,7 @@ const TIMELINE_WRAP_SX: SxProps<Theme> = {
   '&::before': {
     content: '""',
     position: 'absolute',
-    top: 32, // Exactly halfway down the 64px icon circle
+    top: 32,
     left: 'calc(16.666% + 32px)',
     right: 'calc(16.666% + 32px)',
     height: 2,
@@ -81,9 +81,9 @@ const TIMELINE_WRAP_SX: SxProps<Theme> = {
     '&::before': {
       content: '""',
       position: 'absolute',
-      top: 64, // Starts just below the first circle
-      bottom: 64, // Stops just above the last circle
-      left: 32, // Center of the circle
+      top: 64,
+      bottom: 64,
+      left: 32,
       width: 2,
       backgroundImage: `linear-gradient(0deg, ${palette.orange} 50%, transparent 50%)`,
       backgroundSize: '2px 12px',
@@ -145,28 +145,22 @@ const MOMENT_BADGE_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const KeyMomentsSection = () => {
-  const { data } = useApi();
+  const { data: keyMomentsData } = useGetKeyMomentsQuery();
 
-  const keyMomentsData = useMemo(() => {
-    if (!data?.keyMoments) return null;
-    return data.keyMoments as unknown as {
-      eyebrow: string;
-      title: string;
-      subtitle: string;
-      moments: (KeyMomentItem & { iconKey: string })[];
-    };
-  }, [data?.keyMoments]);
-
-  if (!keyMomentsData || keyMomentsData.moments.length === 0) return null;
+  if (!keyMomentsData || keyMomentsData.moments.length === 0) {
+    return null;
+  }
 
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
         <Box sx={HEADER_WRAP_SX}>
           <SectionEyebrow>{keyMomentsData.eyebrow}</SectionEyebrow>
+
           <Typography component="h2" sx={TITLE_SX}>
             {keyMomentsData.title}
           </Typography>
+
           <Typography sx={SUBTITLE_SX}>{keyMomentsData.subtitle}</Typography>
         </Box>
 
@@ -176,9 +170,11 @@ export const KeyMomentsSection = () => {
               <Box sx={ICON_CIRCLE_SX}>
                 <DynamicIcon iconKey={moment.iconKey} sx={{ fontSize: 28 }} />
               </Box>
+
               <Typography component="h3" sx={MOMENT_TITLE_SX}>
                 {moment.title}
               </Typography>
+
               <Box sx={MOMENT_BADGE_SX}>{moment.badge}</Box>
             </Box>
           ))}

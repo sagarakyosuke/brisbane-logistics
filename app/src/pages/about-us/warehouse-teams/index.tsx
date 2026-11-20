@@ -10,7 +10,7 @@ import { AboutUsTabs } from '@/components/extras/about-us-tabs';
 import { CtaBand } from '@/reusables/cta';
 
 // Mock data
-import { warehouseGalleryHeroData } from '@/utilities/_mock/about-us/warehouse-team/hero';
+import { warehouseGalleryHeroData } from '@/utilities/data/about-us/warehouse-team/hero';
 
 /* =====================================================================
  * Page

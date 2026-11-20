@@ -12,13 +12,13 @@ import { HelpfulSection } from '@/pages/home/sections/get-to-know';
 import { ServicesSection } from '@/pages/home/sections/our-services';
 import { Carousel } from '@/reusables/carousel';
 import { CtaBand } from '@/reusables/cta';
-import { heroBays, heroContent, heroSlides } from '@/utilities/_mock/home/hero';
+import { heroBays, heroContent, heroSlides } from '@/utilities/data/home/hero';
 import {
   featuredCaseStudy,
   serviceMarquee,
   trustItems,
   type CaseStudyImage,
-} from '@/utilities/_mock/home/home';
+} from '@/utilities/data/home/home';
 
 /* =====================================================================
  * Constants

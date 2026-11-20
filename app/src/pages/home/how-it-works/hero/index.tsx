@@ -6,7 +6,7 @@ import { SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette } from '@/utilities/themes';
-import { HERO_DATA } from '@/utilities/_mock/home/how-it-works/how-it-works';
+import { HERO_DATA } from '@/utilities/data/home/how-it-works/how-it-works';
 
 /* =====================================================================
  * Static styles

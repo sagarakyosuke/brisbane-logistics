@@ -9,7 +9,7 @@ import { NewsBlogsTabs } from '@/components/extras/news-blogs-tabs';
 import { CtaBand } from '@/reusables/cta';
 
 // Mock data
-import { companyUpdatesHeroData } from '@/utilities/_mock/news-and-blogs/company-updates/hero';
+import { companyUpdatesHeroData } from '@/utilities/data/news-and-blogs/company-updates/hero';
 
 /* =====================================================================
  * Page

@@ -3,7 +3,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionHeader, SectionWrap } from '@/components/sections';
-import { serviceOptions, serviceTags, type ServiceTag } from '@/utilities/_mock/services/services';
+import { serviceOptions, serviceTags, type ServiceTag } from '@/utilities/data/services/services';
 
 /* =====================================================================
  * Constants

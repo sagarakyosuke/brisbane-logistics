@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { CtaBand } from '@/reusables/cta';
-import { transportHeroData } from '@/utilities/_mock/services/transport-and-distribution/hero';
+import { transportHeroData } from '@/utilities/data/services/transport-and-distribution/hero';
 import { TransportHeroSection } from './sections/hero';
 import { OurTransportDistributionSection } from './sections/our-transport-distribution';
 

@@ -10,7 +10,7 @@ import {
 import { ArrowForward, Close, ExpandMore, LocalShipping, Person } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router';
 import { AppButton } from '@/components/buttons';
-import { navLinks } from '@/utilities/_mock/navbar';
+import { navLinks } from '@/utilities/data/navbar';
 
 /* =====================================================================
  * Types

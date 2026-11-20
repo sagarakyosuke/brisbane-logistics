@@ -5,7 +5,7 @@ import { SectionEyebrow, SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette } from '@/utilities/themes';
-import type { ClientTestimonialsHeroData } from '@/utilities/_mock/case-studies/client-testimonials/hero';
+import type { ClientTestimonialsHeroData } from '@/utilities/data/case-studies/client-testimonials/hero';
 
 /* =====================================================================
  * Types

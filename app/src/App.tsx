@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation } from 'react-router';
 import { Layout } from '@/components/layout';
 import { OverlayLoader } from '@/components/extras/overlay-loader';
-import { useApi } from '@/routes/api-routing/api-context';
-import { ApiProvider } from '@/routes/api-routing/useApiRouting';
+import { showError } from '@/components/dialogs/alerts';
+import { apiSlice } from '@/utilities/hooks/api/slice';
+import type { RootState, AppDispatch } from '@/utilities/store';
 
 /* =====================================================================
  * Title Configuration
@@ -40,9 +42,8 @@ const getTitle = (pathname: string): string => {
     return `${PAGE_TITLES[pathname]} | ${APP_NAME}`;
   }
 
-  // Fallback to the closest parent path if no exact match
   const parentPath = Object.keys(PAGE_TITLES)
-    .sort((a, b) => b.length - a.length) // longest path first
+    .sort((a, b) => b.length - a.length)
     .find((path) => path !== '/' && pathname.startsWith(path));
 
   if (parentPath) {
@@ -58,16 +59,38 @@ const getTitle = (pathname: string): string => {
 
 const AppLayout = () => {
   const { pathname } = useLocation();
-  const { isLoading: isApiLoading } = useApi();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { isLoading, isError } = useSelector((state: RootState) => {
+    const queries = Object.values(state.api.queries);
+
+    return {
+      isLoading: queries.some((query) => query?.status === 'pending'),
+      isError: queries.some((query) => query?.status === 'rejected'),
+    };
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = getTitle(pathname);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!isError || isLoading) return;
+
+    showError({
+      title: 'Failed to load data',
+      text: 'We could not connect to the server. Please check your connection and try again.',
+      confirmText: 'Dismiss',
+      onRetry: () => {
+        dispatch(apiSlice.util.invalidateTags(['CaseStudies', 'NewsBlogs', 'Faqs', 'AboutUs']));
+      },
+    });
+  }, [isError, isLoading, dispatch]);
+
   return (
     <>
-      <OverlayLoader open={isApiLoading} />
+      <OverlayLoader open={isLoading} />
       <Layout>
         <Outlet />
       </Layout>
@@ -79,12 +102,6 @@ const AppLayout = () => {
  * Main App Component
  * ===================================================================== */
 
-const App = () => {
-  return (
-    <ApiProvider>
-      <AppLayout />
-    </ApiProvider>
-  );
-};
+const App = () => <AppLayout />;
 
 export default App;

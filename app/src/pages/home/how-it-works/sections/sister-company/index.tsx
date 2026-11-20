@@ -14,7 +14,7 @@ import { AppButton } from '@/components/buttons';
 import { JourneyProgress } from '@/components/extras/journey-progress';
 import { Section, SectionEyebrow, SectionWrap } from '@/components/sections';
 import { Reveal } from '@/reusables/animation';
-import { SISTER_COMPANY_DATA } from '@/utilities/_mock/home/how-it-works/how-it-works';
+import { SISTER_COMPANY_DATA } from '@/utilities/data/home/how-it-works/how-it-works';
 
 /* =====================================================================
  * Constants

@@ -15,7 +15,7 @@ import { AppButton } from '@/components/buttons';
 import { Section, SectionWrap } from '@/components/sections';
 import { Modal } from '@/components/dialogs/modals';
 import { palette } from '@/utilities/themes';
-import { useApi } from '@/routes/api-routing/api-context';
+import { useGetLatestCaseStudiesQuery } from '@/utilities/hooks/api';
 
 const ICONS: Record<string, ElementType> = {
   description: Description,
@@ -250,7 +250,7 @@ const SafeImage = ({ src, alt, sx }: { src?: string | null; alt: string; sx?: Sx
 };
 
 export const CaseStudySection = () => {
-  const { data } = useApi();
+  const { data } = useGetLatestCaseStudiesQuery();
   const study = data?.latest;
 
   const navigate = useNavigate();

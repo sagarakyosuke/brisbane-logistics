@@ -1,10 +1,9 @@
-import { useMemo, createElement, type ElementType } from 'react';
+import { createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Inventory, Warehouse, LocalShipping, Outbox } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { useApi } from '@/routes/api-routing/api-context';
-import type { WhatWeHandleItem } from '@/utilities/data/about-us/what-we-handle';
+import { useGetWhatWeHandleQuery } from '@/utilities/hooks/api';
 
 /* =====================================================================
  * Icon Mapping
@@ -104,16 +103,7 @@ const CARD_DESC_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const WhatWeHandleSection = () => {
-  const { data } = useApi();
-
-  const whatWeHandleData = useMemo(() => {
-    if (!data?.whatWeHandle) return null;
-    return data.whatWeHandle as unknown as {
-      eyebrow: string;
-      title: string;
-      items: (WhatWeHandleItem & { iconKey: string })[];
-    };
-  }, [data?.whatWeHandle]);
+  const { data: whatWeHandleData } = useGetWhatWeHandleQuery();
 
   if (!whatWeHandleData || whatWeHandleData.items.length === 0) return null;
 

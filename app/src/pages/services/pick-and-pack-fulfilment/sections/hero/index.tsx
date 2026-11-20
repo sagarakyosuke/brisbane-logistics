@@ -6,7 +6,7 @@ import { SectionEyebrow, SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette } from '@/utilities/themes';
-import type { PickAndPackHeroData } from '@/utilities/_mock/services/pick-and-pack-fulfilment/hero';
+import type { PickAndPackHeroData } from '@/utilities/data/services/pick-and-pack-fulfilment/hero';
 
 /* =====================================================================
  * Types

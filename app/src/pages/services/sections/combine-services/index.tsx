@@ -1,6 +1,6 @@
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Section, SectionEyebrow, SectionWrap } from '@/components/sections';
-import { combineServicesList } from '@/utilities/_mock/services/combine-services/combine-services';
+import { combineServicesList } from '@/utilities/data/services/combine-services/combine-services';
 
 /* =====================================================================
  * Static styles

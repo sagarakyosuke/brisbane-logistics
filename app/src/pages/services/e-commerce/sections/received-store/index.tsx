@@ -5,7 +5,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 import { Section, SectionWrap } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { receiveStoreTabs } from '@/utilities/_mock/services/e-commerce/receive-store';
+import { receiveStoreTabs } from '@/utilities/data/services/e-commerce/receive-store';
 
 /* =====================================================================
  * Static styles

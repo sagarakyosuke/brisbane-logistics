@@ -2,7 +2,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionHeader, SectionWrap } from '@/components/sections';
-import { helpfulLinks } from '@/utilities/_mock/home/home';
+import { helpfulLinks } from '@/utilities/data/home/home';
 
 /* =====================================================================
  * Static styles

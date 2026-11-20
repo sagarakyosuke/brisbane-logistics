@@ -11,7 +11,7 @@ import {
   heroSlides,
   type HeroBay,
   type HeroContent,
-} from '@/utilities/_mock/home/hero';
+} from '@/utilities/data/home/hero';
 
 export type { HeroBay, HeroContent };
 

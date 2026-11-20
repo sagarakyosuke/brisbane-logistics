@@ -4,7 +4,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
 import { Section, SectionHeader, SectionWrap } from '@/components/sections';
 import { Reveal } from '@/reusables/animation';
-import { GETTING_STARTED_DATA } from '@/utilities/_mock/home/how-it-works/how-it-works';
+import { GETTING_STARTED_DATA } from '@/utilities/data/home/how-it-works/how-it-works';
 
 /* =====================================================================
  * Static styles

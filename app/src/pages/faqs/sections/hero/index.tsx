@@ -11,7 +11,7 @@ import { SectionEyebrow, SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette } from '@/utilities/themes';
-import { faqsHeroData } from '@/utilities/_mock/faqs/hero';
+import { faqsHeroData } from '@/utilities/data/faqs/hero';
 
 /* =====================================================================
  * Static styles

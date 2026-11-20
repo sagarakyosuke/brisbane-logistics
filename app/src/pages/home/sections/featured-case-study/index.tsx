@@ -3,7 +3,7 @@ import { ArrowForward } from '@mui/icons-material';
 import { AppButton } from '@/components/buttons';
 import { Section, SectionEyebrow, SectionWrap } from '@/components/sections';
 import { Reveal } from '@/reusables/animation';
-import { featuredCaseStudy } from '@/utilities/_mock/home/home';
+import { featuredCaseStudy } from '@/utilities/data/home/home';
 
 /* =====================================================================
  * Types

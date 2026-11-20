@@ -7,7 +7,7 @@ import { CtaBand } from '@/reusables/cta';
 import { HowCrossDockingWorksSection } from './sections/how-cross-docking-works';
 import { NeedStockSection } from './sections/need-stock';
 import { WhyConsiderCrossDockingSection } from './sections/why-consider-cross-docking';
-import { crossDockingHeroData } from '@/utilities/_mock/services/cross-docking/cross-docking';
+import { crossDockingHeroData } from '@/utilities/data/services/cross-docking/cross-docking';
 
 /* =====================================================================
  * Static styles

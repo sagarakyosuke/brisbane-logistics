@@ -3,7 +3,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Apartment, Warehouse, LocalShipping } from '@mui/icons-material';
 import { Section, SectionWrap } from '@/components/sections';
 import { palette, shadows } from '@/utilities/themes';
-import { useGetWarehouseDetailsQuery } from '@/pages/about-us/warehouse-teams/sections/api-hook';
+import { useGetWarehouseDetailsQuery } from '@/utilities/hooks/api';
 import type { WarehouseDetail } from '@/utilities/data/about-us/warehouse-team/warehouse-details';
 
 /* =====================================================================

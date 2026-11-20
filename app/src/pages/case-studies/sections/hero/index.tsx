@@ -3,7 +3,7 @@ import { SectionEyebrow, SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette } from '@/utilities/themes';
-import type { CaseStudiesHeroData } from '@/utilities/_mock/case-studies/hero';
+import type { CaseStudiesHeroData } from '@/utilities/data/case-studies/hero';
 
 /* =====================================================================
  * Types

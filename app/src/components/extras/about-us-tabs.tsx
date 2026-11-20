@@ -7,10 +7,10 @@ import { palette } from '@/utilities/themes';
  * ===================================================================== */
 
 const TABS = [
-  { label: 'Overview', path: '/about' },
-  { label: 'Our Story', path: '/about/our-story' },
-  { label: 'Our Team', path: '/about/team' },
-  { label: 'Warehouse Gallery', path: '/about/gallery' },
+  { label: 'Overview', path: '/about-us' },
+  { label: 'Our Story', path: '/about-us/our-story' },
+  { label: 'Our Team', path: '/about-us/team' },
+  { label: 'Warehouse Gallery', path: '/about-us/gallery' },
 ];
 
 /* =====================================================================
@@ -46,7 +46,7 @@ export const AboutUsTabs = () => {
             <NavLink
               key={tab.label}
               to={tab.path}
-              end={tab.path === '/about'} // Prevents 'Overview' from matching on sub-routes
+              end={tab.path === '/about-us'}
               style={({ isActive }) => ({
                 padding: '16px 24px',
                 fontWeight: 600,

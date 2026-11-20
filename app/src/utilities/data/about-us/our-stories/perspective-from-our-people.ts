@@ -13,17 +13,3 @@ export type PerspectiveData = {
   initials: string;
   image?: string; // Optional — falls back to placeholder if undefined
 };
-
-/* =====================================================================
- * Data
- * ===================================================================== */
-
-export const perspectiveData: PerspectiveData = {
-  eyebrow: 'A perspective from our people',
-  title: 'A message from Emily.',
-  quote: 'Approved message to be supplied.',
-  authorName: 'Emily Jackman',
-  authorRole: 'Owner',
-  initials: 'EJ',
-  // image: 'path-to-emily-photo.jpg'
-};

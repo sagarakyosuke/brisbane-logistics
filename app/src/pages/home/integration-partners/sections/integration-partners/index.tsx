@@ -3,7 +3,7 @@ import { Section, SectionHeader, SectionWrap } from '@/components/sections';
 import {
   integrationPartners,
   integrationSteps,
-} from '@/utilities/_mock/home/integration-partners/integration-partners';
+} from '@/utilities/data/home/integration-partners/integration-partners';
 
 /* =====================================================================
  * Static styles

@@ -1,10 +1,9 @@
-import { useMemo, createElement, type ElementType } from 'react';
+import { createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Groups, WbSunny, BarChart, Shield } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { useApi } from '@/routes/api-routing/api-context';
-import type { WhyChooseValue } from '@/utilities/data/about-us/why-choose';
+import { useGetWhyChooseQuery } from '@/utilities/hooks/api';
 
 /* =====================================================================
  * Icon Mapping
@@ -108,16 +107,7 @@ const CARD_DESC_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const WhyChooseSection = () => {
-  const { data } = useApi();
-
-  const whyChooseData = useMemo(() => {
-    if (!data?.whyChoose) return null;
-    return data.whyChoose as unknown as {
-      eyebrow: string;
-      title: string;
-      values: (WhyChooseValue & { iconKey: string })[];
-    };
-  }, [data?.whyChoose]);
+  const { data: whyChooseData } = useGetWhyChooseQuery();
 
   if (!whyChooseData || whyChooseData.values.length === 0) return null;
 

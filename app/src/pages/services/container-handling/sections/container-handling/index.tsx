@@ -3,7 +3,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Add, Close } from '@mui/icons-material';
 import { Section, SectionWrap } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { containerHandlingData } from '@/utilities/_mock/services/container-handling/container-handling';
+import { containerHandlingData } from '@/utilities/data/services/container-handling/container-handling';
 
 /* =====================================================================
  * Static styles

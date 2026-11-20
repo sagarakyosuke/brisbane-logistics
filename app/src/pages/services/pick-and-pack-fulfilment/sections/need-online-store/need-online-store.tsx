@@ -2,7 +2,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionWrap } from '@/components/sections';
-import { needOnlineStoreData } from '@/utilities/_mock/services/pick-and-pack-fulfilment/pick-and-pack-fulfilment';
+import { needOnlineStoreData } from '@/utilities/data/services/pick-and-pack-fulfilment/pick-and-pack-fulfilment';
 import { palette } from '@/utilities/themes';
 
 /* =====================================================================

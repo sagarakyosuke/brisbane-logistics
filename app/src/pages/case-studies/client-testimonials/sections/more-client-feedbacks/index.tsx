@@ -2,7 +2,7 @@ import { Box, Typography, Divider, type SxProps, type Theme } from '@mui/materia
 import { FormatQuote } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { useApi } from '@/routes/api-routing/api-context';
+import { useGetMoreClientFeedbacksQuery } from '@/utilities/hooks/api';
 import type { MoreFeedback } from '@/utilities/data/case-studies/client-testimonials/more-client-feedbacks';
 
 /* =====================================================================
@@ -112,8 +112,8 @@ const SAMPLE_BADGE_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const MoreClientFeedbacksSection = () => {
-  const { data } = useApi();
-  const feedbacks = (data?.moreClientFeedbacks || []) as MoreFeedback[];
+  const { data } = useGetMoreClientFeedbacksQuery();
+  const feedbacks: MoreFeedback[] = data?.feedbacks ?? [];
 
   if (feedbacks.length === 0) return null;
 

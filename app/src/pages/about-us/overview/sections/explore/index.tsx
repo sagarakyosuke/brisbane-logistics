@@ -3,7 +3,7 @@ import { ArrowForward } from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionWrap } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { exploreData, type ExploreItem } from '@/utilities/_mock/about-us/explore';
+import { exploreData, type ExploreItem } from '@/utilities/data/about-us/explore';
 
 /* =====================================================================
  * Static styles

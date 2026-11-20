@@ -2,7 +2,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { FormatQuote } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { perspectiveData } from '@/utilities/data/about-us/our-stories/perspective-from-our-people';
+import { useGetOurPerspectiveQuery } from '@/utilities/hooks/api';
 
 /* =====================================================================
  * Static styles
@@ -20,7 +20,7 @@ const LAYOUT_SX: SxProps<Theme> = {
 const MEDIA_WRAP_SX: SxProps<Theme> = {
   position: 'relative',
   width: '100%',
-  aspectRatio: '4 / 5', // Taller portrait aspect ratio
+  aspectRatio: '4 / 5',
   maxWidth: 420,
   borderRadius: '24px',
   overflow: 'hidden',
@@ -68,7 +68,7 @@ const PHOTO_BADGE_SX: SxProps<Theme> = {
   letterSpacing: '0.05em',
 };
 
-/* ── Right Column (Text) ──────────────────────────────────────────── */
+/* ── Right Column (Text) ───────────────────────────────────────────── */
 
 const TEXT_COLUMN_SX: SxProps<Theme> = {
   display: 'flex',
@@ -120,22 +120,30 @@ const AUTHOR_ROLE_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const PerspectiveFromOurPeopleSection = () => {
+  const { data } = useGetOurPerspectiveQuery();
+
+  const perspective = data?.perspective;
+
+  if (!perspective) {
+    return null;
+  }
+
   return (
     <Section skipAlternate={false}>
       <SectionWrap>
         <Box sx={LAYOUT_SX}>
           {/* Left Column — Image or Placeholder */}
           <Box sx={MEDIA_WRAP_SX}>
-            {perspectiveData.image ? (
+            {perspective.image ? (
               <Box
                 component="img"
-                src={perspectiveData.image}
-                alt={perspectiveData.authorName}
+                src={perspective.image}
+                alt={perspective.authorName}
                 sx={IMAGE_SX}
               />
             ) : (
               <>
-                <Box sx={INITIALS_CIRCLE_SX}>{perspectiveData.initials}</Box>
+                <Box sx={INITIALS_CIRCLE_SX}>{perspective.initials}</Box>
                 <Box sx={PHOTO_BADGE_SX}>Photo to be supplied</Box>
               </>
             )}
@@ -143,18 +151,19 @@ export const PerspectiveFromOurPeopleSection = () => {
 
           {/* Right Column — Text */}
           <Box sx={TEXT_COLUMN_SX}>
-            <SectionEyebrow>{perspectiveData.eyebrow}</SectionEyebrow>
+            <SectionEyebrow>{perspective.eyebrow}</SectionEyebrow>
 
             <Typography component="h2" sx={TITLE_SX}>
-              {perspectiveData.title}
+              {perspective.title}
             </Typography>
 
             <FormatQuote sx={QUOTE_ICON_SX} />
 
-            <Typography sx={QUOTE_TEXT_SX}>{perspectiveData.quote}</Typography>
+            <Typography sx={QUOTE_TEXT_SX}>{perspective.quote}</Typography>
 
-            <Typography sx={AUTHOR_NAME_SX}>{perspectiveData.authorName}</Typography>
-            <Typography sx={AUTHOR_ROLE_SX}>{perspectiveData.authorRole}</Typography>
+            <Typography sx={AUTHOR_NAME_SX}>{perspective.authorName}</Typography>
+
+            <Typography sx={AUTHOR_ROLE_SX}>{perspective.authorRole}</Typography>
           </Box>
         </Box>
       </SectionWrap>

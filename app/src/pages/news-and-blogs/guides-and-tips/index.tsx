@@ -11,7 +11,7 @@ import { NewsBlogsTabs } from '@/components/extras/news-blogs-tabs';
 import { CtaBand } from '@/reusables/cta';
 
 // Mock data
-import { guidesAndTipsHeroData } from '@/utilities/_mock/news-and-blogs/guides-and-tips/hero';
+import { guidesAndTipsHeroData } from '@/utilities/data/news-and-blogs/guides-and-tips/hero';
 
 /* =====================================================================
  * Page

@@ -9,7 +9,7 @@ import { CombineServicesSection } from '@/pages/services/sections/combine-servic
 import { CtaBand } from '@/reusables/cta';
 
 // Mock data
-import { servicesOverviewHeroData } from '@/utilities/_mock/services/hero';
+import { servicesOverviewHeroData } from '@/utilities/data/services/hero';
 
 /* =====================================================================
  * Page

@@ -5,7 +5,7 @@ import { ArrowForward, ViewInAr } from '@mui/icons-material';
 import { AppButton } from '@/components/buttons';
 import { Section, SectionEyebrow, SectionWrap } from '@/components/sections';
 import { Reveal } from '@/reusables/animation';
-import { WMS_PARTNER_DATA } from '@/utilities/_mock/home/warehouse-management/warehouse-management';
+import { WMS_PARTNER_DATA } from '@/utilities/data/home/warehouse-management/warehouse-management';
 
 /* =====================================================================
  * Static styles

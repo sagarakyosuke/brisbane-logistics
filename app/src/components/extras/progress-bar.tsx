@@ -1,4 +1,4 @@
-import { ScrollProgress } from '@/reusables/loader/page-progress';
+import { ScrollProgress } from '@/reusables/page-progress/page-progress';
 
 export const ProgressBar = () => {
   return <ScrollProgress />;

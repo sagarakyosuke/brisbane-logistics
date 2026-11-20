@@ -5,7 +5,7 @@ import { ArrowForward, LaptopMac, Inventory2, BarChart } from '@mui/icons-materi
 import { AppButton } from '@/components/buttons';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { eCommerceHeroData } from '@/utilities/_mock/services/e-commerce/hero';
+import { eCommerceHeroData } from '@/utilities/data/services/e-commerce/hero';
 import { ECommerceHeroSection } from '@/pages/services/e-commerce/sections/hero';
 import { ReceiveStoreSection } from '@/pages/services/e-commerce/sections/received-store';
 import { IntegrationsSection } from '@/pages/services/e-commerce/sections/integrations';

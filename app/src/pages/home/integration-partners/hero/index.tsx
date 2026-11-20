@@ -2,7 +2,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Link } from 'react-router';
 import { SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
-import { HERO_DATA, PARTNER_NODES } from '@/utilities/_mock/home/warehouse-management/hero';
+import { HERO_DATA, PARTNER_NODES } from '@/utilities/data/home/warehouse-management/hero';
 
 /* =====================================================================
  * Constants

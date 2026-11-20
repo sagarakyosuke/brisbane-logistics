@@ -61,6 +61,7 @@ export {
 export {
   useGetOurBeginningsQuery,
   useGetKeyMomentsQuery,
+  useGetOurPerspectiveQuery,
   type OurBeginningsResponse,
   type KeyMomentsResponse,
 } from '@/pages/about-us/our-stories/sections/api-hook';

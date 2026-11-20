@@ -12,7 +12,7 @@ import {
 } from '@mui/icons-material';
 import { AppButton } from '@/components/buttons';
 import { Section, SectionEyebrow, SectionHeader, SectionWrap } from '@/components/sections';
-import { audiences } from '@/utilities/_mock/home/home';
+import { audiences } from '@/utilities/data/home/home';
 
 /* =====================================================================
  * Constants

@@ -7,7 +7,7 @@ import {
   quotePanelItems,
   relatedServices,
   storageOptions,
-} from '@/utilities/_mock/services/storage-options/storage-options';
+} from '@/utilities/data/services/storage-options/storage-options';
 import { palette } from '@/utilities/themes';
 
 //  Import the modals and providers

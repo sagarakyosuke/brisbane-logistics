@@ -6,7 +6,7 @@ import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { TransferBoxes } from '@/components/extras/transfer-boxes';
 import { palette } from '@/utilities/themes';
-import type { ECommerceHeroData } from '@/utilities/_mock/services/e-commerce/hero';
+import type { ECommerceHeroData } from '@/utilities/data/services/e-commerce/hero';
 
 /* =====================================================================
  * Types

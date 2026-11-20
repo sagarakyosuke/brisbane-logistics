@@ -9,9 +9,7 @@ import { PerspectiveFromOurPeopleSection } from '@/pages/about-us/our-stories/se
 // Components
 import { AboutUsTabs } from '@/components/extras/about-us-tabs';
 import { CtaBand } from '@/reusables/cta';
-
-// Mock data
-import { ourStoryHeroData } from '@/utilities/_mock/about-us/our-stories/hero';
+import { ourStoryHeroData } from '@/utilities/data/about-us/our-stories/hero';
 
 /* =====================================================================
  * Page

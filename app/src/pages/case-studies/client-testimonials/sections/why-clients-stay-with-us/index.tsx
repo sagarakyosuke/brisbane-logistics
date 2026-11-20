@@ -1,10 +1,10 @@
-import { useMemo, createElement, type ElementType } from 'react';
+import { createElement, type ElementType } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { ArrowForward, Chat, Shield, VerifiedUser, People } from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { useApi } from '@/routes/api-routing/api-context';
+import { useGetWhyClientsStayQuery } from '@/utilities/hooks/api';
 
 /* =====================================================================
  * Icon Mapping
@@ -130,19 +130,9 @@ const CTA_LINK_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const WhyClientsStayWithUsSection = () => {
-  const { data } = useApi();
+  const { data: values = [] } = useGetWhyClientsStayQuery();
 
-  const values = useMemo(() => {
-    return (data?.whyClientsStay || []) as unknown as {
-      id: string;
-      key: string;
-      title: string;
-      description: string;
-      iconKey: string;
-    }[];
-  }, [data?.whyClientsStay]);
-
-  if (!values || values.length === 0) return null;
+  if (values.length === 0) return null;
 
   return (
     <Section skipAlternate={false}>

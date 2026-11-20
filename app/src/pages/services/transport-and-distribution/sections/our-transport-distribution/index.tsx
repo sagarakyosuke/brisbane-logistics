@@ -4,7 +4,7 @@ import { Section, SectionHeader, SectionWrap } from '@/components/sections';
 import {
   transportInfoCard,
   transportServices,
-} from '@/utilities/_mock/services/transport-and-distribution/transport-and-distribution';
+} from '@/utilities/data/services/transport-and-distribution/transport-and-distribution';
 import { palette } from '@/utilities/themes';
 
 /* =====================================================================

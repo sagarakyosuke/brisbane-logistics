@@ -7,7 +7,7 @@ import { AboutHeroSection } from '@/pages/about-us/overview/sections/hero';
 import { CtaBand } from '@/reusables/cta';
 
 // Mock data
-import { aboutHeroData } from '@/utilities/_mock/about-us/hero';
+import { aboutHeroData } from '@/utilities/data/about-us/hero';
 
 /* =====================================================================
  * Page

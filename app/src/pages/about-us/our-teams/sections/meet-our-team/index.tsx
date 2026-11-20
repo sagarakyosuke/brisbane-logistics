@@ -1,10 +1,9 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Chat, ArrowForward } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette, shadows } from '@/utilities/themes';
-import { useApi } from '@/routes/api-routing/api-context';
-import type { TeamMember } from '@/utilities/data/about-us/our-team/meet-our-team';
+import { useGetMeetOurTeamQuery, type MeetOurTeamResponse } from '@/utilities/hooks/api';
 
 /* =====================================================================
  * Static styles
@@ -169,7 +168,7 @@ const CONTACT_ARROW_SX: SxProps<Theme> = {
  * Sub-components
  * ===================================================================== */
 
-const TeamAvatar = ({ member }: { member: TeamMember }) => {
+const TeamAvatar = ({ member }: { member: MeetOurTeamResponse['members'][number] }) => {
   const [hasError, setHasError] = useState(false);
 
   const showFallback = !member.image || hasError;
@@ -199,16 +198,7 @@ const TeamAvatar = ({ member }: { member: TeamMember }) => {
  * ===================================================================== */
 
 export const MeetOurTeamSection = () => {
-  const { data } = useApi();
-
-  const meetOurTeamData = useMemo(() => {
-    if (!data?.meetOurTeam) return null;
-    return data.meetOurTeam as unknown as {
-      eyebrow: string;
-      title: string;
-      members: TeamMember[];
-    };
-  }, [data?.meetOurTeam]);
+  const { data: meetOurTeamData } = useGetMeetOurTeamQuery();
 
   if (!meetOurTeamData || meetOurTeamData.members.length === 0) return null;
 

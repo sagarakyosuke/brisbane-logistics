@@ -6,7 +6,7 @@ import {
   pickAndPackNote,
   pickAndPackQuoteItems,
   pickAndPackSteps,
-} from '@/utilities/_mock/services/pick-and-pack-fulfilment/pick-and-pack-fulfilment';
+} from '@/utilities/data/services/pick-and-pack-fulfilment/pick-and-pack-fulfilment';
 import { palette } from '@/utilities/themes';
 
 /* =====================================================================

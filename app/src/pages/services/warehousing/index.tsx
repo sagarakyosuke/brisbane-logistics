@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { CtaBand } from '@/reusables/cta';
-import { warehousingHeroData } from '@/utilities/_mock/services/warehousing/hero';
+import { warehousingHeroData } from '@/utilities/data/services/warehousing/hero';
 import { WarehousingHeroSection } from '@/pages/services/warehousing/sections/hero';
 import { StorageOptionsSection } from '@/pages/services/warehousing/sections/storage-options';
 

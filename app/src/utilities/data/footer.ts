@@ -30,9 +30,9 @@ export const footerLinks: FooterColumn[] = [
       { label: 'Home', href: '/' },
       { label: 'How It Works', href: '/how-it-works' },
       { label: 'Case Studies', href: '/case-studies' },
-      { label: 'News & Blogs', href: '/news' },
+      { label: 'News & Blogs', href: '/news-and-blogs' },
       { label: 'FAQs', href: '/faqs' },
-      { label: 'About Us', href: '/about' },
+      { label: 'About Us', href: '/about-us' },
     ],
   },
   {

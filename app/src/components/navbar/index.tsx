@@ -23,7 +23,7 @@ import { BookACallProvider } from '@/reusables/book-a-call';
 import { useBookACallModal } from '@/reusables/book-a-call/use-book-a-call';
 
 import { palette } from '@/utilities/themes';
-import { navLinks } from '@/utilities/_mock/navbar';
+import { navLinks } from '@/utilities/data/navbar';
 
 /* =====================================================================
  * Constants

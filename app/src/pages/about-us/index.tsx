@@ -12,7 +12,7 @@ import { AboutUsTabs } from '@/components/extras/about-us-tabs';
 import { CtaBand } from '@/reusables/cta';
 
 // Mock data
-import { aboutHeroData } from '@/utilities/_mock/about-us/hero';
+import { aboutHeroData } from '@/utilities/data/about-us/hero';
 
 /* =====================================================================
  * Page

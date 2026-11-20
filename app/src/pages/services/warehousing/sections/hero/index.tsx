@@ -5,7 +5,7 @@ import { SectionEyebrow, SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette } from '@/utilities/themes';
-import type { WarehousingHeroData } from '@/utilities/_mock/services/warehousing/hero';
+import type { WarehousingHeroData } from '@/utilities/data/services/warehousing/hero';
 
 /* =====================================================================
  * Types

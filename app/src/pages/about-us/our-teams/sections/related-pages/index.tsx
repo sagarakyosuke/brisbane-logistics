@@ -5,7 +5,7 @@ import { palette } from '@/utilities/themes';
 import {
   relatedPagesData,
   type RelatedPageItem,
-} from '@/utilities/_mock/about-us/our-stories/related-pages';
+} from '@/utilities/data/about-us/our-stories/related-pages';
 
 /* =====================================================================
  * Static styles

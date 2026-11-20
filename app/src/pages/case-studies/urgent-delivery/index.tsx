@@ -8,7 +8,7 @@ import { TheResultSection } from '@/pages/case-studies/urgent-delivery/sections/
 import { CtaBand } from '@/reusables/cta';
 
 // Mock data
-import { urgentDeliveryHeroData } from '@/utilities/_mock/case-studies/urgent-delivery/hero';
+import { urgentDeliveryHeroData } from '@/utilities/data/case-studies/urgent-delivery/hero';
 
 /* =====================================================================
  * Page

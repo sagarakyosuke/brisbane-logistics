@@ -56,18 +56,18 @@ export const router = createBrowserRouter([
       { path: 'case-studies/urgent-delivery', Component: UrgentDeliveryPage },
 
       // ── News & Blogs ──
-      { path: 'news', Component: NewsAndBlogsPage },
-      { path: 'news/company', Component: CompanyUpdatesPage },
-      { path: 'news/guides', Component: GuidesAndTipsPage },
+      { path: 'news-and-blogs', Component: NewsAndBlogsPage },
+      { path: 'news-and-blogs/company', Component: CompanyUpdatesPage },
+      { path: 'news-and-blogs/guides', Component: GuidesAndTipsPage },
 
       // ── FAQs ──
       { path: 'faqs', Component: FaqsPage },
 
       // ── About Us ──
-      { path: 'about', Component: AboutPage },
-      { path: 'about/our-story', Component: OurStoryPage },
-      { path: 'about/team', Component: OurTeamPage },
-      { path: 'about/gallery', Component: WarehouseGalleryPage },
+      { path: 'about-us', Component: AboutPage },
+      { path: 'about-us/our-story', Component: OurStoryPage },
+      { path: 'about-us/team', Component: OurTeamPage },
+      { path: 'about-us/gallery', Component: WarehouseGalleryPage },
     ],
   },
 ]);

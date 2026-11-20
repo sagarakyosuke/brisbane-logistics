@@ -125,25 +125,25 @@ export const navLinks: NavGroup[] = [
   },
   {
     label: 'News & Blogs',
-    path: '/news',
+    path: '/news-and-blogs',
     items: [
       {
         title: 'Blogs',
         desc: 'Insights on warehousing and fulfilment',
         icon: Article,
-        path: '/news',
+        path: '/news-and-blogs',
       },
       {
         title: 'Company Updates',
         desc: 'The latest from our team',
         icon: AutoAwesome,
-        path: '/news/company',
+        path: '/news-and-blogs/company',
       },
       {
         title: 'Guides & Tips',
         desc: 'Practical help before you choose',
         icon: MenuBook,
-        path: '/news/guides',
+        path: '/news-and-blogs/guides',
       },
     ],
   },
@@ -153,31 +153,31 @@ export const navLinks: NavGroup[] = [
   },
   {
     label: 'About Us',
-    path: '/about',
+    path: '/about-us',
     items: [
       {
         title: 'Overview',
         desc: 'Your Brisbane 3PL partner',
         icon: Business,
-        path: '/about',
+        path: '/about-us',
       },
       {
         title: 'Our Story',
         desc: 'The people and the journey',
         icon: History,
-        path: '/about/our-story',
+        path: '/about-us/our-story',
       },
       {
         title: 'Our Team',
         desc: 'Meet the people behind your logistics',
         icon: People,
-        path: '/about/team',
+        path: '/about-us/team',
       },
       {
         title: 'Warehouse Gallery',
         desc: 'Take a look inside',
         icon: PhotoLibrary,
-        path: '/about/gallery',
+        path: '/about-us/gallery',
       },
     ],
   },

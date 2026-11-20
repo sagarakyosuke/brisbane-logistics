@@ -9,7 +9,7 @@ import { PreviousCaseStudiesSection } from '@/pages/case-studies/sections/previo
 import { CtaBand } from '@/reusables/cta';
 
 // Mock data
-import { caseStudiesHeroData } from '@/utilities/_mock/case-studies/hero';
+import { caseStudiesHeroData } from '@/utilities/data/case-studies/hero';
 
 /* =====================================================================
  * Page

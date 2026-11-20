@@ -5,7 +5,7 @@ import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { LineLoader } from '@/components/extras/line-loader';
 
 // Mock data
-import { crossDockingSteps } from '@/utilities/_mock/services/cross-docking/cross-docking';
+import { crossDockingSteps } from '@/utilities/data/services/cross-docking/cross-docking';
 
 // Theme
 import { palette } from '@/utilities/themes';

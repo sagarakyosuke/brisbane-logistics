@@ -4,7 +4,7 @@ import borderExpressLogo from '@/assets/partners/border-express.svg';
 import couriersPleaseLogo from '@/assets/partners/couriers-please.svg';
 import fedexExpressLogo from '@/assets/partners/fedex-express.svg';
 import tntLogo from '@/assets/partners/tnt.svg';
-import type { Partner } from '@/utilities/_mock/home/home';
+import type { Partner } from '@/utilities/data/home/home';
 
 /* =====================================================================
  * Types

@@ -3,7 +3,7 @@ import { ArrowForward } from '@mui/icons-material';
 import { Link } from 'react-router';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { nextStepsData } from '@/utilities/_mock/services/container-handling/container-handling';
+import { nextStepsData } from '@/utilities/data/services/container-handling/container-handling';
 
 /* =====================================================================
  * Static styles

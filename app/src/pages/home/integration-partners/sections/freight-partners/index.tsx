@@ -1,6 +1,6 @@
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Section, SectionHeader, SectionWrap } from '@/components/sections';
-import { freightPartners } from '@/utilities/_mock/home/freight-partners/freight-partners';
+import { freightPartners } from '@/utilities/data/home/freight-partners/freight-partners';
 
 /* =====================================================================
  * Constants

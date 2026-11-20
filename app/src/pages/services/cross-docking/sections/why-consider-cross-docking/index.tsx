@@ -4,7 +4,7 @@ import { Section, SectionEyebrow, SectionWrap } from '@/components/sections';
 import {
   crossDockingBenefits,
   crossDockingFeatureImage,
-} from '@/utilities/_mock/services/cross-docking/cross-docking';
+} from '@/utilities/data/services/cross-docking/cross-docking';
 import { palette } from '@/utilities/themes';
 
 /* =====================================================================

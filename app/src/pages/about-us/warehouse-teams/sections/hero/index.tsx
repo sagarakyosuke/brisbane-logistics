@@ -3,7 +3,7 @@ import { SectionEyebrow, SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette } from '@/utilities/themes';
-import type { WarehouseGalleryHeroData } from '@/utilities/_mock/about-us/warehouse-team/hero';
+import type { WarehouseGalleryHeroData } from '@/utilities/data/about-us/warehouse-team/hero';
 
 /* =====================================================================
  * Types

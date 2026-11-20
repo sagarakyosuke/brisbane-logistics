@@ -4,7 +4,7 @@ import { SectionEyebrow, SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette } from '@/utilities/themes';
-import type { OurStoryHeroData } from '@/utilities/_mock/about-us/our-stories/hero';
+import type { OurStoryHeroData } from '@/utilities/data/about-us/our-stories/hero';
 
 /* =====================================================================
  * Types

@@ -3,7 +3,7 @@ import { SectionEyebrow, SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette } from '@/utilities/themes';
-import type { NewsAndBlogsHeroData } from '@/utilities/_mock/news-and-blogs/hero';
+import type { NewsAndBlogsHeroData } from '@/utilities/data/news-and-blogs/hero';
 
 // Import the image directly
 import heroImage from '@/assets/hero/warehouse-side-a2.jpg';

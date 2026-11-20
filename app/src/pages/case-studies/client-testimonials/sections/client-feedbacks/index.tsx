@@ -3,7 +3,7 @@ import { Box, Typography, IconButton, type SxProps, type Theme } from '@mui/mate
 import { FormatQuote, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Section, SectionWrap, SectionEyebrow } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { useApi } from '@/routes/api-routing/api-context';
+import { useGetClientFeedbacksQuery } from '@/utilities/hooks/api';
 import type { ClientFeedback } from '@/utilities/data/case-studies/client-testimonials/client-feedbacks';
 
 /* =====================================================================
@@ -137,8 +137,9 @@ const DISCLAIMER_SX: SxProps<Theme> = {
  * ===================================================================== */
 
 export const ClientFeedbacksSection = () => {
-  const { data } = useApi();
-  const feedbacks = (data?.clientFeedbacks || []) as ClientFeedback[];
+  const { data } = useGetClientFeedbacksQuery();
+
+  const feedbacks: ClientFeedback[] = data?.feedbacks ?? [];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const total = feedbacks.length;
@@ -155,7 +156,9 @@ export const ClientFeedbacksSection = () => {
 
   useEffect(() => {
     if (total <= 1) return;
+
     const timer = setInterval(handleNext, AUTOPLAY_INTERVAL_MS);
+
     return () => clearInterval(timer);
   }, [currentIndex, handleNext, total]);
 

@@ -1,13 +1,13 @@
-
+import type { ElementType, ReactNode } from 'react';
 import { Box, InputBase, Typography, type SxProps, type Theme } from '@mui/material';
 import { Email, LocationOn, Phone } from '@mui/icons-material';
-import type { ElementType, ReactNode } from 'react';
+import GoogleMap from '@/reusables/google-map';
 
 import { AppButton } from '@/components/buttons';
 import { SectionWrap } from '@/components/sections';
 import ScrollUp from '@/components/extras/scroll-up';
 
-import { footerContact, footerLinks } from '@/utilities/_mock/footer';
+import { footerContact, footerLinks } from '@/utilities/data/footer';
 import { palette } from '@/utilities/themes';
 
 import whiteLogo from '@/assets/logo/main-logo-alt-white.png';
@@ -199,32 +199,18 @@ const LEGAL_ROW_SX: SxProps<Theme> = {
 
 const Logo = () => (
   <Box sx={LOGO_WRAPPER_SX}>
-    <Box
-      component="img"
-      src={whiteLogo}
-      alt="Brisbane Logistics"
-      sx={LOGO_IMG_SX}
-    />
+    <Box component="img" src={whiteLogo} alt="Brisbane Logistics" sx={LOGO_IMG_SX} />
   </Box>
 );
 
-const LinkColumn = ({
-  title,
-  links,
-}: (typeof footerLinks)[number]) => (
+const LinkColumn = ({ title, links }: (typeof footerLinks)[number]) => (
   <Box>
-    <Typography sx={COLUMN_TITLE_SX}>
-      {title}
-    </Typography>
+    <Typography sx={COLUMN_TITLE_SX}>{title}</Typography>
 
     <Box component="ul" sx={LIST_SX}>
       {links.map((link) => (
         <Box component="li" key={link.label}>
-          <Box
-            component="a"
-            href={link.href}
-            sx={linkSx()}
-          >
+          <Box component="a" href={link.href} sx={linkSx()}>
             {link.label}
           </Box>
         </Box>
@@ -233,19 +219,11 @@ const LinkColumn = ({
   </Box>
 );
 
-const ContactRow = ({
-  icon: Icon,
-  children,
-}: {
-  icon: ElementType;
-  children: ReactNode;
-}) => (
+const ContactRow = ({ icon: Icon, children }: { icon: ElementType; children: ReactNode }) => (
   <Box sx={CONTACT_ROW_SX}>
     <Icon sx={CONTACT_ICON_SX} />
 
-    <Typography sx={CONTACT_TEXT_SX}>
-      {children}
-    </Typography>
+    <Typography sx={CONTACT_TEXT_SX}>{children}</Typography>
   </Box>
 );
 
@@ -257,15 +235,18 @@ export const Footer = () => (
   <Box component="footer">
     <Box sx={ROOT_SX}>
       <SectionWrap>
+        {/* Google Map */}
+        <GoogleMap />
+
+        {/* Footer Grid */}
         <Box sx={GRID_SX}>
           {/* Brand */}
           <Box sx={BRAND_COLUMN_SX}>
             <Logo />
 
             <Typography sx={BRAND_COPY_SX}>
-              Warehousing, fulfilment and distribution support for
-              Australian businesses, from a Brisbane team you can talk
-              to directly.
+              Warehousing, fulfilment and distribution support for Australian businesses, from a
+              Brisbane team you can talk to directly.
             </Typography>
 
             <Box sx={NEWSLETTER_ROW_SX}>
@@ -277,11 +258,7 @@ export const Footer = () => (
                 sx={NEWSLETTER_INPUT_SX}
               />
 
-              <AppButton
-                color="primary"
-                size="medium"
-                sx={SUBSCRIBE_OVERRIDE_SX}
-              >
+              <AppButton color="primary" size="medium" sx={SUBSCRIBE_OVERRIDE_SX}>
                 Subscribe
               </AppButton>
             </Box>
@@ -289,41 +266,25 @@ export const Footer = () => (
 
           {/* Footer Links */}
           {footerLinks.map((col) => (
-            <LinkColumn
-              key={col.title}
-              {...col}
-            />
+            <LinkColumn key={col.title} {...col} />
           ))}
 
           {/* Contact */}
           <Box>
-            <Typography sx={COLUMN_TITLE_SX}>
-              Contact
-            </Typography>
+            <Typography sx={COLUMN_TITLE_SX}>Contact</Typography>
 
             <Box sx={CONTACT_GROUP_SX}>
-              <ContactRow icon={Phone}>
-                {footerContact.phone}
-              </ContactRow>
+              <ContactRow icon={Phone}>{footerContact.phone}</ContactRow>
 
-              <ContactRow icon={Email}>
-                {footerContact.email}
-              </ContactRow>
+              <ContactRow icon={Email}>{footerContact.email}</ContactRow>
 
-              <ContactRow icon={LocationOn}>
-                {footerContact.location}
-              </ContactRow>
+              <ContactRow icon={LocationOn}>{footerContact.location}</ContactRow>
             </Box>
 
             {/* Portal Links */}
             <Box sx={PORTAL_GROUP_SX}>
               {PORTAL_LINKS.map((link) => (
-                <Box
-                  key={link.label}
-                  component="a"
-                  href={link.href}
-                  sx={linkSx()}
-                >
+                <Box key={link.label} component="a" href={link.href} sx={linkSx()}>
                   {link.label}
                 </Box>
               ))}
@@ -334,8 +295,7 @@ export const Footer = () => (
         {/* Bottom Bar */}
         <Box sx={BOTTOM_BAR_SX}>
           <Typography sx={{ fontSize: 'inherit' }}>
-            © {new Date().getFullYear()} Brisbane Logistics.
-            All rights reserved.
+            © {new Date().getFullYear()} Brisbane Logistics. All rights reserved.
           </Typography>
 
           <Box sx={LEGAL_ROW_SX}>
@@ -349,11 +309,7 @@ export const Footer = () => (
               >
                 {index > 0 && <span>·</span>}
 
-                <Box
-                  component="a"
-                  href={link.href}
-                  sx={linkSx('0.8rem')}
-                >
+                <Box component="a" href={link.href} sx={linkSx('0.8rem')}>
                   {link.label}
                 </Box>
               </Box>

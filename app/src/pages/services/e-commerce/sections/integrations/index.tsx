@@ -3,7 +3,7 @@
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Section, SectionWrap, SectionHeader } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { integrationsData } from '@/utilities/_mock/services/e-commerce/integrations';
+import { integrationsData } from '@/utilities/data/services/e-commerce/integrations';
 
 /* =====================================================================
  * Static styles

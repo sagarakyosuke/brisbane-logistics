@@ -2,7 +2,7 @@ import { Box, Typography, type SxProps, type Theme } from '@mui/material';
 import { Link } from 'react-router';
 import { Section, SectionWrap } from '@/components/sections';
 import { palette } from '@/utilities/themes';
-import { relatedPagesData } from '@/utilities/_mock/news-and-blogs/related-page';
+import { relatedPagesData } from '@/utilities/data/news-and-blogs/related-page';
 
 /* =====================================================================
  * Static styles

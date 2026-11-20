@@ -1,10 +1,10 @@
 declare module 'crypto-js' {
   export interface WordArray {
+    words: number[];
+    sigBytes: number;
+
     toString(encoder?: unknown): string;
     concat(wordArray: WordArray): WordArray;
-    ciphertext?: WordArray;
-    words?: number[];
-    sigBytes?: number;
   }
 
   export interface Config {
@@ -14,9 +14,20 @@ declare module 'crypto-js' {
   }
 
   export const enc: {
-    Base64: { parse(str: string): WordArray; stringify(wordArray: WordArray): string };
-    Latin1: { parse(str: string): WordArray; stringify(wordArray: WordArray): string };
-    Utf8: { parse(str: string): WordArray; stringify(wordArray: WordArray): string };
+    Base64: {
+      parse(str: string): WordArray;
+      stringify(wordArray: WordArray): string;
+    };
+
+    Latin1: {
+      parse(str: string): WordArray;
+      stringify(wordArray: WordArray): string;
+    };
+
+    Utf8: {
+      parse(str: string): WordArray;
+      stringify(wordArray: WordArray): string;
+    };
   };
 
   export const mode: {
@@ -28,13 +39,23 @@ declare module 'crypto-js' {
   };
 
   export const AES: {
-    encrypt: (message: string, key: WordArray | string, cfg?: Config) => { ciphertext: WordArray };
-    decrypt: (ciphertext: string | WordArray, key: WordArray | string, cfg?: Config) => WordArray;
+    encrypt(
+      message: string,
+      key: WordArray | string,
+      cfg?: Config,
+    ): {
+      ciphertext: WordArray;
+      toString(encoder?: unknown): string;
+    };
+
+    decrypt(ciphertext: string | WordArray, key: WordArray | string, cfg?: Config): WordArray;
   };
 
   export const lib: {
     WordArray: {
-      random: (nBytes: number) => WordArray;
+      create(words?: number[], sigBytes?: number): WordArray;
+
+      random(nBytes: number): WordArray;
     };
   };
 }

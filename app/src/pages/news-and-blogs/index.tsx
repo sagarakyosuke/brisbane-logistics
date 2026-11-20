@@ -4,7 +4,7 @@ import { ArticlesSection } from '@/pages/news-and-blogs/sections/articles';
 import { NewsBlogsTabs } from '@/components/extras/news-blogs-tabs';
 import { RelatedPagesSection } from '@/pages/news-and-blogs/sections/related-pages';
 import { CtaBand } from '@/reusables/cta';
-import { newsAndBlogsHeroData } from '@/utilities/_mock/news-and-blogs/hero';
+import { newsAndBlogsHeroData } from '@/utilities/data/news-and-blogs/hero';
 
 const NewsAndBlogsPage = () => {
   return (

@@ -3,7 +3,7 @@ import { SectionEyebrow, SectionWrap } from '@/components/sections';
 import { useAnimation } from '@/reusables/animation/use-animation';
 import { Breadcrumbs } from '@/reusables/breadcrumbs';
 import { palette, shadows } from '@/utilities/themes';
-import type { UrgentDeliveryHeroData } from '@/utilities/_mock/case-studies/urgent-delivery/hero';
+import type { UrgentDeliveryHeroData } from '@/utilities/data/case-studies/urgent-delivery/hero';
 
 /* =====================================================================
  * Types

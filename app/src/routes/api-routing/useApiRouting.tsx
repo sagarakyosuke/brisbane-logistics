@@ -71,35 +71,44 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
   const shouldFetch = (endpoint: string) => {
     if (!currentPage) return false;
+
     return (PAGE_CONFIG[currentPage] as readonly string[]).includes(endpoint);
   };
 
-  /* ── Queries ──────────────────────────────────────────────────────── */
+  /* ── Queries ─────────────────────────────────────────────────────── */
 
   const latestQuery = useGetLatestCaseStudiesQuery(shouldFetch('latest') ? undefined : skipToken);
+
   const previousQuery = useGetPreviousCaseStudiesQuery(
     shouldFetch('previous') ? undefined : skipToken,
   );
+
   const clientFeedbacksQuery = useGetClientFeedbacksQuery(
     shouldFetch('clientFeedbacks') ? undefined : skipToken,
   );
+
   const moreClientFeedbacksQuery = useGetMoreClientFeedbacksQuery(
     shouldFetch('moreClientFeedbacks') ? undefined : skipToken,
   );
+
   const whyClientsStayQuery = useGetWhyClientsStayQuery(
     shouldFetch('whyClientsStay') ? undefined : skipToken,
   );
 
   const articlesQuery = useGetArticlesQuery(shouldFetch('articles') ? undefined : skipToken);
+
   const companyUpdatesQuery = useGetCompanyUpdatesQuery(
     shouldFetch('companyUpdates') ? undefined : skipToken,
   );
+
   const featuredGuideQuery = useGetFeaturedGuideQuery(
     shouldFetch('featuredGuide') ? undefined : skipToken,
   );
+
   const browseByTopicQuery = useGetBrowseByTopicQuery(
     shouldFetch('browseByTopic') ? undefined : skipToken,
   );
+
   const practicalGuidesQuery = useGetPracticalGuidesQuery(
     shouldFetch('practicalGuides') ? undefined : skipToken,
   );
@@ -107,23 +116,32 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const whatDoYouNeedQuery = useGetWhatDoYouNeedQuery(
     shouldFetch('whatDoYouNeed') ? undefined : skipToken,
   );
+
   const usefulGuideQuery = useGetUsefulGuideQuery(
     shouldFetch('usefulGuide') ? undefined : skipToken,
   );
 
   const overviewQuery = useGetOverviewQuery(shouldFetch('overview') ? undefined : skipToken);
+
   const whatWeHandleQuery = useGetWhatWeHandleQuery(
     shouldFetch('whatWeHandle') ? undefined : skipToken,
   );
+
   const whyChooseQuery = useGetWhyChooseQuery(shouldFetch('whyChoose') ? undefined : skipToken);
+
   const ourBeginningsQuery = useGetOurBeginningsQuery(
     shouldFetch('ourBeginnings') ? undefined : skipToken,
   );
+
   const keyMomentsQuery = useGetKeyMomentsQuery(shouldFetch('keyMoments') ? undefined : skipToken);
+
   const meetOurTeamQuery = useGetMeetOurTeamQuery(
     shouldFetch('meetOurTeam') ? undefined : skipToken,
   );
+
   const seeTheTeamQuery = useGetSeeTheTeamQuery(shouldFetch('seeTheTeam') ? undefined : skipToken);
+
+  /* ── Query Collection ───────────────────────────────────────────── */
 
   const queries = [
     latestQuery,
@@ -147,14 +165,19 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     seeTheTeamQuery,
   ];
 
-  /* ── Loading & Error States ───────────────────────────────────────── */
+  /* ── Loading & Error States ─────────────────────────────────────── */
 
-  const isError = queries.some((q) => q.isError);
-  const isLoading = !isError && queries.some((q) => q.isLoading);
+  const isError = queries.some((query) => query.isError);
 
-  /* ── Error Alert ──────────────────────────────────────────────────── */
+  // Track every active request, including background refetches.
+  // The loader remains visible until all registered requests finish.
+  const isLoading = queries.some((query) => query.isFetching);
+
+  /* ── Error Alert ────────────────────────────────────────────────── */
 
   useEffect(() => {
+    // Wait until all active requests have finished before displaying
+    // the error alert.
     if (!isError || isLoading) return;
 
     showError({
@@ -162,37 +185,77 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       text: 'We could not connect to the server. Please check your connection and try again.',
       confirmText: 'Dismiss',
       onRetry: () => {
-        queries.forEach((q) => {
-          if (q.isError) q.refetch();
+        queries.forEach((query) => {
+          if (query.isError) {
+            query.refetch();
+          }
         });
       },
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isError, isLoading]);
 
-  /* ── Formatted Data ───────────────────────────────────────────────── */
+  /* ── Formatted Data ─────────────────────────────────────────────── */
 
   const formattedData = useMemo(() => {
-    const hasAnyData = queries.some((q) => q.data);
+    const hasAnyData = queries.some((query) => query.data);
 
     if (!hasAnyData) return null;
 
     return {
       latest: latestQuery.data?.latest ?? null,
+
       previous: previousQuery.data?.previous ?? [],
+
       clientFeedbacks: clientFeedbacksQuery.data?.feedbacks ?? [],
+
       moreClientFeedbacks: moreClientFeedbacksQuery.data?.feedbacks ?? [],
+
       whyClientsStay: whyClientsStayQuery.data ?? [],
+
       articles: articlesQuery.data?.articles ?? [],
+
       companyUpdates: companyUpdatesQuery.data?.updates ?? [],
+
       featuredGuide: featuredGuideQuery.data?.guide ?? null,
-      browseByTopic: browseByTopicQuery.data ?? { title: '', topics: [] },
-      practicalGuides: practicalGuidesQuery.data ?? { title: '', items: [] },
-      whatDoYouNeed: whatDoYouNeedQuery.data ?? { title: '', subtitle: '', topics: [] },
-      usefulGuide: usefulGuideQuery.data ?? { eyebrow: '', title: '', guides: [] },
+
+      browseByTopic: browseByTopicQuery.data ?? {
+        title: '',
+        topics: [],
+      },
+
+      practicalGuides: practicalGuidesQuery.data ?? {
+        title: '',
+        items: [],
+      },
+
+      whatDoYouNeed: whatDoYouNeedQuery.data ?? {
+        title: '',
+        subtitle: '',
+        topics: [],
+      },
+
+      usefulGuide: usefulGuideQuery.data ?? {
+        eyebrow: '',
+        title: '',
+        guides: [],
+      },
+
       overview: overviewQuery.data?.overview ?? null,
-      whatWeHandle: whatWeHandleQuery.data ?? { eyebrow: '', title: '', items: [] },
-      whyChoose: whyChooseQuery.data ?? { eyebrow: '', title: '', values: [] },
+
+      whatWeHandle: whatWeHandleQuery.data ?? {
+        eyebrow: '',
+        title: '',
+        items: [],
+      },
+
+      whyChoose: whyChooseQuery.data ?? {
+        eyebrow: '',
+        title: '',
+        values: [],
+      },
+
       ourBeginnings: ourBeginningsQuery.data ?? {
         eyebrow: '',
         title: '',
@@ -201,17 +264,20 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
         badge: '',
         values: [],
       },
+
       keyMoments: keyMomentsQuery.data ?? {
         eyebrow: '',
         title: '',
         subtitle: '',
         moments: [],
       },
+
       meetOurTeam: meetOurTeamQuery.data ?? {
         eyebrow: '',
         title: '',
         members: [],
       },
+
       seeTheTeam: seeTheTeamQuery.data ?? {
         eyebrow: '',
         title: '',
@@ -241,10 +307,16 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     seeTheTeamQuery.data,
   ]);
 
-  /* ── Render ───────────────────────────────────────────────────────── */
+  /* ── Render ─────────────────────────────────────────────────────── */
 
   return (
-    <ApiContext.Provider value={{ data: formattedData, isLoading, isError }}>
+    <ApiContext.Provider
+      value={{
+        data: formattedData,
+        isLoading,
+        isError,
+      }}
+    >
       {children}
     </ApiContext.Provider>
   );
