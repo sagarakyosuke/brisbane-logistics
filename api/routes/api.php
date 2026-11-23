@@ -5,23 +5,56 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AboutUs\AboutUsController;
 use App\Http\Controllers\CaseStudies\CaseStudiesController;
+use App\Http\Controllers\Cookies\CookieController;
 use App\Http\Controllers\NewsBlogs\NewsBlogsController;
 use App\Http\Controllers\Faqs\FaqsController;
 use App\Http\Controllers\Security\Encryption\EncryptionController;
 use App\Http\Middleware\EncryptApiData;
 
 /*
-*--------------------------------------------------------------------------
-* Public APIs
-*--------------------------------------------------------------------------
+|--------------------------------------------------------------------------
+| Public APIs
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+| API Encryption Testing
+|--------------------------------------------------------------------------
+|
+| These endpoints intentionally remain outside EncryptApiData.
+| They independently test encryption and decryption.
+|
+*/
+
+Route::prefix('cipher')->group(function () {
+
+    // Encrypt
+    Route::post('/encrypt', [
+        EncryptionController::class,
+        'encrypt',
+    ]);
+
+    // Decrypt
+    Route::post('/decrypt', [
+        EncryptionController::class,
+        'decrypt',
+    ]);
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| Encrypted API Routes
+|--------------------------------------------------------------------------
 */
 
 Route::middleware([EncryptApiData::class])->group(function () {
 
     /*
-    *--------------------------------------------------------------------------
-    * Case Studies API
-    *--------------------------------------------------------------------------
+    |--------------------------------------------------------------------------
+    | Case Studies API
+    |--------------------------------------------------------------------------
     */
 
     Route::prefix('case-studies')->group(function () {
@@ -34,9 +67,9 @@ Route::middleware([EncryptApiData::class])->group(function () {
     });
 
     /*
-    *--------------------------------------------------------------------------
-    * News & Blogs API
-    *--------------------------------------------------------------------------
+    |--------------------------------------------------------------------------
+    | News & Blogs API
+    |--------------------------------------------------------------------------
     */
 
     Route::prefix('news-and-blogs')->group(function () {
@@ -48,9 +81,9 @@ Route::middleware([EncryptApiData::class])->group(function () {
     });
 
     /*
-    *--------------------------------------------------------------------------
-    * FAQs API
-    *--------------------------------------------------------------------------
+    |--------------------------------------------------------------------------
+    | FAQs API
+    |--------------------------------------------------------------------------
     */
 
     Route::prefix('faqs')->group(function () {
@@ -59,9 +92,9 @@ Route::middleware([EncryptApiData::class])->group(function () {
     });
 
     /*
-    *--------------------------------------------------------------------------
-    * About Us API
-    *--------------------------------------------------------------------------
+    |--------------------------------------------------------------------------
+    | About Us API
+    |--------------------------------------------------------------------------
     */
 
     Route::prefix('about-us')->group(function () {
@@ -77,29 +110,17 @@ Route::middleware([EncryptApiData::class])->group(function () {
         Route::get('/warehouse-details', [AboutUsController::class, 'warehouseDetails']);
     });
 
+    /*
+    |--------------------------------------------------------------------------
+    | Cookie Consent API
+    |--------------------------------------------------------------------------
+    */
 
-    /* =================================================================
-    * API Encryption Testing
-    * ================================================================= */
-
-    Route::prefix('cipher')->group(function () {
-
-        /*
-        * Encrypt
-        * -------------------------------------------------------------
-        * Receives plain data and returns encrypted data.
-        */
-
-        Route::post('/encrypt', [EncryptionController::class, 'encrypt']);
-
-        /*
-        * Decrypt
-        * -------------------------------------------------------------
-        * Receives encrypted data and returns decrypted data.
-        */
-
-        Route::post('/decrypt', [EncryptionController::class, 'decrypt']);
-
+    Route::prefix('cookies')->group(function () {
+        Route::get('/consent', [CookieController::class, 'show']);
+        Route::post('/consent', [CookieController::class, 'store']);
+        Route::put('/consent', [CookieController::class, 'update']);
+        Route::delete('/consent', [CookieController::class, 'destroy']);
     });
 
 });

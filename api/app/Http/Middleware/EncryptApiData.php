@@ -85,8 +85,10 @@ class EncryptApiData
 
     /* ── Response Helpers ─────────────────────────────────────────────── */
 
+
     /**
-     * Encrypt the response if it is a successful JSON response.
+     * Encrypt successful JSON responses while preserving
+     * the original response headers and cookies.
      */
     private function encryptResponse(Response $response): Response
     {
@@ -109,15 +111,26 @@ class EncryptApiData
         try {
             $encrypted = $this->encryptionService->encrypt($data);
 
-            return response()->json(
+            $response->setContent(json_encode(
                 ['response' => $encrypted],
-                $response->getStatusCode()
-            );
+                JSON_THROW_ON_ERROR
+            ));
+
+            // Remove any stale content length after changing the body.
+            $response->headers->remove('Content-Length');
+
+            // Return the original response, preserving Set-Cookie
+            // and all other existing headers.
+            return $response;
 
         } catch (Throwable $exception) {
-            return $this->errorResponse('Unable to encrypt response payload.', 500);
+            return $this->errorResponse(
+                'Unable to encrypt response payload.',
+                500
+            );
         }
     }
+
 
     /**
      * Determine if the response is a 2xx JSON response.

@@ -185,6 +185,12 @@ const baseQueryWithDecryption: BaseQueryFn<
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithDecryption,
-  tagTypes: ['CaseStudies', 'NewsBlogs', 'Faqs', 'AboutUs'],
+  tagTypes: [
+    'CaseStudies',
+    'NewsBlogs',
+    'Faqs',
+    'AboutUs',
+    'Cookies',
+  ],
   endpoints: () => ({}),
 });

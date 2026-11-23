@@ -1,3 +1,4 @@
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from '@mui/material/styles';
@@ -8,13 +9,16 @@ import { Provider } from 'react-redux';
 import { store } from '@/utilities/store';
 import { theme } from '@/utilities/themes';
 import { router } from '@/routes/routes';
+import { CookieConsentProvider } from '@/utilities/hooks/cookies/consent-provider';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <RouterProvider router={router} />
+        <CookieConsentProvider>
+          <RouterProvider router={router} />
+        </CookieConsentProvider>
       </ThemeProvider>
     </Provider>
   </StrictMode>,
