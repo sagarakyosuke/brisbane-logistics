@@ -27,13 +27,13 @@ import {
   useSaveCookieConsentMutation,
   useUpdateCookieConsentMutation,
   useWithdrawCookieConsentMutation,
-} from './api-hook';
+} from '@/utilities/hooks/cookies/api-hook';
 
 import {
   DEFAULT_COOKIE_PREFERENCES,
   type CookiePreferences,
   type SaveCookiePreferencesRequest,
-} from './types';
+} from '@/utilities/hooks/cookies/types';
 
 // ============================================================================
 // Types
@@ -118,16 +118,11 @@ export const CookieConsentProvider = ({
   // Local consent state
   // ========================================================================
 
-  // RTK Query provides the initial consent.
-  // Local state takes priority after a successful user action.
-
   const [localPreferences, setLocalPreferences] =
     useState<CookiePreferences>(DEFAULT_COOKIE_PREFERENCES);
 
   const [localHasConsent, setLocalHasConsent] = useState(false);
-
   const [hasLocalUpdate, setHasLocalUpdate] = useState(false);
-
   const [preferencesOpen, setPreferencesOpen] = useState(false);
 
   const [draftPreferences, setDraftPreferences] =
@@ -136,11 +131,7 @@ export const CookieConsentProvider = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const isReady = isSuccess || isError;
-
   const isSaving = isSavingNew || isUpdating || isWithdrawing;
-
-  // Derive consent directly from RTK Query instead of synchronizing it
-  // through useEffect and triggering additional renders.
 
   const preferences = hasLocalUpdate
     ? localPreferences
@@ -173,7 +164,6 @@ export const CookieConsentProvider = ({
         setLocalPreferences(response.consent.preferences);
         setLocalHasConsent(response.hasConsent);
         setHasLocalUpdate(true);
-
         setDraftPreferences(response.consent.preferences);
         setPreferencesOpen(false);
       } catch (error) {
@@ -223,7 +213,6 @@ export const CookieConsentProvider = ({
       setLocalPreferences(response.consent.preferences);
       setLocalHasConsent(response.hasConsent);
       setHasLocalUpdate(true);
-
       setDraftPreferences(response.consent.preferences);
       setPreferencesOpen(false);
     } catch (error) {
@@ -258,7 +247,6 @@ export const CookieConsentProvider = ({
   // ========================================================================
 
   useEffect(() => {
-    // Do not initialize optional tracking until consent has been retrieved.
     if (!isSuccess) return;
 
     const gaId = import.meta.env.VITE_GA_MEASUREMENT_ID as
@@ -319,7 +307,7 @@ export const CookieConsentProvider = ({
     // ----------------------------------------------------------------------
 
     if (metaPixelId) {
-      const metaWindow = window as MetaPixelWindow;
+      const metaWindow = window as unknown as MetaPixelWindow;
 
       if (marketingAllowed) {
         if (!metaWindow.fbq) {
@@ -663,25 +651,6 @@ export const CookieConsentProvider = ({
           </Button>
         </DialogActions>
       </Dialog>
-
-      {/* Persistent cookie settings */}
-
-      {isReady && hasConsent && (
-        <Button
-          size="small"
-          variant="outlined"
-          onClick={openPreferences}
-          sx={{
-            position: 'fixed',
-            right: 16,
-            bottom: 16,
-            zIndex: 1300,
-            bgcolor: 'background.paper',
-          }}
-        >
-          Cookie settings
-        </Button>
-      )}
     </CookieConsentContext.Provider>
   );
 };
@@ -691,6 +660,7 @@ export const CookieConsentProvider = ({
 // ============================================================================
 
 // The provider and hook intentionally remain in the same file.
+
 // eslint-disable-next-line react-refresh/only-export-components
 export const useCookieConsent = () => {
   const context = useContext(CookieConsentContext);
