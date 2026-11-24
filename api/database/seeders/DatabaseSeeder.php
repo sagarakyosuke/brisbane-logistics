@@ -16,46 +16,53 @@ class DatabaseSeeder extends Seeder
          * Toggle true/false to choose which seeders run.
          * ===================================================================== */
 
-        $seedCaseStudies         = false;
-        $seedArticles            = false;
-        $seedCompanyUpdates      = false;
-        $seedGuideTips           = false;
-        $seedBrowseTopics        = false;
-        $seedPracticalGuides     = false;
-        $seedFaqs                = false;
-        $seedOverview            = false;
-        $seedOurPerspective      = false;
-        $seedOurBeginnings       = false;
-        $seedKeyMoments          = false;
-        $seedTeamMembers         = false;
-        $seedTeamVideos          = false;
-        $seedWarehouseGalleries  = false;
-        $seedCaseStudyResults    = false;
+        $seedUser               = true;
+        $seedCaseStudies        = false;
+        $seedArticles           = false;
+        $seedCompanyUpdates     = false;
+        $seedGuideTips          = false;
+        $seedBrowseTopics       = false;
+        $seedPracticalGuides    = false;
+        $seedFaqs               = false;
+        $seedOverview           = false;
+        $seedOurPerspective     = false;
+        $seedOurBeginnings      = false;
+        $seedKeyMoments         = false;
+        $seedTeamMembers        = false;
+        $seedTeamVideos         = false;
+        $seedWarehouseGalleries = false;
+        $seedCaseStudyResults   = false;
 
 
         /* =====================================================================
          * Fresh Seeder
          * ===================================================================== */
 
-        // $seedCaseStudies         = true;
-        // $seedArticles            = true;
-        // $seedCompanyUpdates      = true;
-        // $seedGuideTips           = true;
-        // $seedBrowseTopics        = true;
-        // $seedPracticalGuides     = true;
-        // $seedFaqs                = true;
-        // $seedOverview            = true;
-        // $seedOurPerspective      = true;
-        // $seedOurBeginnings       = true;
-        // $seedKeyMoments          = true;
-        // $seedTeamMembers         = true;
-        // $seedTeamVideos          = true;
-        // $seedWarehouseGalleries  = true;
-        // $seedCaseStudyResults    = true;
+        // $seedUser               = true;
+        // $seedCaseStudies        = true;
+        // $seedArticles           = true;
+        // $seedCompanyUpdates     = true;
+        // $seedGuideTips          = true;
+        // $seedBrowseTopics       = true;
+        // $seedPracticalGuides    = true;
+        // $seedFaqs               = true;
+        // $seedOverview           = true;
+        // $seedOurPerspective     = true;
+        // $seedOurBeginnings      = true;
+        // $seedKeyMoments         = true;
+        // $seedTeamMembers        = true;
+        // $seedTeamVideos         = true;
+        // $seedWarehouseGalleries = true;
+        // $seedCaseStudyResults   = true;
+
 
         /* =====================================================================
          * Execution
          * ===================================================================== */
+
+        if ($seedUser) {
+            $this->call(UserSeeder::class);
+        }
 
         if ($seedCaseStudies) {
             $this->call(CaseStudiesSectionSeeder::class);

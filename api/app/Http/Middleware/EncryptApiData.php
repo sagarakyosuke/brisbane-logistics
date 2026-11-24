@@ -24,12 +24,17 @@ class EncryptApiData
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // 1. Skip cipher endpoints
+        // 1. Check whether API encryption is enabled.
+        if (!config('api-encryption.enabled')) {
+            return $next($request);
+        }
+
+        // 2. Skip cipher endpoints.
         if ($this->isCipherEndpoint($request)) {
             return $next($request);
         }
 
-        // 2. Decrypt incoming request payload
+        // 3. Decrypt incoming request payload.
         if ($request->exists('payload')) {
             $decryptionError = $this->decryptRequest($request);
 
@@ -38,10 +43,10 @@ class EncryptApiData
             }
         }
 
-        // 3. Process the request
+        // 4. Process the request.
         $response = $next($request);
 
-        // 4. Encrypt successful JSON responses
+        // 5. Encrypt successful JSON responses.
         return $this->encryptResponse($response);
     }
 
