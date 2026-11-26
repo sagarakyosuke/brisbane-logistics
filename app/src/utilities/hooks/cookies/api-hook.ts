@@ -4,7 +4,7 @@ import type {
   CookieConsentResponse,
   SaveCookiePreferencesRequest,
   SaveCookiePreferencesResponse,
-} from './types';
+} from '@/utilities/hooks/cookies/types';
 
 export const cookieApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

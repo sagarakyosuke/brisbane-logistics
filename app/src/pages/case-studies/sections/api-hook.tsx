@@ -33,6 +33,7 @@ export interface ApiPreviousCaseStudy {
 export interface LatestResponse {
   latest: ApiCaseStudy | null;
 }
+
 export interface PreviousResponse {
   previous: ApiPreviousCaseStudy[];
 }

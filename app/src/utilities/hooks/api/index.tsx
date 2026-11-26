@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 
-export { apiSlice } from './slice';
+export { apiSlice } from '@/utilities/hooks/api/slice';
 
 export {
   useGetLatestCaseStudiesQuery,
